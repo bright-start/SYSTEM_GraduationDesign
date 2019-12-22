@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+          name="viewport">
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../plugins/layui/css/layui.css">
+    <script src="../plugins/layui/layui.js"></script>
+    <script src="../js/layuistart.js"></script>
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../plugins/angularjs/pagination.css">
+    <script src="../plugins/angularjs/angular.min.js"></script>
+    <script src="../plugins/angularjs/pagination.js"></script>
+    <script type="text/javascript" src="../js/base_pagination.js"></script>
+    <script type="text/javascript" src="../js/service/bulletinService.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/controller/bulletinController.js"></script>
+</head>
+<body ng-app="travel" ng-controller="bulletinController"
+      class="hold-transition skin-red sidebar-mini">
+<div class="box-header with-border">
+    <h3 class="box-title">公告管理</h3>
+</div>
+<div class="box-body">
+    <!-- 数据表格 -->
+    <div class="table-box">
+        <!--工具栏-->
+        <div class="pull-left">
+            <div class="form-group form-inline">
+                <div class="btn-group">
+                    <div class="has-feedback"></div>
+                    <button type="button" class="btn btn-default" title="新建"
+                            data-toggle="modal" ng-click="entity={}" data-target="#editModal">
+                        <i class="fa fa-file-o"></i> 新建
+                    </button>
+                    <button type="button" class="btn btn-default" title="删除"
+                            ng-click="dele()">
+                        <i class="fa fa-trash-o"></i> 删除
+                    </button>
+                    <button type="button" class="btn btn-default" title="刷新"
+                            onclick="window.location.reload();">
+                        <i class="fa fa-refresh"></i> 刷新
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="box-tools pull-right">
+            标题：
+            <span class="layui-input-inline">
+				<input type="text" ng-model="searchEntity.title" autocomplete="off" class="layui-input">
+			</span>
+            作者：
+            <span class="layui-input-inline">
+				<input type="text" ng-model="searchEntity.author" autocomplete="off" class="layui-input">
+			</span>
+            <button ng-click="reloadList();" class="btn btn-default">查询</button>
+            <div class="has-feedback"></div>
+        </div>
+    </div>
+</div>
+<table class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th style="padding-right: 0px" class="layui-form">
+            <input type="checkbox" title="全选" lay-skin="primary">
+        </th>
+        <th>标题</th>
+        <th>作者</th>
+        <th>发布状态</th>
+        <th>更新时间</th>
+        <th>创建时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="entity in list">
+        <td class="layui-form">
+            <input type="checkbox" ng-click="updateSelection($event,entity.id)" lay-skin="primary"/>
+        </td>
+        <td>{{entity.title}}</td>
+        <td>{{entity.author}}</td>
+        <td>{{entity.status}}</td>
+        <td>{{entity.createTime}}</td>
+        <td>{{entity.updateTime}}</td>
+        <td class="text-center">
+            <button type="button" class="btn bg-olive btn-xs"
+                    data-toggle="modal" ng-click="findOne(entity.id)"
+                    data-target="#editModal">详情
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<!--数据列表/-->
+<tm-pagination conf="paginationConf"></tm-pagination>
+</div>
+</div>
+<!-- 编辑窗口 -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">×
+                </button>
+                <h3 id="myModalLabel">编辑公告</h3>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-striped" width="800px">
+                    <input type="hidden" ng-model="entity.id"/>
+                    <tr>
+                        <td>标题</td>
+                        <td><input class="form-control" ng-model="entity.title"
+                                   placeholder="标题格式 [标题]"></td>
+                    </tr>
+                    <tr>
+                        <td>作者</td>
+                        <td><input class="form-control" ng-model="entity.author"
+                                   placeholder="作者"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">内容</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><textarea class="form-control" ng-model="entity.content"
+                                                  placeholder="请编辑内容"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">是否开启定时发布任务<input type="checkbox"
+                                                         ng-model="entity.enabletimetask"
+                                                         ng-click="updateStatus(entity.enabletimetask)"
+                                                         ng-value="0"/>{{entity.enabletimetask}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" ng-if="entity.enabletimetask">
+                            <input class="form-control" ng-model="entity.enabletimetask?entity.timetask:'null'"
+                                   placeholder=""></td>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" data-dismiss="modal"
+                        aria-hidden="true" ng-click="save()">保存
+                </button>
+                <button class="btn btn-default" data-dismiss="modal"
+                        aria-hidden="true">关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

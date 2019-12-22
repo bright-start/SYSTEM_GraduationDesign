@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+          name="viewport">
+
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+          rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/moment.js/2.24.0/moment-with-locales.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+    <link rel="stylesheet"
+          href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../plugins/layui/css/layui.css">
+    <script src="../plugins/layui/layui.js"></script>
+    <script src="../js/layuistart.js"></script>
+    <link rel="stylesheet" href="../plugins/angularjs/pagination.css">
+    <script src="../plugins/angularjs/angular.min.js"></script>
+    <script src="../plugins/angularjs/pagination.js"></script>
+    <script src="../plugins/angularjs/encrypt.js"></script>
+    <script type="text/javascript" src="../js/base_pagination_encrypt.js"></script>
+    <script type="text/javascript" src="../js/service/ipinfoService.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/controller/ipinfoController.js"></script>
+</head>
+<body ng-app="travel" ng-controller="ipinfoController"
+      class="hold-transition skin-red sidebar-mini">
+<div class="box-header with-border">
+    <h3 class="box-title">IP记录管理</h3>
+</div>
+<div class="box-body">
+    <!-- 数据表格 -->
+    <div class="table-box">
+        <!--工具栏-->
+        <div class="pull-left">
+            <div class="form-group form-inline">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" title="删除"
+                            ng-click="buidtable()">
+                        <i class="fa fa-trash-o"></i> 批量报表生成
+                    </button>
+                    <button type="button" class="btn btn-default" title="刷新"
+                            onclick="window.location.reload();">
+                        <i class="fa fa-refresh"></i> 刷新
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="box-tools pull-right">
+            只看黑名单:
+            <span class="layui-form">
+			    <input type="checkbox" lay-skin="primary" ng-model="searchEntity.city" ng-true-value="1"
+                       ng-false-value="0"/>
+			</span>
+            城市:
+            <span class="layui-input-inline">
+				<input type="text" ng-model="searchEntity.city" autocomplete="off" class="layui-input">
+			</span>
+            省份:
+            <span class="layui-input-inline">
+				<input type="text" ng-model="searchEntity.province" autocomplete="off" class="layui-input">
+			</span>
+            <button ng-click="reloadList();" class="btn btn-default">查询</button>
+            <div class="has-feedback"></div>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>IP</th>
+            <th>第一次访问</th>
+            <th>最后访问时间</th>
+            <th>今天请求次数</th>
+            <th>所在城市</th>
+            <th>所在省份</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="entity in list">
+            <td>{{entity.ipAddr}}</td>
+            <td>{{entity.firstBrowseTime}}</td>
+            <td>{{entity.beginBrowseTime}}</td>
+            <td>{{entity.browseTotalCount}}</td>
+            <td>{{entity.ipAreaCity}}</td>
+            <td>{{entity.ipAreaProvince}}</td>
+            <td class="text-center">
+                <button type="button" class="btn bg-olive btn-xs" id="btn"
+                        data-toggle="modal" ng-click="findIPLogByDate(entity.ipAddr,'null',entity.firstBrowseTime);"
+                        data-target="#editModal" value="{{entity.firstBrowseTime}}">
+                    <span class="glyphicon glyphicon-list-alt"></span>
+                    IP日志
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <!--数据列表/-->
+    <tm-pagination conf="paginationConf"></tm-pagination>
+</div>
+</div>
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">×
+                </button>
+                <h3 id="myModalLabel">IP日志</h3>
+            </div>
+            <div class="modal-body" style="height: 400px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class='col-sm-6 col-md-offset-6'>
+                                <div class='input-group date' id='datetimepicker1'>
+                                    <input type='text' id="datetime" class="form-control"
+                                           onkeypress="return false"
+                                           onmouseenter="return false"
+                                           ng-blur="findLog(findEntity.ipAddr,findEntity.date)"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Table -->
+                    <table class="table" id='responseTable'>
+                        <thead style="display: table;table-layout: fixed;width: 100%;">
+                        <tr>
+                            <th>IP</th>
+                            <th>访问时间</th>
+                        </tr>
+                        </thead>
+                        <tbody style="display:block;height: 270px;overflow-y: auto;">
+                        <tr ng-repeat="entity in loglist" style="display: table;table-layout: fixed;width: 100%;">
+                            <td>{{entity.ipAddr}}</td>
+                            <td>{{entity.browseTime}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript"></script>
+<script>
+    $(function () {
+        $("body").delegate("#btn", "click", function () {
+            var minDate = $("#btn").attr("value");
+
+            var picker = $('#datetimepicker1');
+            picker.datetimepicker({
+                format: 'YYYY-MM-DD',
+                locale: moment.locale('zh-cn')
+            });
+            picker.data('DateTimePicker').minDate(minDate);
+            picker.data('DateTimePicker').maxDate(new Date());
+        });
+    });
+</script>
+</body>
+</html>

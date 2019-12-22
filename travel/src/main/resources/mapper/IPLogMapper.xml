@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.IPLogMapper">
+    <resultMap id="ipLogMap" type="IPLog">
+        <id column="ip_log_id" property="ipLogId"/>
+        <result column="ip_addr" property="ipAddr"/>
+        <result column="browse_time" property="browseTime"/>
+        <result column="browse_date_day" property="browseDateDay"/>
+        <result column="browse_date_month" property="browseDateMonth"/>
+        <result column="browse_date_year" property="browseDateYear"/>
+    </resultMap>
+    <select id="listIPLog" resultMap="ipLogMap" parameterType="IPLog">
+        select  *
+        from ip_log
+      <where>
+          <if test="ipAddr != null">
+              ip_addr = #{ipAddr}
+          </if>
+          <if test="browseDateDay != null">
+              and browse_date_day = #{browseDateDay}
+          </if>
+          <if test="browseDateMonth != null">
+              and browse_date_month = #{browseDateMonth}
+          </if>
+          <if test="browseDateYear != null">
+              and browse_date_year = #{browseDateYear}
+          </if>
+      </where>
+      order by browse_time DESC
+    </select>
+    <insert id="insertIPLog" parameterType="IPLog">
+        insert into
+        ip_log
+        (ip_addr,browse_time,browse_date_day,browse_date_month,browse_date_year)
+        values (#{ipAddr},#{browseTime},#{browseDateDay},#{browseDateMonth},#{browseDateYear})
+    </insert>
+</mapper>
