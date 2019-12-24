@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.BulletinMapper">
+    <resultMap id="bulletinMap" type="Bulletin">
+        <id column="b_id" property="id"/>
+        <result column="b_title" property="title"/>
+        <result column="b_content" property="content"/>
+        <result column="b_author" property="author"/>
+        <result column="b_status" property="status"/>
+        <result column="b_enabletimetask" property="enableTimeTask"/>
+        <result column="b_timetask" property="timeTask"/>
+        <result column="b_createtime" property="createTime"/>
+        <result column="b_updatetime" property="updateTime"/>
+    </resultMap>
+    <resultMap id="timeTaskMap" type="TimeTask">
+        <id column="b_id" property="id"/>
+        <result column="b_enabletimetask" property="enable"/>
+        <result column="b_timetask" property="time"/>
+    </resultMap>
+    <select id="listBulletin" resultMap="bulletinMap" parameterType="Bulletin">
+        select
+        *
+        from bulletin
+        <where>
+            <if test="title != null">
+                b_title = #{title}
+            </if>
+            <if test="author != null">
+                and b_author = #{author}
+            </if>
+            <if test="status != null">
+                and b_status = #{status}
+            </if>
+        </where>
+    </select>
+    <select id="getBulletinById" parameterType="java.lang.Integer" resultMap="bulletinMap">
+        select * from bulletin where b_id = #{id}
+    </select>
+    <select id="listTimeTask" resultMap="timeTaskMap">
+        select b_id,b_enabletimetask,b_timetask
+        from bulletin
+        where
+        b_status = 0
+        and b_enabletimetask = 1
+        and b_timetask != 'null'
+    </select>
+    <select id="count" resultType="java.lang.Long">
+        select count(b_id)
+        from bulletin
+    </select>
+    <select id="getStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select b_status
+        from bulletin
+        where b_id = #{id}
+    </select>
+    <insert id="insertBulletin" parameterType="Bulletin">
+        insert into bulletin(b_title,b_content,b_author,b_status,b_enabletimetask,b_timetask,b_createtime,b_updatetime)
+        values (#{title},#{content},#{author},#{status},#{enableTimeTask},#{timeTask},#{createTime},#{updateTime})
+    </insert>
+    <update id="updateStatusById" parameterType="java.lang.Integer">
+        update bulletin
+        set b_status = 1
+        b_enabletimetask=0
+        b_timetash='null'
+        where b_id = #{id}
+    </update>
+    <update id="updateBulletinByBulletin" parameterType="Bulletin">
+        update bulletin
+        set b_title=#{title},b_content=#{content},b_author=#{author},b_status=#{status},b_enabletimetask=#{enableTimeTask},b_timetask=#{timeTask},b_updatetime=#{updateTime}
+        where b_id=#{id}
+    </update>
+    <delete id="deleteBulletinById" parameterType="java.lang.Integer">
+        delete * form bulletin where b_id = #{id}
+    </delete>
+</mapper>
