@@ -28,6 +28,8 @@ public abstract class RefreshCenter implements SchedulingConfigurer {
             return new CronTrigger(cron).nextExecutionTime(triggerContext);
         });
     }
+
     protected abstract void timeTask();
+
     protected abstract int getTypeId();
 }

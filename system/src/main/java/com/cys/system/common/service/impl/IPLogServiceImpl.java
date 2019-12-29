@@ -21,7 +21,7 @@ public class IPLogServiceImpl implements IPLogService {
 
     @Resource
     private IPLogMapper ipLogMapper;
-    
+
     @Override
     public void insertIPLog(IPLog ipLog) throws Exception {
         ipLog.setIpAddr(AesUtil.encrypt(ipLog.getIpAddr()));
@@ -35,7 +35,7 @@ public class IPLogServiceImpl implements IPLogService {
     @Override
     public Result listIPLog(IPLog ipLog) {
         List<IPLog> ipLogs = ipLogMapper.listIPLog(ipLog);
-        if(ipLogs != null &&!ipLogs.isEmpty()){
+        if (ipLogs != null && !ipLogs.isEmpty()) {
             return new Result().success(ipLogs);
         }
         return new Result().success("无数据");

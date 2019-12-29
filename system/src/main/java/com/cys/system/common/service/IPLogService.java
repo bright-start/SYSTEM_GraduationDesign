@@ -13,5 +13,6 @@ import java.security.spec.InvalidKeySpecException;
 
 public interface IPLogService {
     void insertIPLog(IPLog ipLog) throws Exception;
+
     Result listIPLog(IPLog ipLog);
 }

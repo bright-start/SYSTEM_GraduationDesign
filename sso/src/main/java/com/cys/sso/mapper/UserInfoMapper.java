@@ -7,6 +7,5 @@ import org.apache.ibatis.annotations.Select;
 public interface UserInfoMapper {
     @Insert("insert into user_info values(#{userId},#{registryTime},#{lastLoginTime},#{phoneType},#{phoneIp},#{area})")
     void saveUserInfo(UserInfo userInfo);
-    @Select("select * from user_info where u_id = #{userId}")
-    UserInfo getUserInfoById(Integer userId);
+
 }

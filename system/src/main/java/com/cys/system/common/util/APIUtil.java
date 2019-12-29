@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class APIUtil {
-    public static Map<String,String> query(String ip){
+    public static Map<String, String> query(String ip) {
         String host = "https://jkyip.market.alicloudapi.com";
         String path = "/ip";
         String method = "GET";
@@ -19,23 +19,23 @@ public class APIUtil {
         Map<String, String> querys = new HashMap<String, String>();
         querys.put("ip", ip);
 
-        Map<String,String> map = new LinkedHashMap<>();
+        Map<String, String> map = new LinkedHashMap<>();
 
         try {
             HttpResponse response = HttpUtils.doGet(host, path, method, headers, querys);
             String string = EntityUtils.toString(response.getEntity());
             ObjectMapper objectMapper = new ObjectMapper();
-            Map<String,String> map1 = objectMapper.readValue(string, Map.class);
-            if("0".equals(map1.get("status"))) {
+            Map<String, String> map1 = objectMapper.readValue(string, Map.class);
+            if ("0".equals(map1.get("status"))) {
                 map.put("city", map1.get("city"));
                 map.put("province", map1.get("province"));
-            }else {
-                map.put("city",null);
-                map.put("province",null);
+            } else {
+                map.put("city", null);
+                map.put("province", null);
             }
         } catch (Exception e) {
-            map.put("city",null);
-            map.put("province",null);
+            map.put("city", null);
+            map.put("province", null);
         }
         return map;
     }

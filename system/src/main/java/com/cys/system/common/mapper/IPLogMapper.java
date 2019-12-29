@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface IPLogMapper {
     void insertIPLog(IPLog ipLog);
+
     List<IPLog> listIPLog(IPLog ipLog);
 }

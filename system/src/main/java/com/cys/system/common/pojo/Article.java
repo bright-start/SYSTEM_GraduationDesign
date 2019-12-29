@@ -7,6 +7,7 @@ public class Article {
     private String name;
     private String author;
     private String content;
+    private String releaseTime;
     private String createTime;
     private Integer browseNum;
     private Integer loveNum;
@@ -103,4 +104,11 @@ public class Article {
         this.timeTask = timeTask;
     }
 
+    public String getReleaseTime() {
+        return releaseTime;
+    }
+
+    public void setReleaseTime(String releaseTime) {
+        this.releaseTime = releaseTime;
+    }
 }

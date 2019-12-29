@@ -21,7 +21,7 @@ public interface BulletinMapper {
 
     void updateBulletinByBulletin(Bulletin bulletin);
 
-    void updateStatusById(@Param("id")Integer id);
+    void updateStatusById(@Param("id") Integer id);
 
     void insertBulletin(Bulletin bulletin);
 }

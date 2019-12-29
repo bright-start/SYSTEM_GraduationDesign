@@ -7,5 +7,6 @@ import java.io.IOException;
 
 public interface SSOService {
     User getUserByToken(String token);
+
     String SaveUser(User user);
 }

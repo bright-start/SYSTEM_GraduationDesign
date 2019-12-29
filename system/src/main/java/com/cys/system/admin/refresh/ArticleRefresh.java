@@ -14,7 +14,7 @@ import java.util.List;
  * 文章刷新插件
  */
 @Component
-public class ArticleRefresh extends RefreshCenter  {
+public class ArticleRefresh extends RefreshCenter {
 
     @Autowired
     private ArticleService articleService;

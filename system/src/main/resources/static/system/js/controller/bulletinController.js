@@ -1,4 +1,4 @@
-app.controller("bulletinController", function ($scope,$controller, bulletinService) {
+app.controller("bulletinController", function ($scope, $controller, bulletinService) {
 
     $controller("baseController", {$scope: $scope});
 

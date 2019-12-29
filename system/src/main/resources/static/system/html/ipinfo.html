@@ -55,8 +55,8 @@
         <div class="box-tools pull-right">
             只看黑名单:
             <span class="layui-form">
-			    <input type="checkbox" lay-skin="primary" ng-model="searchEntity.city" ng-true-value="1"
-                       ng-false-value="0"/>
+			    <input type="checkbox" lay-skin="primary" ng-model="searchEntity.blackList" ng-true-value="1"
+                       ng-false-value="0" ng-change="reloadList();"/>
 			</span>
             城市:
             <span class="layui-input-inline">

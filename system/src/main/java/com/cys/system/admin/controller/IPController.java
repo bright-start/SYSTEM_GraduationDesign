@@ -51,17 +51,17 @@ public class IPController {
     public Result get(String ipAddr, @RequestParam(required = false) String date) throws InvalidRequestException {
         IPLog ipLog = new IPLog();
         ipLog.setIpAddr(ipAddr);
-        if(!"null".equals(date)) {
+        if (!"null".equals(date)) {
             String date1 = date.split(" ")[0];
             Matcher matcher = pattern.matcher(date1);
-            if(!matcher.find()){
+            if (!matcher.find()) {
                 throw new InvalidRequestException();
             }
             final String[] s = date1.split("-");
             ipLog.setBrowseDateYear(s[0]);
             ipLog.setBrowseDateMonth(s[1]);
             ipLog.setBrowseDateDay(s[2]);
-        }else {
+        } else {
             String date1 = TimeConverter.DateToString(new Date());
             String[] s = date1.split(" ")[0].split("-");
             ipLog.setBrowseDateYear(s[0]);

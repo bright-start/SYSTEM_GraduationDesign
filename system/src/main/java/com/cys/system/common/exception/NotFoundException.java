@@ -1,6 +1,6 @@
 package com.cys.system.common.exception;
 
-public class NotFoundException extends Exception{
+public class NotFoundException extends Exception {
     public NotFoundException() {
         super("NOT FOUND");
     }

@@ -25,7 +25,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(ipFilter).addPathPatterns("/travel/**").excludePathPatterns(EXCLUDE_PATH);
+        registry.addInterceptor(ipFilter).addPathPatterns("/system/**").excludePathPatterns(EXCLUDE_PATH);
     }
 
 }

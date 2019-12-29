@@ -1,4 +1,4 @@
-app.controller("ipinfoController", function ($scope,$controller, ipinfoService) {
+app.controller("ipinfoController", function ($scope, $controller, ipinfoService) {
 
     $controller("baseController", {$scope: $scope});
 
@@ -26,7 +26,7 @@ app.controller("ipinfoController", function ($scope,$controller, ipinfoService) 
                         "background-image": ""
                     });
                     $("#responseTable thead").css({
-                        "visibility":"visible"
+                        "visibility": "visible"
                     });
                 } else {
                     $scope.loglist = null;
@@ -34,7 +34,7 @@ app.controller("ipinfoController", function ($scope,$controller, ipinfoService) 
                         "background-image": "url('../images/nomore.png')"
                     });
                     $("#responseTable thead").css({
-                        "visibility":"hidden"
+                        "visibility": "hidden"
                     });
                 }
             } else {

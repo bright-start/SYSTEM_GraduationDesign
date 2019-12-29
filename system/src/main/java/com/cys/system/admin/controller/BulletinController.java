@@ -18,16 +18,16 @@ public class BulletinController {
     private BulletinService bulletinService;
 
     @PostMapping("/list")
-    public Result list(Integer page, Integer rows,@RequestBody(required = false) Bulletin bulletin) throws InvalidRequestException {
+    public Result list(Integer page, Integer rows, @RequestBody(required = false) Bulletin bulletin) throws InvalidRequestException {
         if (page == null) {
             page = 1;
         }
         if (rows == null) {
             rows = 10;
         }
-        if(rows == 10 || rows == 20 || rows == 30 || rows == 40|| rows == 50){
-            return bulletinService.listBulletin(page, rows,bulletin);
-        }else {
+        if (rows == 10 || rows == 20 || rows == 30 || rows == 40 || rows == 50) {
+            return bulletinService.listBulletin(page, rows, bulletin);
+        } else {
             throw new InvalidRequestException();
         }
     }

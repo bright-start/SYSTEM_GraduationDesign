@@ -2,51 +2,66 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cys.system.common.mapper.UserMapper">
     <resultMap id="userMap" type="User">
-        <id column="u_id" property="Id"/>
-        <result column="u_name" property="name"/>
-        <result column="u_sex" property="sex"/>
-        <result column="u_image" property="image"/>
-        <result column="u_online" property="online"/>
+        <id column="user_id" property="userId"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="sex" property="sex"/>
+        <result column="images" property="images"/>
+        <result column="role_id" property="roleId"/>
+        <result column="level" property="level"/>
+        <result column="status" property="status"/>
+        <result column="disable_time" property="disableTime"/>
     </resultMap>
-    <select id="getUserById" parameterType="java.lang.Integer">
-        select *
-        from user
+    <select id="getUserById" parameterType="java.lang.Integer" resultMap="userMap">
+        select
+        user_id,
+        image,
+        username
+        from _user
+        where user_id = #{userId}
     </select>
-    <select id="listUser" parameterType="User">
-        select *
-        from user
+    <select id="listUser" parameterType="User" resultType="java.util.Map">
+        select
+        username,
+        password,
+        sex,
+        image,
+        role_id,
+        level,
+        status,
+        disable_time,
+        registrytime,
+        lastlogintime,
+        logintype,
+        ip_addr
+        from _user,user_info
         <where>
-            <if test="name != null">
-                u_name = #{name}
+            _user.user_id = user_info.user_id
+            <if test="username != null">
+                and username = #{username}
             </if>
-            <if test="online == 1">
-                u_online = 1
+            <if test="status != 0">
+                and status = #{status}
+            </if>
+            <if test="roleId != null">
+                and role_id = #{roleId}
+            </if>
+        </where>
+        order by username
+    </select>
+    <select id="count" parameterType="User" resultType="java.lang.Long">
+        select count(user_id)
+        from _user
+        <where>
+            <if test="username != null">
+                username = #{username}
+            </if>
+            <if test="status != 0">
+                and status = #{status}
+            </if>
+            <if test="roleId != null">
+                and role_id = #{roleId}
             </if>
         </where>
     </select>
-    <select id="count" parameterType="User">
-        select count(u_id)
-        from user
-        <where>
-            <if test="name != null">
-                u_name = #{name}
-            </if>
-            <if test="online == 1">
-                u_online = 1
-            </if>
-        </where>
-    </select>
-    <insert id="applyUser" parameterType="User">
-        insert into user(
-        u_name,
-        u_sex,
-        u_image,
-        u_online
-        )values (
-        #{name},
-        #{sex},
-        #{image},
-        #{online}
-        )
-    </insert>
 </mapper>

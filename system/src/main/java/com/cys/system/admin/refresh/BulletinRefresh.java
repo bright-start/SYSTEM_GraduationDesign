@@ -14,7 +14,7 @@ import java.util.List;
  * 公告刷新插件
  */
 @Component
-public class BulletinRefresh extends RefreshCenter  {
+public class BulletinRefresh extends RefreshCenter {
 
     @Autowired
     private BulletinService bulletinService;

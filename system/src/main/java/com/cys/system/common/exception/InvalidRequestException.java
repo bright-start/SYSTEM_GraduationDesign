@@ -1,6 +1,6 @@
 package com.cys.system.common.exception;
 
-public class InvalidRequestException extends Exception{
+public class InvalidRequestException extends Exception {
     public InvalidRequestException() {
         super("INVALID REQUEST");
     }

@@ -11,7 +11,7 @@ public class TimeConverter {
         return FORMAT.parse(time);
     }
 
-    public static String DateToString(Date date){
+    public static String DateToString(Date date) {
         return FORMAT.format(date);
     }
 }

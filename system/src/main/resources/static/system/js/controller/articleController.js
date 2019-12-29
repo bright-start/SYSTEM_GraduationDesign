@@ -1,23 +1,18 @@
-app.controller("articleController", function ($scope,$controller, articleService) {
+app.controller("articleController", function ($scope, $controller, $location, articleService, uploadService) {
 
     $controller("baseController", {$scope: $scope});
 
     // 添加函数
     $scope.save = function () {
-        // 初始化返回对象
-        var obj = null;
-        // 判断是否是添加
-        if ($scope.entity.id != null) {
-            obj = articleService.update($scope.entity);
-        } else {
-            obj = articleService.add($scope.entity);
-        }
+
+        $scope.entity.content = editor.html();
+        var obj = articleService.add($scope.entity);
 
         obj.success(function (data) {
             // 判断
             if (data.code === 200) {
                 // 刷新
-                $scope.reloadList();
+                window.location.href = "article.html"
             } else {
                 alert(data.message);
             }
@@ -25,7 +20,9 @@ app.controller("articleController", function ($scope,$controller, articleService
 
     };
 
-    $scope.findOne = function (id) {
+
+    $scope.findOne = function () {
+        var id = $location.search()["id"];
         // 发送请求
         articleService.findOne(id).success(function (data) {
             $scope.entity = data.data;
@@ -33,10 +30,12 @@ app.controller("articleController", function ($scope,$controller, articleService
     };
 
     // 初始化对象
-    $scope.searchEntity = {};
+    $scope.searchEntity = {status: -1};
+    $scope.statusName = "全部";
 
     // 条件查询方法
     $scope.search = function (page, rows) {
+        console.log("文章查询");
         // 发送条件查询请求
         articleService.search(page, rows, $scope.searchEntity).success(function (data) {
             if (data.code === 200) {
@@ -61,4 +60,19 @@ app.controller("articleController", function ($scope,$controller, articleService
             }
         })
     };
+
+    $scope.read_file = function () {
+        console.log("上传word文件");
+        uploadService.parseFile().success(function (data) {
+            if (data.code === 200) {
+                editor.html(data.data);
+            } else {
+
+            }
+        })
+    };
+    $scope.changeStatus = function (statusName, status) {
+        $scope.statusName = statusName;
+        $scope.searchEntity.status = status;
+    }
 });

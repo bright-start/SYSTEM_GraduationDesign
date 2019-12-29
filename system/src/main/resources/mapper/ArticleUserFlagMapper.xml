@@ -18,7 +18,7 @@
         and u_id = #{userId}
     </update>
     <delete id="deleteContact" parameterType="java.lang.Integer">
-        delete * from
+        delete  from
         where article_id = #{articleId}
     </delete>
 </mapper>

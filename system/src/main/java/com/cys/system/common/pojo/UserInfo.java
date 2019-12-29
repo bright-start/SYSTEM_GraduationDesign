@@ -4,9 +4,8 @@ public class UserInfo {
     private Integer userId;
     private String registryTime;
     private String lastLoginTime;
-    private String phoneType;
-    private String phoneIp;
-    private String area;
+    private String loginType;
+    private String ipAddr;
 
     public Integer getUserId() {
         return userId;
@@ -32,27 +31,19 @@ public class UserInfo {
         this.lastLoginTime = lastLoginTime;
     }
 
-    public String getPhoneType() {
-        return phoneType;
+    public String getLoginType() {
+        return loginType;
     }
 
-    public void setPhoneType(String phoneType) {
-        this.phoneType = phoneType;
+    public void setLoginType(String loginType) {
+        this.loginType = loginType;
     }
 
-    public String getPhoneIp() {
-        return phoneIp;
+    public String getIpAddr() {
+        return ipAddr;
     }
 
-    public void setPhoneIp(String phoneIp) {
-        this.phoneIp = phoneIp;
-    }
-
-    public String getArea() {
-        return area;
-    }
-
-    public void setArea(String area) {
-        this.area = area;
+    public void setIpAddr(String ipAddr) {
+        this.ipAddr = ipAddr;
     }
 }

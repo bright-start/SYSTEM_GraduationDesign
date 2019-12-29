@@ -34,7 +34,7 @@ import java.util.Date;
 @EnableAsync
 public class IPFilter implements HandlerInterceptor {
 
-    private static final Logger logger =  LoggerFactory.getLogger(IPRecord.class);
+    private static final Logger logger = LoggerFactory.getLogger(IPRecord.class);
 
     @Autowired
     private IPRecodeService ipRecodeService;
@@ -44,13 +44,13 @@ public class IPFilter implements HandlerInterceptor {
 
     private static String IP = null;
 
-    private static Integer IPBROWSECOUNT =-1;
+    private static Integer IPBROWSECOUNT = -1;
 
     // 阈值
     private static final Integer THRESHOLD = 100;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String ip = request.getHeader("x-forwarded-for");
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IPRecord");
@@ -81,7 +81,7 @@ public class IPFilter implements HandlerInterceptor {
         try {
             recodeIp(ip);
             recordIPLog();
-        }catch (Exception e){
+        } catch (Exception e) {
             // 打印过滤层异常日志
         }
         IP = null;
@@ -113,7 +113,7 @@ public class IPFilter implements HandlerInterceptor {
      * 认为一秒之内所有请求算一次请求
      */
     @Async
-    @Scheduled(fixedRate = 10000,initialDelay = 1000)
+    @Scheduled(fixedRate = 10000, initialDelay = 1000)
     void recordIPLog() throws Exception {
         if (IP == null) {
             return;
@@ -133,9 +133,9 @@ public class IPFilter implements HandlerInterceptor {
 
         // 判断一秒访问次数是否超过阈值，超过拉黑名单
         IPRecord ipRecord = ipRecodeService.getIPRecode(AesUtil.encrypt(IP));
-        if(ipRecord != null) {
+        if (ipRecord != null) {
             Integer lastbrowseCount = Integer.parseInt(AesUtil.decrypt(ipRecord.getBrowseTotalCount()));
-            if(IPBROWSECOUNT != -1) {
+            if (IPBROWSECOUNT != -1) {
                 if (lastbrowseCount - IPBROWSECOUNT > THRESHOLD) {
                     // 拉黑
                     ipRecord.setBlackList(AesUtil.encrypt("1"));
@@ -151,7 +151,7 @@ public class IPFilter implements HandlerInterceptor {
      */
     @Async
     @Scheduled(cron = "0 0 0 * * ?")
-    void timeimgIPTask(){
+    void timeimgIPTask() {
         ipRecodeService.refreshRecode();
     }
 }

@@ -6,8 +6,8 @@ import com.cys.system.common.pojo.TimeTask;
 
 import java.util.List;
 
-public interface BulletinService{
-    Result listBulletin(Integer page, Integer rows,Bulletin bulletin);
+public interface BulletinService {
+    Result listBulletin(Integer page, Integer rows, Bulletin bulletin);
 
     List<TimeTask> listTimeTask();
 

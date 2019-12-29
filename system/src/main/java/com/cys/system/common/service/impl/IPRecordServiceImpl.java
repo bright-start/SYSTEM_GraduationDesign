@@ -32,22 +32,22 @@ public class IPRecordServiceImpl implements IPRecodeService {
         long totalCount = ipMapper.getTotalCount();
 
         if (totalCount > 0) {
-            int pageNum = (int)Math.ceil(totalCount *1.0/rows);
-            if(page >= pageNum){
+            int pageNum = (int) Math.ceil(totalCount * 1.0 / rows);
+            if (page >= pageNum) {
                 page = pageNum;
             }
             int start = (page - 1) * rows;
 
             PageHelper.startPage(start, rows);
-            if(ipRecord.getBlackList() == null) {
+            if (ipRecord.getBlackList() == null) {
                 ipRecord.setBlackList(AesUtil.encrypt("0"));
-            }else {
+            } else {
                 ipRecord.setBlackList(AesUtil.encrypt(ipRecord.getBlackList()));
             }
-            if(ipRecord.getIpAreaCity() != null){
+            if (ipRecord.getIpAreaCity() != null) {
                 ipRecord.setIpAreaCity(AesUtil.encrypt(ipRecord.getIpAreaCity()));
             }
-            if(ipRecord.getIpAreaProvince() != null){
+            if (ipRecord.getIpAreaProvince() != null) {
                 ipRecord.setIpAreaProvince(AesUtil.encrypt(ipRecord.getIpAreaProvince()));
             }
             List<IPRecord> allIPRecode = ipMapper.findAllIPRecode(ipRecord);
@@ -105,11 +105,11 @@ public class IPRecordServiceImpl implements IPRecodeService {
             init = AesUtil.encrypt("0");
         } catch (Exception e) {
             // 记录日志
-        }finally {
+        } finally {
             init = " ";
         }
         for (String ip : ipList) {
-            ipMapper.refreshRecode(ip,init);
+            ipMapper.refreshRecode(ip, init);
         }
     }
 }

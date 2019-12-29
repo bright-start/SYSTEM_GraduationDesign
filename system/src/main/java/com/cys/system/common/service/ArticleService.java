@@ -18,13 +18,13 @@ public interface ArticleService {
 
     Result deleteArticleById(Integer[] ids);
 
-    Result increaseBrowseNum(Integer articleId,Integer userId);
+    Result increaseBrowseNum(Integer articleId, Integer userId);
 
-    Result increaseLoveNum(Integer articleId,Integer userId,Integer islove);
+    Result increaseLoveNum(Integer articleId, Integer userId, Integer islove);
 
     Result commitCommand(Command command);
 
-    Result deleteCommand(Integer commandId,Integer userId);
+    Result deleteCommand(Integer commandId, Integer userId);
 
     void updateStatusById(Integer id);
 

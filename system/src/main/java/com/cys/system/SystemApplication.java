@@ -1,5 +1,6 @@
 package com.cys.system;
 
+
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,11 +17,11 @@ public class SystemApplication {
     }
 
     @Bean
-    public WebMvcConfigurer crosConfigurer(){
+    public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/system/**").allowedOrigins("127.0.0.1","localhost");
+                registry.addMapping("/system/**").allowedOrigins("127.0.0.1:8080", "localhost:8080");
             }
         };
     }

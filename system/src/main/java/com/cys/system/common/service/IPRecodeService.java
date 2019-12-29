@@ -13,9 +13,13 @@ import java.security.spec.InvalidKeySpecException;
 
 
 public interface IPRecodeService {
-    Result findAllIPRecode(Integer start,Integer rows,IPRecord ipRecord) throws Exception;
+    Result findAllIPRecode(Integer start, Integer rows, IPRecord ipRecord) throws Exception;
+
     IPRecord getIPRecode(String ip);
+
     void recodeIP(String ip) throws Exception;
+
     void updateIPRecord(IPRecord ipRecord);
+
     void refreshRecode();
 }

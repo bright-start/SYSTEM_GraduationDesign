@@ -35,10 +35,10 @@ public class SSOServiceImpl implements SSOService {
         User user = null;
         try {
             user = objectMapper.readValue(userJson, User.class);
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
-        redisTemplate.expire("USER"+token,30, TimeUnit.MINUTES);
+        redisTemplate.expire("USER" + token, 30, TimeUnit.MINUTES);
         return user;
     }
 
@@ -48,10 +48,10 @@ public class SSOServiceImpl implements SSOService {
         redisTemplate.setKeySerializer(redisSerializer);
 
         String token = UUID.randomUUID().toString();
-        Cookie cookie = new Cookie("userToken",token);
+        Cookie cookie = new Cookie("userToken", token);
 
-        redisTemplate.opsForValue().set("USER"+token,user);
-        redisTemplate.expire("USER"+token,30,TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set("USER" + token, user);
+        redisTemplate.expire("USER" + token, 30, TimeUnit.MINUTES);
 
         return token;
     }

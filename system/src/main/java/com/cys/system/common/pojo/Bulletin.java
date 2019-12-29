@@ -3,7 +3,7 @@ package com.cys.system.common.pojo;
 import java.util.Date;
 
 public class Bulletin {
-    private Integer  id;
+    private Integer id;
     private String title;
     private String content;
     private String author;

@@ -1,13 +1,18 @@
 package com.cys.system.common.mapper;
 
 import com.cys.system.common.pojo.User;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserMapper {
-    void applyUser(User user);
-    User getUserById(Integer userId);
-    List<User> listUser(User user);
+
+    List<Map> listUser(User user);
+
     long count(User user);
+
+    void nouse(@Param("userid") Integer id);
+
+    User getUserById(Integer userId);
 }

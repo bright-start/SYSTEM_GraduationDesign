@@ -7,6 +7,7 @@ import com.cys.system.common.mapper.CommandMapper;
 import com.cys.system.common.mapper.UserMapper;
 import com.cys.system.common.pojo.*;
 import com.cys.system.common.service.ArticleService;
+import com.cys.system.common.util.TimeConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -72,11 +74,13 @@ public class ArticleServiceImpl implements ArticleService {
         RedisSerializer redisSerializer = new StringRedisSerializer();
         redisTemplate.setKeySerializer(redisSerializer);
         // 缓存层
-        String json2 = (String) redisTemplate.opsForHash().get("article", "page:" + page + ";rows:" + rows);
+        String json2 = (String) redisTemplate.opsForHash().get("article",
+                "page:" + page + "-rows:" + rows + ";" + article.getStatus() + "&" + article.getEnableTimeTask() + "&" + article.getName());
         PageInfo<Article> articleList = null;
         if (json2 == null) {
             synchronized (this) {
-                json2 = (String) redisTemplate.opsForHash().get("article", "page:" + page + ";rows:" + rows);
+                json2 = (String) redisTemplate.opsForHash().get("article",
+                        "page:" + page + "-rows:" + rows + ";" + article.getStatus() + "&" + article.getEnableTimeTask() + "&" + article.getName());
                 if (json2 == null) {
                     long totalCount = articleMapper.count(article);
                     if (totalCount > 0) {
@@ -87,10 +91,13 @@ public class ArticleServiceImpl implements ArticleService {
                             PageInfo<Article> pageInfo = new PageInfo<>();
                             pageInfo.setTotal(totalCount);
                             pageInfo.setList(articles);
-                            redisTemplate.opsForHash().put("article", "page:" + page + ";rows:" + rows, objectMapper.writeValueAsString(pageInfo));
+                            redisTemplate.opsForHash().put("article",
+                                    "page:" + page + "-rows:" + rows + ";" + article.getStatus() + "&" + article.getEnableTimeTask() + "&" + article.getName(),
+                                    objectMapper.writeValueAsString(pageInfo));
                             Random random = new Random();
                             int i = random.nextInt() * 10;
                             redisTemplate.expire("article", 24 * 60 * 60 + i, TimeUnit.SECONDS);
+                            return new Result().success(pageInfo);
                         }
                     } else {
                         return new Result().success("无数据");
@@ -134,9 +141,35 @@ public class ArticleServiceImpl implements ArticleService {
     @Transactional(readOnly = false)
     @Override
     public Result addArticle(Article article) {
+        //参数校验
+        try {
+            checkArticle(article);
+        } catch (Exception e) {
+            return new Result().success(e.getMessage());
+        }
+
+        article.setCreateTime(TimeConverter.DateToString(new Date()));
+        article.setBrowseNum(0);
+        article.setLoveNum(0);
+        article.setStatus(0);
+        if (article.getEnableTimeTask() == 0) {
+            article.setTimeTask("-");
+        }
         articleMapper.addArticle(article);
         redisTemplate.delete("article");
         return new Result().success();
+    }
+
+    private void checkArticle(Article article) throws Exception {
+        if (article.getAuthor() == null && "".equals(article.getAuthor())) {
+            throw new Exception("作者不能为空");
+        }
+        if (article.getName() == null && "".equals(article.getName())) {
+            throw new Exception("文章标题不能为空");
+        }
+        if (article.getContent() == null && "".equals(article.getContent())) {
+            throw new Exception("文章内容不能为空");
+        }
     }
 
     @Transactional(readOnly = false)
@@ -171,7 +204,7 @@ public class ArticleServiceImpl implements ArticleService {
     public Result commitCommand(Command command) {
         Integer commandId = commandMapper.addCommand(command);
         Command commandRes = commandMapper.getCommandByCommandId(commandId);
-        if(commandRes != null) {
+        if (commandRes != null) {
             return new Result().success();
         }
         return new Result().success("添加评论失败");
@@ -179,8 +212,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Transactional(readOnly = false)
     @Override
-    public Result deleteCommand(Integer commandId,Integer userId) {
-        commandMapper.deleteCommand(commandId,userId);
+    public Result deleteCommand(Integer commandId, Integer userId) {
+        commandMapper.deleteCommand(commandId, userId);
         return new Result().success();
     }
 }

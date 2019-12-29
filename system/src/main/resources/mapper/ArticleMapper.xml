@@ -3,16 +3,17 @@
 <mapper namespace="com.cys.system.common.mapper.ArticleMapper">
     <resultMap id="articleMap" type="Article">
         <id column="article_id" property="id"/>
-        <result column="article_name" property="title"/>
-        <result column="article_author" property="content"/>
-        <result column="article_createtime" property="author"/>
+        <result column="article_name" property="name"/>
+        <result column="article_author" property="author"/>
+        <result column="article_releasetime" property="releaseTime"/>
+        <result column="article_createtime" property="createTime"/>
         <result column="article_content" property="content"/>
-        <result column="article_browsenum" property="browsenum"/>
-        <result column="article_lovenum" property="lovenum"/>
-        <result column="article_istop" property="istTop"/>
+        <result column="article_browsenum" property="browseNum"/>
+        <result column="article_lovenum" property="loveNum"/>
+        <result column="article_istop" property="isTop"/>
         <result column="article_status" property="status"/>
-        <result column="article_enabletimetask" property="enabletimetask"/>
-        <result column="article_timetask" property="timetask"/>
+        <result column="article_enabletimetask" property="enableTimeTask"/>
+        <result column="article_timetask" property="timeTask"/>
     </resultMap>
     <resultMap id="timeTaskMap" type="TimeTask">
         <id column="b_id" property="id"/>
@@ -33,6 +34,7 @@
                 article_name = #{name}
             </if>
         </where>
+        order by article_createtime desc
     </select>
     <select id="getArticleById" parameterType="Article" resultMap="articleMap">
         select *
@@ -58,7 +60,7 @@
                 article_enabletimetask = #{enableTimeTask}
             </if>
             <if test="name != null">
-                article_name = #{name}
+                article_name like concat('%',#{name},'%')
             </if>
         </where>
     </select>
@@ -73,22 +75,23 @@
         article_istop,
         article_status,
         article_enabletimetask,
-        article_timetask)
+        article_timetask
+        )
         values (
         #{name},
         #{author},
         #{content},
-        #{createtime},
-        #{browsenum},
-        #{lovenum},
-        #{istop},
+        #{createTime},
+        #{browseNum},
+        #{loveNum},
+        #{isTop},
         #{status},
-        #{enabletimetask},
-        #{timetask}
+        #{enableTimeTask},
+        #{timeTask}
         )
     </insert>
     <delete id="deleteArticleById" parameterType="java.lang.Integer">
-        delete *
+        delete
         from article
         where article_id = #{id}
     </delete>

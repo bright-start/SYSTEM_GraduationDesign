@@ -32,7 +32,7 @@
         and user_id = #{userId}
     </delete>
     <delete id="deleteCommandByArticleId" parameterType="java.lang.Integer">
-        delete *
+        delete
         from command
         where article_id = #{articleId}
     </delete>
