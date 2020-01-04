@@ -10,6 +10,7 @@ public class User {
     private Integer level;
     private Integer status;
     private String disableTime;
+    private String bindPhone;
 
     public Integer getUserId() {
         return userId;
@@ -81,5 +82,13 @@ public class User {
 
     public void setDisableTime(String disableTime) {
         this.disableTime = disableTime;
+    }
+
+    public String getBindPhone() {
+        return bindPhone;
+    }
+
+    public void setBindPhone(String bindPhone) {
+        this.bindPhone = bindPhone;
     }
 }

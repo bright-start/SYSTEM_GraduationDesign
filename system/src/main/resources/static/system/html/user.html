@@ -102,6 +102,7 @@
         <th>注册时间</th>
         <th>IP</th>
         <th>状态</th>
+        <th>绑定手机号</th>
     </tr>
     </thead>
     <tbody>
@@ -130,6 +131,7 @@
             <span ng-if="entity.status == 2">离线</span>
             <span ng-if="entity.status == 3">限制</span>
         </td>
+        <td>{{entity.bind_phone}}</td>
     </tr>
     </tbody>
 </table>

@@ -11,6 +11,7 @@
         <result column="level" property="level"/>
         <result column="status" property="status"/>
         <result column="disable_time" property="disableTime"/>
+        <result column="bind_phone" property="bindPhone"/>
     </resultMap>
     <select id="getUserById" parameterType="java.lang.Integer" resultMap="userMap">
         select
@@ -30,6 +31,7 @@
         level,
         status,
         disable_time,
+        bind_phone,
         registrytime,
         lastlogintime,
         logintype,
