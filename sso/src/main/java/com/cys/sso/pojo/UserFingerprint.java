@@ -1,7 +1,5 @@
-package com.cys.system.common.pojo;
+package com.cys.sso.pojo;
 
-import com.cys.sso.pojo.User;
-import com.cys.sso.pojo.UserInfo;
 
 public class UserFingerprint {
     private User user;

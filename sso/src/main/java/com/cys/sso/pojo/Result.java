@@ -1,4 +1,4 @@
-package com.cys.system.common.common.pojo;
+package com.cys.sso.pojo;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;

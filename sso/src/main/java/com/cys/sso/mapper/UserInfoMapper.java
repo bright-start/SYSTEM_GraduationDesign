@@ -1,11 +1,14 @@
-package com.cys.system.common.mapper;
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
 
-import com.cys.system.common.pojo.UserInfo;
+package com.cys.sso.mapper;
+
+import com.cys.sso.pojo.UserInfo;
 import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
 
 public interface UserInfoMapper {
-    @Insert("insert into user_info values(#{userId},#{registryTime},#{lastLoginTime},#{phoneType},#{phoneIp},#{area})")
+    @Insert({"insert into user_info values(#{userId},#{registryTime},#{lastLoginTime},#{phoneType},#{phoneIp},#{area})"})
     void saveUserInfo(UserInfo userInfo);
-
 }

@@ -1,4 +1,15 @@
-package com.cys.sso.service.impl;
+package com.cys.sso.service;
 
-public class UserService {
+import com.cys.sso.pojo.Result;
+import com.cys.sso.pojo.User;
+import com.cys.sso.pojo.UserFingerprint;
+
+import javax.servlet.http.HttpServletRequest;
+
+public interface UserService {
+    Result registry(UserFingerprint userFingerprint);
+
+    User findPasswordByUsername(String username);
+
+    void logout(HttpServletRequest request);
 }

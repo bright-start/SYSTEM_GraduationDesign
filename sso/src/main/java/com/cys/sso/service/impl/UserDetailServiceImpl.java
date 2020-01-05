@@ -4,6 +4,9 @@ import com.cys.sso.pojo.LoginUser;
 import com.cys.sso.pojo.User;
 import com.cys.sso.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,18 +24,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Resource
     private UserService userService;
 
-    @Autowired
-    private SmsServiceImpl smsService;
-
-    public UserDetails login(LoginUser loginUser){
-        if(volidateCode(loginUser.getBindPhone(),loginUser.getCode()))
-        loadUserByUsername(loginUser.getUsername());
-    }
-
-    private boolean volidateCode(String phone,String code){
-        
-    }
-
+    @Resource
+    private RedisTemplate redisTemplate;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -80,8 +73,12 @@ public class UserDetailServiceImpl implements UserDetailsService {
             }
         }
         collection.add(new SimpleGrantedAuthority(roleLevel));
-        org.springframework.security.core.userdetails.User userDetails =
-                new org.springframework.security.core.userdetails.User(username, user.getPassword(), collection);
-        return userDetails;
+
+        RedisSerializer redisSerializer = new StringRedisSerializer();
+        redisTemplate.setKeySerializer(redisSerializer);
+        String code = (String)redisTemplate.opsForValue().get(user.getBindPhone());
+        LoginUser loginUser =
+                new LoginUser(username, user.getPassword(),user.getBindPhone(),code, collection);
+        return loginUser;
     }
 }
