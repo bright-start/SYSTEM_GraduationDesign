@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.IPRecordMapper">
+    <resultMap id="ipRecordMap" type="IPRecord">
+        <id column="ip_addr" property="ipAddr"/>
+        <result column="first_browse_time" property="firstBrowseTime"/>
+        <result column="begin_browse_time" property="beginBrowseTime"/>
+        <result column="browse_totalcount" property="browseTotalCount"/>
+        <result column="black_list" property="blackList"/>
+        <result column="ip_area_city" property="ipAreaCity"/>
+        <result column="ip_area_province" property="ipAreaProvince"/>
+    </resultMap>
+    <select id="findAllIPRecode" resultMap="ipRecordMap" parameterType="IPRecord">
+        select *
+        from ip_record
+        <where>
+            black_list=#{blackList}
+            <if test="ipAreaCity != null">
+                and ip_area_city=#{ipAreaCity}
+            </if>
+            <if test="ipAreaProvince != null">
+                and ip_area_province=#{ipAreaProvince}
+            </if>
+        </where>
+    </select>
+    <select id="getTotalCount" resultType="java.lang.Long">
+        select count(ip_addr)
+        from ip_record;
+    </select>
+    <select id="getIPRecode" parameterType="java.lang.String" resultMap="ipRecordMap">
+        select *
+        from ip_record
+        where ip_addr=#{ipAddr}
+    </select>
+    <insert id="recodeIP" parameterType="IPRecord">
+        insert into ip_record(
+        ip_addr,
+        first_browse_time,
+        begin_browse_time,
+        browse_totalcount,
+        black_list,
+        ip_area_city,
+        ip_area_province)
+        values (
+        #{ipAddr},
+        #{firstBrowseTime},
+        #{beginBrowseTime},
+        #{browseTotalCount},
+        #{blackList},
+        #{ipAreaCity},
+        #{ipAreaProvince}
+        )
+    </insert>
+    <update id="updateIPRecord" parameterType="IPRecord">
+      update ip_record
+      set first_browse_time=#{firstBrowseTime},
+      begin_browse_time=#{beginBrowseTime},
+      browse_totalcount=#{browseTotalCount},
+      black_list=#{blackList}
+      where ip_addr=#{ipAddr}
+    </update>
+    <update id="refreshRecode">
+      update ip_record
+      set browse_totalcount=#{init},
+      black_list=#{init}
+      where ip_addr=#{ipAddr}
+    </update>
+</mapper>

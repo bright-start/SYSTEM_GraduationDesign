@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.UserMapper">
+    <resultMap id="userMap" type="User">
+        <id column="user_id" property="userId"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="sex" property="sex"/>
+        <result column="images" property="images"/>
+        <result column="role_id" property="roleId"/>
+        <result column="level" property="level"/>
+        <result column="status" property="status"/>
+        <result column="disable_time" property="disableTime"/>
+        <result column="bind_phone" property="bindPhone"/>
+    </resultMap>
+    <select id="getUserById" parameterType="java.lang.Integer" resultMap="userMap">
+        select
+        user_id,
+        image,
+        username
+        from _user
+        where user_id = #{userId}
+    </select>
+    <select id="listUser" parameterType="User" resultType="java.util.Map">
+        select
+        username,
+        password,
+        sex,
+        image,
+        role_id,
+        level,
+        status,
+        disable_time,
+        bind_phone,
+        registrytime,
+        lastlogintime,
+        logintype,
+        ip_addr
+        from _user,user_info
+        <where>
+            _user.user_id = user_info.user_id
+            <if test="username != null">
+                and username = #{username}
+            </if>
+            <if test="status != 0">
+                and status = #{status}
+            </if>
+            <if test="roleId != null">
+                and role_id = #{roleId}
+            </if>
+        </where>
+        order by username
+    </select>
+    <select id="count" parameterType="User" resultType="java.lang.Long">
+        select count(user_id)
+        from _user
+        <where>
+            <if test="username != null">
+                username = #{username}
+            </if>
+            <if test="status != 0">
+                and status = #{status}
+            </if>
+            <if test="roleId != null">
+                and role_id = #{roleId}
+            </if>
+        </where>
+    </select>
+</mapper>
