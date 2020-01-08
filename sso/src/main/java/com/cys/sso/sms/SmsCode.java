@@ -3,6 +3,7 @@ package com.pyg.sms;
 import java.util.Map;
 
 import com.aliyuncs.exceptions.ClientException;
+import com.cys.sso.sms.SmsUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class SmsCode {
 		String accessKeySecret = env.getProperty("accessKeySecret");
 		System.out.println(code);
 		try {
-			com.cys.sso.utils.SmsUtils.sendSms(mobile,signName,templateCode,code,accessKeyId,accessKeySecret);
+			SmsUtils.sendSms(mobile,signName,templateCode,code,accessKeyId,accessKeySecret);
 		} catch (ClientException e) {
 			logger.error(e.getMessage());
 		}

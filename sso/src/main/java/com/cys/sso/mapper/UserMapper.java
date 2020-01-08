@@ -12,4 +12,6 @@ public interface UserMapper {
     Integer registry(User user);
 
     User findPasswordByUsername(@Param("username") String username);
+
+    Integer checkUsername(String username);
 }

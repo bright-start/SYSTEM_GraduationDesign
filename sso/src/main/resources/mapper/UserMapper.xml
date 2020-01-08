@@ -23,6 +23,11 @@
         where
         username = #{username}
     </select>
+    <select id="checkUsername" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select user_id
+        from _user
+        where username=#{username}
+    </select>
     <insert id="registry" parameterType="User">
         <selectKey resultType="java.lang.Integer"  order="AFTER" keyProperty="userId" >
             select currval('user_u_id_seq'::regclass) as user_id

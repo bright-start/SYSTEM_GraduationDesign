@@ -12,4 +12,6 @@ public interface UserService {
     User findPasswordByUsername(String username);
 
     void logout(HttpServletRequest request);
+
+    Result checkUsername(String username);
 }

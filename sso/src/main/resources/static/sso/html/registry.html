@@ -1,94 +1,316 @@
-<!doctype html>
-<html>
-<head>
-	<title>注册</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta http-equiv="Content-Type" content=""/>
-	<meta name="keywords" content=""/>
-	<script type="application/x-javascript"> addEventListener("load", function () {
-		setTimeout(hideURLbar, 0);
-	}, false);
+<!DOCTYPE html>
+<html lang="zxx">
+<!-- Head -->
 
-	function hideURLbar() {
-		window.scrollTo(0, 1);
-	} </script>
-	<!-- /font files  -->
-	<!-- css files -->
-	<link href="../css/regisrty_style.css" rel='stylesheet' type='text/css' media="all"/>
-	<!-- /css files -->
+<head>
+    <title>注册</title>
+    <!-- Meta-Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="keywords"
+          content="Key Login Form a Responsive Web Template, Bootstrap Web Templates, Flat Web Templates, Android Compatible Web Template, Smartphone Compatible Web Template, Free Webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola Web Design">
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <!-- //Meta-Tags -->
+    <!-- Index-Page-CSS -->
+    <link rel="stylesheet" href="../css/registry_style.css" type="text/css" media="all">
+    <!-- //Custom-Stylesheet-Links -->
+    <!--fonts -->
+    <!-- //fonts -->
+    <link rel="stylesheet" href="../css/font-awesome.min.css" type="text/css" media="all">
+    <!-- //Font-Awesome-File-Links -->
+
 </head>
+<!-- //Head -->
+<!-- Body -->
+
 <body>
-<h1></h1>
-<div class="log">
-	<!--	<div class="content1">-->
-	<!--		<h2>Sign In Form</h2>-->
-	<!--		<form>-->
-	<!--			<input type="text" name="userid" value="USERNAME" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'USERNAME';}">-->
-	<!--			<input type="password" name="psw" value="PASSWORD" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'PASSWORD';}">-->
-	<!--			<div class="button-row">-->
-	<!--				<input type="submit" class="sign-in" value="Sign In">-->
-	<!--				<input type="reset" class="reset" value="Reset">-->
-	<!--				<div class="clear"></div>-->
-	<!--			</div>-->
-	<!--		</form>-->
-	<!--	</div>-->
-	<div class="content2">
-		<h2>Sign Up Form</h2>
-		<form>
-			<input type="file" name="images" value="头像" autocomplete="off">
-			<input type="text" name="username" id="username" value="USERNAME" autocomplete="off"
-				   onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'NAME AND SURNAME';}">
-			<input type="password" name="password" id="password" autocomplete="off">
-			<input type="text" name="sex" list="sex" autocomplete="off"/>
-			<datalist id="sex">
-				<option>男</option>
-				<option>女</option>
-			</datalist>
-			<input type="text" name="realName" value="真实姓名" autocomplete="off" onfocus="this.value = '';"
-				   onblur="if (this.value == '') {this.value = '真实姓名';}">
-			<input type="text" name="phone" value="手机号" autocomplete="off" onfocus="this.value = '';"
-				   onblur="if (this.value == '') {this.value = '手机号';}">
-			<input type="text" name="address" value="收货地址" autocomplete="off" onfocus="this.value = '';"
-				   onblur="if (this.value == '') {this.value = '收获地址';}">
-			<input type="hidden" value="0" id="role"/>
-			<input type="button" id="registry" class="register" value="Register">
-		</form>
-	</div>
-	<div class="clear"></div>
-</div>
-<div class="footer">
-	<p>Copyright &copy; 2016.Company name All rights reserved.</p>
-</div>
+
+<section class="main">
+    <div class="layer">
+
+        <div class="bottom-grid">
+            <div class="logo">
+                <h1><a href="#"><span class="fa fa-key"></span> Key</a></h1>
+            </div>
+            <div class="links">
+                <ul class="links-unordered-list">
+                    <li class="">
+                        <a href="#" class="">Login</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">About Us</a>
+                    </li>
+                    <li class="active">
+                        <a href="#" class="">Register</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="content-w3ls">
+            <div class="text-center" style="margin-bottom: 10px;">
+                <span class="fa"><img src="../images/default.jpeg" alt="头像"
+                                      style="height: 80px;width: 80px; background-position: top; border-radius: 50%;"/></span>
+            </div>
+            <div class="text-center"
+                 style="background-color: black;opacity: 0.3;width: 340px;margin: 0 auto;height: 30px;font-size: 20px;font-style: oblique;border-radius: 10px 10px 10px 10px;">
+                <span id="user" style="color:goldenrod;opacity: 1.5;">用户注册</span>
+                <span id="shop"
+                      style="margin: 30px;color:lightslategray;">店铺注册</span>
+            </div>
+            <div id="user_show" style="height: 330px;overflow: scroll">
+                <div class="content-bottom">
+                    <form action="#" id="dataForm" onsubmit="return false;">
+                        <div class="field-group">
+                            <span class="fa fa-photo" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="file" id="myInput4" type="file" placeholder="上传头像">
+                            </div>
+                        </div>
+                        <div style="width: 320px">
+                            <span class="fa fa-info" id="tip3"
+                                  style="color:darkgray;margin-left: 20px;margin-top: 2px;"></span>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-user" aria-hidden="true" id="flag"></span>
+                            <div class="wthree-field">
+                                <input name="username" id="text1" type="text" value="" placeholder="昵称/手机号/邮箱" required
+                                       autocomplete="off"><br>
+                            </div>
+                        </div>
+                        <div style="width: 320px">
+                            <span class="fa fa-info" id="tip1"
+                                  style="color:red;margin-left: 20px;margin-top: 2px;"></span>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-lock" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input id="myInput" type="Password" placeholder="Password" required autocomplete="off">
+                            </div>
+                        </div>
+                        <div style="width: 320px">
+                            <p class="fa fa-info" id="tip2"
+                               style="color:darkgray;margin-left: 20px;margin-top: 2px;"></p>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-lock" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="password" id="myInput2" type="Password" placeholder="RepeatPassword"
+                                       required autocomplete="off">
+
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-male" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="sex" id="myInput3" type="text" placeholder="性别" required
+                                       autocomplete="off" list="sex">
+                                <datalist id="sex">
+                                    <option>男</option>
+                                    <option>女</option>
+                                </datalist>
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-mobile-phone" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="bindPhone" id="myInput5" type="text" placeholder="绑定手机号" required
+                                       autocomplete="off">
+                            </div>
+                        </div>
+                        <div style="width: 320px">
+                            <p class="fa fa-info" id="tip4"
+                               style="color:darkgray;margin-left: 20px;margin-top: 2px;"></p>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-pencil-square" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="realName" id="myInput6" type="text" placeholder="真实姓名" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-phone" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="phone" id="myInput8" type="text" placeholder="收货手机号" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-home" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="address" id="myInput9" type="text" placeholder="收获地址" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="wthree-field">
+                            <button type="submit" class="btn" id="registry" onclick="return false;">Get Started</button>
+                        </div>
+                        <ul class="list-login-bottom">
+                            <li class="">
+                                <a href="#" class="">Create Account</a>
+                            </li>
+                            <li class="">
+                                <a href="#" class="text-right">Need Help?</a>
+                            </li>
+                            <li class="clearfix"></li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-grid1">
+            <div class="links">
+                <ul class="links-unordered-list">
+                    <li class="">
+                        <a href="#" class="">About Us</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">Privacy Policy</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">Terms of Use</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="copyright">
+                <p>© 2019 Key. All rights reserved | Design by
+                    <a href="http://w3layouts.com">W3layouts</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
 <script src="../js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
-	$("#registry").click(function () {
-		console.log("1");
-		var username = $("#username").val();
-		var password = $("#password").val();
-		var role = $("#role").val();
-		console.log(username+"-"+password+"-"+role);
-		$.ajax({
-			url: "/sso/registry",
-			type: "POST",
-			dataType: "json",
-			data: {
-				username: username,
-				password: password,
-				role:role
-			},
-			before: function () {
 
-			},
-			success: function (data) {
-				if (data == 200) {
-					console.log("组册成功")
-				}
+    $("#user_show").show();
+    $("#tip1").hide();
+    $("#tip2").hide();
+    $("#tip3").hide();
+    $("#tip4").hide();
 
-			},
-			error: function (data) {
-			}
-		});
-	});
+
+    $("#user").click(function () {
+        $("#user").css({"color": "goldenrod"});
+        $("#shop").css({"color": "lightslategray"});
+        $("#user_show").show();
+    });
+    $("#shop").click(function () {
+        $("#user").css({"color": "lightslategray"});
+        $("#shop").css({"color": "goldenrod"});
+        $("#user_show").hide();
+    });
+
+    $("#myInput4").change(function () {
+        var filePath = document.getElementById("myInput4").value;
+        var mimeTypeList = ["jpg", "jpeg", "png"];
+        var isAllow = false;
+        for (mimeType in mimeTypeList) {
+            if (filePath.endsWith(mimeType)) {
+                isAllow = true;
+            }
+        }
+        if (!isAllow) {
+            $("#tip3").html("&nbsp;非法格式,只允许上传jpg,jpeg,png格式文件").show();
+        }
+    });
+
+    $("#myInput4").change(function () {
+        $.ajax({
+            //文件上传并回显
+        })
+    });
+
+    $("#text1").blur(function () {
+        var username = $("#text1").val();
+        console.log(username);
+        $.ajax({
+            url: "/sso/checkUsername",
+            type: "POST",
+            data: {
+                "username": username
+            },
+            dataType: "json",
+            before: function (data) {
+                $("#flag").removeClass("fa-user fa-check fa-remove").addClass("fa-spinner");
+            },
+            success: function (data) {
+                if (data.code === 200) {
+                    if (data.message === "OK") {
+                        $("#tip1").html("").hide();
+                        $("#flag").removeClass("fa-spinner fa-remove").addClass("fa-check");
+                    } else {
+                        $("#flag").removeClass("fa-spinner fa-check").addClass("fa-remove");
+                        $("#tip1").html(data.message).show();
+                    }
+                }
+            },
+            fail: function (data) {
+            }
+
+        })
+    });
+
+    $("#myInput").blur(function () {
+        var pass = $("#myInput").val();
+        if (pass.length < 6) {
+            $("#tip2").html("&nbsp;密码至少为6位").show();
+        } else if (pass.length > 16) {
+            $("#tip2").html("&nbsp;密码长度上限为16位").show();
+        } else if (/[\u4e00-\u9fa5]/.test(pass)) {
+            $("#tip2").html("&nbsp;密码不支持中文").show();
+        }
+        //确少白名单密码格式匹配
+
+        //密码强度检测
+        if (/^[0-9]{6,8}$|^[a-zA-Z]{6,8}$/.test(pass)) {
+            $("#tip2").html("<span>密码强度</span><span style='color:red;'>&nbsp;弱&nbsp;</span><span class='fa-star'style='color:red;'/><span class='fa-star-o'style='color:red;'/><span class='fa-star-o'style='color:red;'/>").show();
+        } else if (/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,12}$/.test(pass)) {
+            $("#tip2").html("<span>密码强度</span><span style='color:orange;'>&nbsp;中&nbsp;</span><span class='fa-star'style='color:orange;'/><span class='fa-star'style='color:orange;'/><span class='fa-star-o'style='color:orange;'/>").show();
+        } else if (/^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*])[\da-zA-Z~!@#$%^&*]{12,16}$/.test(pass)) {
+            $("#tip2").html("<span>密码强度</span><span style='color:green;'>&nbsp;强&nbsp;</span><span class='fa-star' color:green;/><span class='fa-star'color:green;/><span class='fa-star'color:green;/>").show();
+        }
+    });
+
+    $("#myInput5").blur(function () {
+        var phoneNumber = $("#myInput5").val();
+        //手机格式校验
+        if (!/^1[34578]\d{9}$/.test(phoneNumber)) {
+            $("#tip4").html("&nbsp;手机格式错误").show();
+        }
+        $("myInput8").val(phoneNumber);
+    });
+
+    $("#registry").click(function () {
+        //两次密码输入检查
+        if ($("#myInput").val === $("#myInput2").val()) {
+            alert("两次输入的密码不一致");
+        }
+        var data = $("#dataForm").serializeArray();
+        console.log(data);
+        $.ajax({
+            url: "/sso/registry",
+            type: "POST",
+            data: data,
+            dataType: "json",
+            before: function (data) {
+
+            },
+            success: function (data) {
+                if (data.code === 200) {
+
+                }
+            }
+        })
+    });
 </script>
 </body>
 </html>

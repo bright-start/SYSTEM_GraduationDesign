@@ -81,4 +81,14 @@ public class UserServiceImpl implements UserService {
         Integer userId = this.userMapper.registry(userFingerprint.getUser());
         return (new Result()).success();
     }
+
+    @Override
+    public Result checkUsername(String username) {
+        Integer userId = userMapper.checkUsername(username);
+        if(userId != null){
+            return new Result().success(200,"该昵称已被使用");
+        }else {
+            return new Result().success(200,"OK");
+        }
+    }
 }

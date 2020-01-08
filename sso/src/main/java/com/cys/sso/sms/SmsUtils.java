@@ -1,4 +1,4 @@
-package com.cys.sso.utils;
+package com.cys.sso.sms;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,9 +20,6 @@ public class SmsUtils {
     //产品域名,开发者无需替换
     static final String domain = "dysmsapi.aliyuncs.com";
 
-    // TODO 此处需要替换成开发者自己的AK(在阿里云访问控制台寻找)
-   // static final String accessKeyId = "LTAIdSQD6Aw6mgLV";
-   //final String accessKeySecret = "KFCVQ32sJmf3Yov8qRETNjX6jEfARR";
     public static SendSmsResponse sendSms(String mobile,String signName,String templateCode,String code,String accessKeyId,String accessKeySecret) throws ClientException {
 
         //可自助调整超时时间
