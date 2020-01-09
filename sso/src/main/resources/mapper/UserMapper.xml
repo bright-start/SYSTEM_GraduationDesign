@@ -40,7 +40,8 @@
         role_id,
         level,
         status,
-        disable_time
+        disable_time,
+        bind_phone
         )values (
         #{username},
         #{password},
@@ -49,7 +50,8 @@
         #{roleId},
         #{level},
         #{status},
-        #{disableTime}
+        #{disableTime},
+        ${bindPhone}
         )
     </insert>
 </mapper>

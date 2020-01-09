@@ -6,6 +6,10 @@ public class UserInfo {
     private String lastLoginTime;
     private String loginType;
     private String ipAddr;
+    private String phone;
+    private String realName;
+    private String address;
+
 
     public Integer getUserId() {
         return userId;
@@ -45,5 +49,29 @@ public class UserInfo {
 
     public void setIpAddr(String ipAddr) {
         this.ipAddr = ipAddr;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

@@ -1,8 +1,7 @@
 package com.cys.sso.controller;
 
-import com.cys.sso.pojo.LoginUser;
+import com.cys.sso.config.Config;
 import com.cys.sso.pojo.Result;
-import com.cys.sso.pojo.User;
 import com.cys.sso.pojo.UserFingerprint;
 import com.cys.sso.service.UserService;
 import java.util.Collection;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -35,16 +33,6 @@ public class UserController {
     private RedisTemplate redisTemplate;
 
     private Gson gson = new GsonBuilder().serializeNulls().create();
-
-    @Value("${redirectPage1}")
-    private String backPage;
-    @Value("${redirectPage2}")
-    private String index;
-    @Value("${testPage}")
-    private String testPage;
-
-    @Value("${cookieName}")
-    private String cookieName;
 
     private Pattern emailFormatCheck= Pattern.compile("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$");
     private Pattern phoneFormatCheck = Pattern.compile("^1[34578]\\d{9}$");
@@ -69,14 +57,8 @@ public class UserController {
     }
 
     @PostMapping("/registry")
-    public Result registry(String username, String password, Integer role) {
-        UserFingerprint userFingerprint = new UserFingerprint();
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setRoleId(role);
-        userFingerprint.setUser(user);
-        return this.userService.registry(userFingerprint);
+    public Result registry(@RequestBody UserFingerprint userFingerprint,HttpServletRequest request) {
+        return this.userService.registry(userFingerprint,request);
     }
 
     @RequestMapping({"/redirectPage"})
@@ -91,7 +73,7 @@ public class UserController {
         redisTemplate.opsForValue().set(token,gson.toJson(loginUser));
         redisTemplate.expire(token,30, TimeUnit.MINUTES);
 
-        Cookie cookie = new Cookie(cookieName,token);
+        Cookie cookie = new Cookie(Config.cookieName,token);
         cookie.setMaxAge(30*60);
         cookie.setPath("/");
 //        cookie.setDomain("/");
@@ -102,7 +84,7 @@ public class UserController {
         if (var2.hasNext()) {
             GrantedAuthority authority = (GrantedAuthority)var2.next();
             String role = authority.getAuthority();
-            return !role.contains("ADMIN") && !role.contains("SHOP") ? (new Result()).success(this.backPage) : (new Result()).success(this.testPage);
+            return !role.contains("ADMIN") && !role.contains("SHOP") ? (new Result()).success(Config.backPage) : (new Result()).success(Config.testPage);
         } else {
             return (new Result()).success(200, "服务器繁忙，请稍后再试");
         }

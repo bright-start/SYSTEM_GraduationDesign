@@ -1,9 +1,7 @@
 package com.cys.sso.service.impl;
 
-import com.cys.sso.pojo.LoginUser;
 import com.cys.sso.pojo.User;
 import com.cys.sso.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -77,8 +75,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
         RedisSerializer redisSerializer = new StringRedisSerializer();
         redisTemplate.setKeySerializer(redisSerializer);
         String code = (String)redisTemplate.opsForValue().get(user.getBindPhone());
-        LoginUser loginUser =
-                new LoginUser(username, user.getPassword(),user.getBindPhone(),code, collection);
+        org.springframework.security.core.userdetails.User loginUser =
+                new org.springframework.security.core.userdetails.User(username, user.getPassword(), collection);
         return loginUser;
     }
 }

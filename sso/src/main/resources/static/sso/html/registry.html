@@ -43,7 +43,7 @@
             <div class="links">
                 <ul class="links-unordered-list">
                     <li class="">
-                        <a href="#" class="">Login</a>
+                        <a href="login.html" class="">Login</a>
                     </li>
                     <li class="">
                         <a href="#" class="">About Us</a>
@@ -64,9 +64,10 @@
             </div>
             <div class="text-center"
                  style="background-color: black;opacity: 0.3;width: 340px;margin: 0 auto;height: 30px;font-size: 20px;font-style: oblique;border-radius: 10px 10px 10px 10px;">
-                <span id="user" style="color:goldenrod;opacity: 1.5;">用户注册</span>
+                <span id="user" style="color:goldenrod;opacity: 1.5;" role="none">用户注册</span>
                 <span id="shop"
-                      style="margin: 30px;color:lightslategray;">店铺注册</span>
+                      style="margin: 30px;color:lightslategray;" role="none">店铺注册</span>
+                <input type="hidden" id="role"/>
             </div>
             <div id="user_show" style="height: 330px;overflow: scroll">
                 <div class="content-bottom">
@@ -192,6 +193,7 @@
 <script type="text/javascript">
 
     $("#user_show").show();
+    $("#role").val(0);
     $("#tip1").hide();
     $("#tip2").hide();
     $("#tip3").hide();
@@ -201,12 +203,14 @@
     $("#user").click(function () {
         $("#user").css({"color": "goldenrod"});
         $("#shop").css({"color": "lightslategray"});
+        $("#role").val(0);
         $("#user_show").show();
     });
     $("#shop").click(function () {
-        $("#user").css({"color": "lightslategray"});
+        $("#shop").css({"color": "lightslategray"});
         $("#shop").css({"color": "goldenrod"});
-        $("#user_show").hide();
+        $("#role").val(1);
+        $("#shop_show").hide();
     });
 
     $("#myInput4").change(function () {
@@ -231,6 +235,10 @@
 
     $("#text1").blur(function () {
         var username = $("#text1").val();
+        if(username === null || username === ""){
+            $("#tip1").html("昵称不能为空").show();
+            return;
+        }
         console.log(username);
         $.ajax({
             url: "/sso/checkUsername",
@@ -261,6 +269,9 @@
 
     $("#myInput").blur(function () {
         var pass = $("#myInput").val();
+        if (pass === "") {
+            return;
+        }
         if (pass.length < 6) {
             $("#tip2").html("&nbsp;密码至少为6位").show();
         } else if (pass.length > 16) {
@@ -280,6 +291,14 @@
         }
     });
 
+    $("#myInput2").blur(function () {
+        var pass = $("#myInput").val();
+        if (pass === null) {
+            $("#tip2").html("&nbsp;请输入密码").show();
+            $("#myInput").val("");
+        }
+    });
+
     $("#myInput5").blur(function () {
         var phoneNumber = $("#myInput5").val();
         //手机格式校验
@@ -289,31 +308,37 @@
         $("myInput8").val(phoneNumber);
     });
 
-    JQuery.prototype.serializeObject = function () {
-        var a,o,h,i,e;
-        a = this.serializeArray();
-        o={};
-        h=o.hasOwnProperty;
-        for(i=0;i<a.length;i++){
-            e=a[i];
-            if(!h.call(o,e.name)){
-                o[e.name]=e.value;
-            }
-        }
-        return o;
-    };
-
     $("#registry").click(function () {
+
+
         //两次密码输入检查
         if ($("#myInput").val === $("#myInput2").val()) {
             alert("两次输入的密码不一致");
         }
-        var data = $("#dataForm").serializeObject();
+
+        var obj = {
+            user: {
+                username: $("#text1").val(),
+                password: $("#myInput2").val(),
+                sex: $("#myInput3").val() === "男" ? 0 : 1,
+                image: document.getElementById("myInput4").value,
+                roleId: $("#role").val(),
+                bindPhone: $("#myInput5").val()
+            },
+            userInfo: {
+                loginType: "PC",
+                realName: $("#myInput6").val(),
+                phone: $("#myInput8").val(),
+                address: $("#myInput9").val()
+            }
+        };
+        var data = JSON.stringify(obj);
         console.log(data);
         $.ajax({
             url: "/sso/registry",
             type: "POST",
             data: data,
+            contentType: "application/json;utf-8",
             dataType: "json",
             before: function (data) {
 

@@ -1,16 +1,16 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
-
 package com.cys.sso.service.impl;
 
+import com.cys.sso.config.Config;
 import com.cys.sso.mapper.UserInfoMapper;
 import com.cys.sso.mapper.UserMapper;
 import com.cys.sso.pojo.Result;
 import com.cys.sso.pojo.User;
 import com.cys.sso.pojo.UserFingerprint;
+import com.cys.sso.pojo.UserInfo;
 import com.cys.sso.service.UserService;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(
-        readOnly = true
+        readOnly = true,rollbackFor = Exception.class
 )
 @Service
 public class UserServiceImpl implements UserService {
@@ -35,12 +35,6 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Resource
     private UserInfoMapper userInfoMapper;
-
-    @Value("${cookieName}")
-    private String cookieName;
-
-    public UserServiceImpl() {
-    }
 
     public User findPasswordByUsername(String username) {
         return this.userMapper.findPasswordByUsername(username);
@@ -53,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
         for(int var5 = 0; var5 < var4; ++var5) {
             Cookie cookie = var3[var5];
-            if (cookieName.equals(cookie.getName())) {
+            if (Config.cookieName.equals(cookie.getName())) {
                 String token_value = cookie.getValue();
                 RedisSerializer redisSerializer = new StringRedisSerializer();
                 this.redisTemplate.setKeySerializer(redisSerializer);
@@ -67,7 +61,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(
             readOnly = false
     )
-    public Result registry(UserFingerprint userFingerprint) {
+    public Result registry(UserFingerprint userFingerprint,HttpServletRequest request) {
         User user = userFingerprint.getUser();
         if (user.getRoleId() == 0 && user.getImage() == null) {
         }
@@ -79,7 +73,18 @@ public class UserServiceImpl implements UserService {
         user.setLevel(0);
         user.setPassword((new BCryptPasswordEncoder()).encode(user.getPassword()));
         Integer userId = this.userMapper.registry(userFingerprint.getUser());
-        return (new Result()).success();
+        UserInfo userInfo = userFingerprint.getUserInfo();
+        userInfo.setUserId(userId);
+        userInfo.setIpAddr(request.getRemoteAddr());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        userInfo.setRegistryTime(simpleDateFormat.format(new Date()));
+        userInfo.setLastLoginTime(userInfo.getRegistryTime());
+        userInfoMapper.saveUserInfo(userInfo);
+        if(userId != null) {
+            return (new Result()).success(200,"注册成功");
+        }else {
+            return new Result().success(200,"注册失败");
+        }
     }
 
     @Override
