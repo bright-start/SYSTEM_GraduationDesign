@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.CommandMapper">
+    <resultMap id="commandMap" type="Command">
+        <id column="c_id" property="commandId"/>
+        <result column="c_command" property="command"/>
+        <result column="c_createtime" property="createtime"/>
+        <result column="response_user_id" property="responseUserId"/>
+        <result column="article_id" property="articleId"/>
+        <result column="user_id" property="userId"/>
+    </resultMap>
+    <insert id="addCommand" parameterType="Command" keyProperty="c_id" useGeneratedKeys="true">
+        insert into command(
+          c_command,
+          c_createtime,
+          response_user_id,
+          article_id,
+          user_id
+        )
+        values (
+        #{command},
+        #{createTime},
+        #{responseUserId},
+        #{articleId},
+        #{userId}
+        )
+    </insert>
+    <delete id="deleteContact">
+        delete *
+        from command
+        where c_id = #{commandId}
+        and user_id = #{userId}
+    </delete>
+    <delete id="deleteCommandByArticleId" parameterType="java.lang.Integer">
+        delete
+        from command
+        where article_id = #{articleId}
+    </delete>
+    <select id="getCommandByArticleId" parameterType="java.lang.Integer">
+        select *
+        from command
+        where article_id = #{articleId}
+    </select>
+    <select id="getCommandByCommandId" parameterType="java.lang.Integer">
+        select  *
+        from command
+        where c_id = #{commandId}
+    </select>
+</mapper>

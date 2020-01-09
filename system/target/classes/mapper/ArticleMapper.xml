@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.ArticleMapper">
+    <resultMap id="articleMap" type="Article">
+        <id column="article_id" property="id"/>
+        <result column="article_name" property="name"/>
+        <result column="article_author" property="author"/>
+        <result column="article_releasetime" property="releaseTime"/>
+        <result column="article_createtime" property="createTime"/>
+        <result column="article_content" property="content"/>
+        <result column="article_browsenum" property="browseNum"/>
+        <result column="article_lovenum" property="loveNum"/>
+        <result column="article_istop" property="isTop"/>
+        <result column="article_status" property="status"/>
+        <result column="article_enabletimetask" property="enableTimeTask"/>
+        <result column="article_timetask" property="timeTask"/>
+    </resultMap>
+    <resultMap id="timeTaskMap" type="TimeTask">
+        <id column="b_id" property="id"/>
+        <result column="b_enabletimetask" property="enable"/>
+        <result column="b_timetask" property="time"/>
+    </resultMap>
+    <select id="listArticle" resultMap="articleMap" parameterType="Article">
+        select *
+        from article
+        <where>
+            <if test="status != null">
+                article_status = #{status}
+            </if>
+            <if test="enableTimeTask != null">
+                article_enabletimetask = #{enableTimeTask}
+            </if>
+            <if test="name != null">
+                article_name = #{name}
+            </if>
+        </where>
+        order by article_createtime desc
+    </select>
+    <select id="getArticleById" parameterType="Article" resultMap="articleMap">
+        select *
+        from article
+        where article_id=#{id}
+    </select>
+    <select id="listTimeTask" resultMap="timeTaskMap">
+        select b_id,b_enabletimetask,b_timetask
+        from bulletin
+        where
+        b_status = 0
+        and b_enabletimetask = 1
+        and b_timetask != 'null'
+    </select>
+    <select id="count" parameterType="Article" resultType="java.lang.Long">
+        select count(article_id)
+        from article
+        <where>
+            <if test="status != null">
+                article_status = #{status}
+            </if>
+            <if test="enableTimeTask != null">
+                article_enabletimetask = #{enableTimeTask}
+            </if>
+            <if test="name != null">
+                article_name like concat('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+    <insert id="addArticle" parameterType="Article">
+        insert into article(
+        article_name,
+        article_author,
+        article_content,
+        article_createtime,
+        article_browsenum,
+        article_lovenum,
+        article_istop,
+        article_status,
+        article_enabletimetask,
+        article_timetask
+        )
+        values (
+        #{name},
+        #{author},
+        #{content},
+        #{createTime},
+        #{browseNum},
+        #{loveNum},
+        #{isTop},
+        #{status},
+        #{enableTimeTask},
+        #{timeTask}
+        )
+    </insert>
+    <delete id="deleteArticleById" parameterType="java.lang.Integer">
+        delete
+        from article
+        where article_id = #{id}
+    </delete>
+    <update id="increaseBrowseNum" parameterType="java.lang.Integer">
+        update article
+        set aricle_browsenum=article_browsenum+1
+        where article_id = #{id}
+    </update>
+    <update id="increaseLoveNum" parameterType="java.lang.Integer">
+        update article
+        set artilce_lovenum = article_lovenum+1
+        where article_id = #{id}
+    </update>
+    <update id="updateStatusById" parameterType="java.lang.Integer">
+        update article
+        set article_status=0
+        article_enabletimetask = 0
+        article_timetask='null'
+        where article_id=#{id}
+    </update>
+</mapper>
