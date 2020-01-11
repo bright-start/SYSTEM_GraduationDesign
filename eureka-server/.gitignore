@@ -1,6 +1,6 @@
 HELP.md
 target/
-.mvn
+.mvn/**
 !**/src/main/**
 !**/src/test/**
 .DS_Store
@@ -30,3 +30,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+mvnw
+mvnw.cmd
