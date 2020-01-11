@@ -1,11 +1,14 @@
 package com.cys.system.common.pojo;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.List;
 
 /**
  * 文章内容展示
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ArticleContent {
     private Article article;
     private List<CommandContent> commandContentList;
@@ -28,7 +31,8 @@ public class ArticleContent {
 
     public static class CommandContent {
         private Command command;
-        private User user;
+        private User commandUser;
+        private User responseUser;
 
         public Command getCommand() {
             return command;
@@ -38,12 +42,20 @@ public class ArticleContent {
             this.command = command;
         }
 
-        public User getUser() {
-            return user;
+        public User getCommandUser() {
+            return commandUser;
         }
 
-        public void setUser(User user) {
-            this.user = user;
+        public void setCommandUser(User commandUser) {
+            this.commandUser = commandUser;
+        }
+
+        public User getResponseUser() {
+            return responseUser;
+        }
+
+        public void setResponseUser(User responseUser) {
+            this.responseUser = responseUser;
         }
     }
 

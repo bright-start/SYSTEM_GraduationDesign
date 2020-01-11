@@ -6,7 +6,6 @@ import com.cys.system.common.service.IPLogService;
 import com.cys.system.common.service.IPRecodeService;
 import com.cys.system.common.util.AesUtil;
 import com.cys.system.common.util.TimeConverter;
-import org.apache.commons.codec.DecoderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +16,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
 
 @Configuration
@@ -151,7 +144,7 @@ public class IPFilter implements HandlerInterceptor {
      */
     @Async
     @Scheduled(cron = "0 0 0 * * ?")
-    void timeimgIPTask() {
+    void timeRefreshIPTask() {
         ipRecodeService.refreshRecode();
     }
 }

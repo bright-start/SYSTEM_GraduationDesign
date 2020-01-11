@@ -99,6 +99,32 @@
 <script src="../js/canva_moving_effect.js"></script>
 <script>
 
+    document.body.onselectstart = function(){
+        return false;
+    }
+
+    $(".form-style-agile:nth-of-type(1)").show();
+    $(".form-style-agile:nth-of-type(2)").show();
+    $(".form-style-agile:nth-of-type(3)").hide();
+    $(".form-style-agile:nth-of-type(4)").hide();
+
+    $("#changeLoginType").click(function () {
+        var logintype = $("#changeLoginType");
+        if(logintype.html() === "手机号登陆"){
+            $(".form-style-agile:nth-of-type(1)").hide();
+            $(".form-style-agile:nth-of-type(2)").hide();
+            logintype.html("账号登陆");
+            $(".form-style-agile:nth-of-type(3)").show();
+            $(".form-style-agile:nth-of-type(4)").show();
+        }else{
+            $(".form-style-agile:nth-of-type(3)").hide();
+            $(".form-style-agile:nth-of-type(4)").hide();
+            logintype.html("手机号登陆");
+            $(".form-style-agile:nth-of-type(1)").show();
+            $(".form-style-agile:nth-of-type(2)").show();
+        }
+    });
+
 	$("#login").click(function () {
 		console.log("login");
 		var username = $("#username").val();

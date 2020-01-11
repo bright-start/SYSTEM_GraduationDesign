@@ -1,0 +1,33 @@
+server:
+  port: 9200
+spring:
+  application:
+    name: spring-cloud-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          #开启小写后uri也必须小写
+#          lowerCaseServiceId: true
+      routes:
+        - id: sso
+          uri: lb://SSO
+          predicates:
+            - Path=/sso/**
+        - id: system
+          uri: lb://SYSTEM
+          predicates:
+            - Path=/system/**
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+# 配置Gateway日志等级，输出转发细节信息
+logging:
+  level:
+    org.springframework.cloud.gateway: debug

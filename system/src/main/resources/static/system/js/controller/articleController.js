@@ -23,9 +23,22 @@ app.controller("articleController", function ($scope, $controller, $location, ar
 
     $scope.findOne = function () {
         var id = $location.search()["id"];
+        console.log("查询文章id:"+id);
         // 发送请求
         articleService.findOne(id).success(function (data) {
             $scope.entity = data.data;
+            console.log(data.data);
+        })
+    };
+
+    $scope.increaseBrowseNum = function(){
+        var id = $location.search()["id"];
+        // 发送请求
+        articleService.increaseBrowseNum(id).success(function (data) {
+            if(data.code === 200) {
+                $scope.entity.article.browseNum = $scope.entity.article.browseNum + 1;
+                console.log("浏览量+1");
+            }
         })
     };
 

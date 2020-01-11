@@ -1,5 +1,8 @@
 package com.cys.system.common.pojo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
     private Integer userId;
     private String username;

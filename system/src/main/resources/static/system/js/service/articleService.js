@@ -8,6 +8,10 @@ app.service("articleService", function ($http) {
     this.findOne = function (id) {
         return $http.get("http://127.0.0.1:8080/system/article/get?id=" + id);
     };
+
+    this.increaseBrowseNum = function (id) {
+        return $http.get("http://127.0.0.1:8080/system/article/increaseBrowse?id=" + id);
+    };
     // 条件查询
     this.search = function (page, rows, searchEntity) {
         return $http.post("http://127.0.0.1:8080/system/article/list?page=" + page + "&rows=" + rows,

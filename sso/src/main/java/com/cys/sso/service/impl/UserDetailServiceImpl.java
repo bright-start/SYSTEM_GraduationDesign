@@ -72,9 +72,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
         }
         collection.add(new SimpleGrantedAuthority(roleLevel));
 
-        RedisSerializer redisSerializer = new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        String code = (String)redisTemplate.opsForValue().get(user.getBindPhone());
+//        RedisSerializer redisSerializer = new StringRedisSerializer();
+//        redisTemplate.setKeySerializer(redisSerializer);
+//        String code = (String)redisTemplate.opsForValue().get(user.getBindPhone());
         org.springframework.security.core.userdetails.User loginUser =
                 new org.springframework.security.core.userdetails.User(username, user.getPassword(), collection);
         return loginUser;

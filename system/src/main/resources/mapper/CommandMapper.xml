@@ -36,12 +36,12 @@
         from command
         where article_id = #{articleId}
     </delete>
-    <select id="getCommandByArticleId" parameterType="java.lang.Integer">
+    <select id="getCommandByArticleId" parameterType="java.lang.Integer" resultMap="commandMap">
         select *
         from command
         where article_id = #{articleId}
     </select>
-    <select id="getCommandByCommandId" parameterType="java.lang.Integer">
+    <select id="getCommandByCommandId" parameterType="java.lang.Integer" resultMap="commandMap">
         select  *
         from command
         where c_id = #{commandId}

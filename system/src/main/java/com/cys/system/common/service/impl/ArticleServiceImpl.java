@@ -126,16 +126,30 @@ public class ArticleServiceImpl implements ArticleService {
         List<ArticleContent.CommandContent> commandContentList = new LinkedList<>();
         List<Command> commandList = commandMapper.getCommandByArticleId(id);
         for (Command command : commandList) {
-            User user = userMapper.getUserById(command.getUserId());
+            User commandUser = userMapper.getUserById(command.getUserId());
+            clearSensitiveInfoOfUser(commandUser);
+            User responseUser = userMapper.getUserById(command.getResponseUserId());
+            clearSensitiveInfoOfUser(responseUser);
+
 
             ArticleContent.CommandContent commandContent = new ArticleContent.CommandContent();
             commandContent.setCommand(command);
-            commandContent.setUser(user);
+            commandContent.setCommandUser(commandUser);
+            commandContent.setResponseUser(responseUser);
             commandContentList.add(commandContent);
         }
         articleContent.setCommandContentList(commandContentList);
 
         return new Result().success(articleContent);
+    }
+
+    private void clearSensitiveInfoOfUser(User user) {
+        user.setPassword(null);
+        user.setStatus(null);
+        user.setBindPhone(null);
+        user.setRoleId(null);
+        user.setLevel(null);
+        user.setDisableTime(null);
     }
 
     @Transactional(readOnly = false)

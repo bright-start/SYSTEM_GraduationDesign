@@ -13,8 +13,7 @@
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../plugins/angularjs/pagination.css">
     <script src="../plugins/angularjs/angular.min.js"></script>
-    <script src="../plugins/angularjs/pagination.js"></script>
-    <script type="text/javascript" src="../js/base_pagination.js"></script>
+    <script type="text/javascript" src="../js/base.js"></script>
     <script type="text/javascript" src="../js/service/uploadService.js"></script>
     <script type="text/javascript" src="../js/service/articleService.js"></script>
     <script type="text/javascript" src="../js/controller/baseController.js"></script>
@@ -22,26 +21,59 @@
 </head>
 <body ng-app="system" ng-controller="articleController"
       class="hold-transition skin-red sidebar-mini"
-      ng-init="findOne()">
+      ng-init="findOne();" style="background-image:url('../images/bg/article_bg.jpg');">
 <!--页头-->
 <div>
     <section>
-        <div style="width:1200px;height: 50px; margin:0 auto;background-color: #1ab7ea;"></div>
+        <div style="width:100%;height: 50px; margin:0 auto;background-color: gray;box-shadow: 0px 10px 5px black;"></div>
     </section>
-    <!--文章主题-->
-    <h1>{{entity.name}}</h1>
-    <p><span>entity.browseNum</span><span>{{entity.loveNum}}</span></p>
-    <!--半透明背景-->
-    <section>
-        <div style="width:1200px;height: 50px; margin:0 auto;background-color: #1ab7ea;">
-            {{entity.content}}
+    <div style="clear:both;overflow: hidden;width: 100%;">
+        <div style="width: 25%;float: left;background-color: ghostwhite;padding: 10px;text-align: center;">
+            作者
         </div>
-    </section>
-    <!--评论-->
-    <section></section>
+        <div style="width:75%;float: left;background-color: rgba(255,255,255,0.7); padding: 40px;">
+            <!--文章主题-->
+            <h1 style="text-align: center;margin-top: 50px;">{{entity.article.name}}</h1>
+            <p style="text-align: center"><span>浏览:{{entity.article.browseNum}}</span>&nbsp;|&nbsp;<span>喜欢:{{entity.article.loveNum}}</span>
+            </p>
+            <!--半透明背景-->
+            <section>
+                <article style="margin-top: 50px;" ng-bind-html="entity.article.content | trustHtml">
+                </article>
+            </section>
+            <!--评论-->
+            <section>
+                <table>
+                    <thead style="border-radius: 10px;border: 1px dashed slategray; width: 100%;padding: 5px;">
+                    <tr>
+                        <textarea id="command.content" cols="30" rows="10"
+                                  style="width: 100%;margin:0 auto;height: 60px;outline: none;" placeholder="biu～～～" ></textarea>
+                        <br>
+                        <button style="background-color: orange;width: 150px;height: 40px;font-size: 30px;font-size: large;outline: none;"
+                                ng-click="addCommand()">评论</button>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="commandContent in entity.commandContentList">
+                        <div>
+                            <input type="hidden" ng-model="commandContent.command.commandId">
+                            <div ng-value="commandContent.user.userId"><img src="commandContent.user.image" alt="">{{commandContent.user.username}}
+                            </div>
+                            <div ng-if="commandContent.user.responseUserId != null" ng-value="commandContent.user.userId"><img src="commandContent.user.image" alt="">{{commandContent.user.username}}
+                            </div>
+                            <div>{{commandContent.command.content}}</div>
+                            <div><span>{{commandContent.command.createTime}}</span><span ng-if="commandContent.user.userId == " ng-click="dele();">删除评论</span></div>
+                        </div>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+
     <!--页脚-->
     <section>
-        <div style="background-color: #eaeaea;height: 400px;width:100%;text-align: center;">
+        <div style="background-color: #eaeaea;width:100%;height: 60px;text-align: center;padding: 40px;">
             <p>客服热线 000-0000 | 投稿邮箱 xxxx@163.com | QQ交流群 000000000</p>
         </div>
     </section>

@@ -1,5 +1,8 @@
 package com.cys.system.common.pojo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Command {
     private Integer commandId;
     private String content;

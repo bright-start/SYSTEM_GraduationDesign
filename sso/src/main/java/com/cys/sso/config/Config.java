@@ -8,13 +8,33 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true)
 public class Config {
 
-    @Value("${redirectPage1}")
+
     public static String backPage;
-    @Value("${redirectPage2}")
+
     public static String index;
-    @Value("${testPage}")
+
     public static String testPage;
 
-    @Value("${cookieName}")
+
     public static String cookieName;
+
+    @Value("${redirectPage1}")
+    public void setBackPage(String backPage) {
+        Config.backPage = backPage;
+    }
+
+    @Value("${redirectPage2}")
+    public void setIndex(String index) {
+        Config.index = index;
+    }
+
+    @Value("${testPage}")
+    public void setTestPage(String testPage) {
+        Config.testPage = testPage;
+    }
+
+    @Value("${cookieName}")
+    public void setCookieName(String cookieName) {
+        Config.cookieName = cookieName;
+    }
 }

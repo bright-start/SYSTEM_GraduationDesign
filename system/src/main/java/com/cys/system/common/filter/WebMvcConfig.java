@@ -16,7 +16,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     private IPFilter ipFilter;
 
+    @Autowired
+    private TokenFilter tokenFilter;
+
     private static final List<String> EXCLUDE_PATH = Arrays.asList("/html/**", "css/**", "js/**", "/plugins/**", "/ip/**");
+    private static final List<String> TOKEN_EXCLUDE_PATH = Arrays.asList("/getToken","/html/**", "css/**", "js/**", "/plugins/**", "/ip/**");
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -26,6 +30,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(ipFilter).addPathPatterns("/system/**").excludePathPatterns(EXCLUDE_PATH);
+        registry.addInterceptor(tokenFilter).addPathPatterns("/system/**").excludePathPatterns(TOKEN_EXCLUDE_PATH);
     }
 
 }

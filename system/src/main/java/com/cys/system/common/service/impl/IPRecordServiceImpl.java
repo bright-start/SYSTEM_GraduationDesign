@@ -10,15 +10,9 @@ import com.cys.system.common.util.TimeConverter;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
-import sun.security.krb5.internal.crypto.RsaMd5CksumType;
+
 
 import javax.annotation.Resource;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.*;
 
 @Service

@@ -3,9 +3,10 @@ package com.cys.sso.pojo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class Result {
+public class Result implements Serializable {
     private Integer code;
     private String message;
     @JsonInclude(JsonInclude.Include.NON_NULL)
