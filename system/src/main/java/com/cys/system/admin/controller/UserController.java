@@ -22,9 +22,7 @@ public class UserController {
         if (rows == null) {
             rows = 10;
         }
-        if (user.getRoleId() == -1) {
-            user.setRoleId(null);
-        }
+        
         if (rows == 10 || rows == 20 || rows == 30 || rows == 40 || rows == 50) {
             return userService.listUser(page, rows, user);
         } else {

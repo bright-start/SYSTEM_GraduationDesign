@@ -6,28 +6,18 @@ import org.springframework.security.core.userdetails.User;
 import java.util.Collection;
 
 public class LoginUser extends User {
-    private String bindPhone;
-    private String code;
+    private Integer userId;
 
-    public LoginUser(String username, String password,String bindPhone,String code, Collection<? extends GrantedAuthority> authorities) {
+    public LoginUser(Integer userId,String username, String password,Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
-        this.bindPhone = bindPhone;
-        this.code =code;
+        this.userId = userId;
     }
 
-    public String getBindPhone() {
-        return bindPhone;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setBindPhone(String bindPhone) {
-        this.bindPhone = bindPhone;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

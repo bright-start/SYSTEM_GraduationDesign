@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+          name="viewport">
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../plugins/angularjs/pagination.css">
+    <script src="../plugins/angularjs/angular.min.js"></script>
+    <script src="../plugins/angularjs/pagination.js"></script>
+    <script type="text/javascript" src="../js/base_pagination.js"></script>
+    <script type="text/javascript" src="../js/service/specificationService.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/controller/specificationController.js"></script>
+</head>
+<body ng-app="system" ng-controller="specificationController"
+      class="hold-transition skin-red sidebar-mini">
+<div class="box-header with-border">
+    <h3 class="box-title">规格管理</h3>
+</div>
+<div class="box-body">
+    <!-- 数据表格 -->
+    <div class="table-box">
+        <!--工具栏-->
+        <div class="pull-left">
+            <div class="form-group form-inline">
+                <div class="btn-group">
+                    <div class="has-feedback"></div>
+                    <button type="button" class="btn btn-default" title="新建"
+                            data-toggle="modal" ng-click="entity={specificationDesc:[]}" data-target="#editModal">
+                        <i class="fa fa-file-o"></i> 新建
+                    </button>
+                    <button type="button" class="btn btn-default" title="删除"
+                            ng-click="dele()">
+                        <i class="fa fa-trash-o"></i> 删除
+                    </button>
+                    <button type="button" class="btn btn-default" title="刷新"
+                            onclick="window.location.reload();">
+                        <i class="fa fa-refresh"></i> 刷新
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="box-tools pull-right">
+            规格名称：
+            <span class="layui-input-inline">
+				<input type="text" ng-model="searchEntity.specificationType" autocomplete="off" class="layui-input">
+			</span>
+            <button ng-click="reloadList();" class="btn btn-default">查询</button>
+            <div class="has-feedback"></div>
+        </div>
+    </div>
+</div>
+<table class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th style="padding-right: 0px">
+            <input type="checkbox" title="全选">
+        </th>
+        <th>规格名称</th>
+        <th>规格参数</th>
+        <th>自定义规格</th>
+        <th>所属店铺</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="entity in list">
+        <td>
+            <input type="checkbox" ng-click="updateSelection($event,entity.id)"/>
+        </td>
+        <td>{{entity.specificationType}}</td>
+        <td>{{entity.specificationDesc}}</td>
+        <td>{{entity.isCustom == 0 ? "否":"是"}}</td>
+        <td>{{entity.shopId == null ? "暂无":entity.shopId}}</td>
+        <td class="text-center">
+            <button type="button" class="btn bg-olive btn-xs"
+                    data-toggle="modal" ng-click="findOne(entity.id)"
+                    data-target="#editModal">详情
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<!--数据列表/-->
+<tm-pagination conf="paginationConf"></tm-pagination>
+<!-- 编辑窗口 -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">×
+                </button>
+                <h3 id="myModalLabel">编辑规格</h3>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-striped" width="800px">
+                    <input type="hidden" ng-model="entity.id"/>
+                    <tr>
+                        <td>规格类型</td>
+                        <td><input class="form-control" ng-model="entity.specificationType"
+                                   placeholder="规格类型"></td>
+                    </tr>
+                    <tr>
+                        <td>规格描述</td>
+                        <td>
+                            <span style="overflow:hidden;width:430px;">
+                                <span ng-repeat=" desc in entity.specificationDesc"
+                                      style="padding:5px;margin:5px;background-color: #e4e8ea;border-radius: 5px;margin-left: 2px;float: left;">
+                                    {{desc}}
+                                    <span id="del" ng-click="delDesc($index)" style="color:grep;">x</span></span>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input class="form-control" ng-model="desc"
+                                   placeholder="规格参数">
+                            <button style="background-color:#5cb85c;" class="form-control" ng-click="addDesc()">新增
+                            </button>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" data-dismiss="modal"
+                        aria-hidden="true" ng-click="save()">保存
+                </button>
+                <button class="btn btn-default" data-dismiss="modal"
+                        aria-hidden="true">关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script type="text/javascript">
+    $("#del").mouseover(function(){
+        $("#del").css("color","red");
+    });
+
+</script>
+</html>

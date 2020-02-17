@@ -3,30 +3,39 @@
 <mapper namespace="com.cys.system.common.mapper.CommandMapper">
     <resultMap id="commandMap" type="Command">
         <id column="c_id" property="commandId"/>
-        <result column="c_command" property="command"/>
-        <result column="c_createtime" property="createtime"/>
+        <result column="c_command" property="content"/>
+        <result column="c_createtime" property="createTime"/>
         <result column="response_user_id" property="responseUserId"/>
         <result column="article_id" property="articleId"/>
         <result column="user_id" property="userId"/>
     </resultMap>
-    <insert id="addCommand" parameterType="Command" keyProperty="c_id" useGeneratedKeys="true">
+    <insert id="addCommand" parameterType="Command">
+        <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="commandId">
+            select nextval('command__c_id_seq'::regclass) as commandId
+        </selectKey>
         insert into command(
-          c_command,
-          c_createtime,
-          response_user_id,
-          article_id,
-          user_id
+        c_id,
+        c_command,
+        c_createtime,
+        <if test="responseUserId != null">
+            response_user_id,
+        </if>
+        article_id,
+        user_id
         )
         values (
-        #{command},
+        #{commandId},
+        #{content},
         #{createTime},
-        #{responseUserId},
+        <if test="responseUserId != null">
+            #{responseUserId},
+        </if>
         #{articleId},
         #{userId}
         )
     </insert>
-    <delete id="deleteContact">
-        delete *
+    <delete id="deleteCommand">
+        delete
         from command
         where c_id = #{commandId}
         and user_id = #{userId}
@@ -40,6 +49,7 @@
         select *
         from command
         where article_id = #{articleId}
+        order by c_createtime desc
     </select>
     <select id="getCommandByCommandId" parameterType="java.lang.Integer" resultMap="commandMap">
         select  *

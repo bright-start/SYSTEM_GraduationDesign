@@ -126,16 +126,21 @@ public class ArticleServiceImpl implements ArticleService {
         List<ArticleContent.CommandContent> commandContentList = new LinkedList<>();
         List<Command> commandList = commandMapper.getCommandByArticleId(id);
         for (Command command : commandList) {
-            User commandUser = userMapper.getUserById(command.getUserId());
-            clearSensitiveInfoOfUser(commandUser);
-            User responseUser = userMapper.getUserById(command.getResponseUserId());
-            clearSensitiveInfoOfUser(responseUser);
-
 
             ArticleContent.CommandContent commandContent = new ArticleContent.CommandContent();
             commandContent.setCommand(command);
+
+            User commandUser = userMapper.getUserById(command.getUserId());
+            clearSensitiveInfoOfUser(commandUser);
             commandContent.setCommandUser(commandUser);
-            commandContent.setResponseUser(responseUser);
+
+            Integer responseUserId = command.getResponseUserId();
+            if (responseUserId != null) {
+                User responseUser = userMapper.getUserById(responseUserId);
+                clearSensitiveInfoOfUser(responseUser);
+                commandContent.setResponseUser(responseUser);
+            }
+
             commandContentList.add(commandContent);
         }
         articleContent.setCommandContentList(commandContentList);
@@ -200,28 +205,50 @@ public class ArticleServiceImpl implements ArticleService {
     @Transactional(readOnly = false)
     @Override
     public Result increaseBrowseNum(Integer articleId, Integer userId) {
-        articleMapper.increaseBrowseNum();
-        articleUserFlagMapper.addContact(articleId, userId);
-        return new Result().success();
+        Integer isExist = articleUserFlagMapper.isExistContact(articleId, userId);
+        if (isExist == null) {
+            articleUserFlagMapper.addContact(articleId, userId);
+            articleMapper.increaseBrowseNum(articleId);
+            return new Result().success(true);
+        }
+        return new Result().success(false);
     }
 
     @Transactional(readOnly = false)
     @Override
     public Result increaseLoveNum(Integer articleId, Integer userId, Integer islove) {
-        articleMapper.increaseLoveNum();
         articleUserFlagMapper.updateContact(articleId, userId, islove);
-        return new Result().success();
+        if(islove == 1) {
+            articleMapper.increaseLoveNum(articleId);
+        }else {
+            articleMapper.decreaseLoveNum(articleId);
+        }
+        return new Result().success(islove == 1 ? true : false);
     }
 
     @Transactional(readOnly = false)
     @Override
-    public Result commitCommand(Command command) {
-        Integer commandId = commandMapper.addCommand(command);
-        Command commandRes = commandMapper.getCommandByCommandId(commandId);
-        if (commandRes != null) {
-            return new Result().success();
+    public Result commitCommand(Command command) throws Exception {
+        commandMapper.addCommand(command);
+        Command commandRes = commandMapper.getCommandByCommandId(command.getCommandId());
+        if (commandRes == null) {
+            throw new Exception("添加评论失败");
         }
-        return new Result().success("添加评论失败");
+        ArticleContent.CommandContent commandContent = new ArticleContent.CommandContent();
+
+        commandContent.setCommand(commandRes);
+
+        User commandUser = userMapper.getUserById(command.getUserId());
+        clearSensitiveInfoOfUser(commandUser);
+        commandContent.setCommandUser(commandUser);
+
+        Integer responseUserId = command.getResponseUserId();
+        if (responseUserId != null) {
+            User responseUser = userMapper.getUserById(responseUserId);
+            clearSensitiveInfoOfUser(responseUser);
+            commandContent.setResponseUser(responseUser);
+        }
+        return new Result().success(commandContent);
     }
 
     @Transactional(readOnly = false)

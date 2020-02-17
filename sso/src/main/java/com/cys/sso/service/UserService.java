@@ -14,4 +14,8 @@ public interface UserService {
     void logout(HttpServletRequest request);
 
     Result checkUsername(String username);
+
+    Integer isLogin(String username);
+
+    void changeStatus(String username,Integer status);
 }

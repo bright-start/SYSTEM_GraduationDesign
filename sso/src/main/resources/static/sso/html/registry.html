@@ -166,6 +166,103 @@
                     </form>
                 </div>
             </div>
+            <div id="shop_show" style="height: 330px;overflow: scroll">
+                <div class="content-bottom">
+                    <form action="#" id="dataForm" onsubmit="return false;">
+                        <div class="field-group">
+                            <span class="fa fa-photo" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="file" id="myInput4" type="file" placeholder="上传头像">
+                            </div>
+                        </div>
+                        <div style="width: 320px">
+                            <span class="fa fa-info" id="tip3"
+                                  style="color:darkgray;margin-left: 20px;margin-top: 2px;"></span>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-user" aria-hidden="true" id="flag"></span>
+                            <div class="wthree-field">
+                                <input name="username" id="text1" type="text" value="" placeholder="昵称/手机号/邮箱" required
+                                       autocomplete="off"><br>
+                            </div>
+                        </div>
+                        <div style="width: 320px">
+                            <span class="fa fa-info" id="tip1"
+                                  style="color:red;margin-left: 20px;margin-top: 2px;"></span>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-lock" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input id="myInput" type="Password" placeholder="Password" required autocomplete="off">
+                            </div>
+                        </div>
+                        <div style="width: 320px">
+                            <p class="fa fa-info" id="tip2"
+                               style="color:darkgray;margin-left: 20px;margin-top: 2px;"></p>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-lock" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="password" id="myInput2" type="Password" placeholder="RepeatPassword"
+                                       required autocomplete="off">
+
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-male" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="sex" id="myInput3" type="text" placeholder="性别" required
+                                       autocomplete="off" list="sex">
+                                <datalist id="sex">
+                                    <option>男</option>
+                                    <option>女</option>
+                                </datalist>
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-mobile-phone" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="bindPhone" id="myInput5" type="text" placeholder="绑定手机号" required
+                                       autocomplete="off">
+                            </div>
+                        </div>
+                        <div style="width: 320px">
+                            <p class="fa fa-info" id="tip4"
+                               style="color:darkgray;margin-left: 20px;margin-top: 2px;"></p>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-pencil-square" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="realName" id="myInput6" type="text" placeholder="真实姓名" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-phone" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="phone" id="myInput8" type="text" placeholder="收货手机号" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-home" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="address" id="myInput9" type="text" placeholder="收获地址" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="wthree-field">
+                            <button type="submit" class="btn" id="registry" onclick="return false;">Get Started</button>
+                        </div>
+                        <ul class="list-login-bottom">
+                            <li class="">
+                                <a href="#" class="">Create Account</a>
+                            </li>
+                            <li class="">
+                                <a href="#" class="text-right">Need Help?</a>
+                            </li>
+                            <li class="clearfix"></li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
         </div>
         <div class="bottom-grid1">
             <div class="links">
@@ -205,12 +302,14 @@
         $("#shop").css({"color": "lightslategray"});
         $("#role").val(0);
         $("#user_show").show();
+        $("#shop_show").hide();
     });
     $("#shop").click(function () {
         $("#user").css({"color": "lightslategray"});
         $("#shop").css({"color": "goldenrod"});
         $("#role").val(1);
-        $("#shop_show").hide();
+        $("#shop_show").show();
+        $("#user_show").hide();
     });
 
     $("#myInput4").change(function () {

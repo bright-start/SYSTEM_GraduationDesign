@@ -6,6 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public interface TokenService {
-    Result buildToken(HttpServletResponse response);
+    Result buildToken(HttpServletRequest request,HttpServletResponse response);
     Result getToken(HttpServletRequest request);
 }

@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cys.system.common.mapper.ArticleUserFlagMapper">
+    <select id="isExistContact" resultType="java.lang.Integer">
+        select id
+        from
+        article_user_flag
+        where article_id = #{articleId}
+        and u_id = #{userId}
+    </select>
     <insert id="addContact">
         insert into article_user_flag(
-        article_id,u_id,isbrowse,isclicklove
+        article_id,
+        u_id,
+        isbrowse,
+        islove
         )
-        value(
+        values(
         #{articleId},
         #{userId},
         1,
@@ -13,12 +23,12 @@
         )
     </insert>
     <update id="updateContact">
-        update set islove = #{islove}
+        update article_user_flag set islove = #{islove}
         where article_id = #{articleId}
         and u_id = #{userId}
     </update>
     <delete id="deleteContact" parameterType="java.lang.Integer">
-        delete  from
+        delete from
         where article_id = #{articleId}
     </delete>
 </mapper>

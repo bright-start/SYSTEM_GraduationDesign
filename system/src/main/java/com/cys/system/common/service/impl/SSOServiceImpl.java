@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -23,36 +26,41 @@ public class SSOServiceImpl implements SSOService {
     @Resource
     private RedisTemplate redisTemplate;
 
+    private final static String COOKIENAME="SYS-TOKEN";
+
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
 
     @Override
-    public User getUserByToken(String token) {
+    public Map<String, Object> getUser(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+
+        if(!(cookies != null && cookies.length > 0)){
+            return null;
+        }
+        String token = null;
+        for (Cookie cookie : cookies) {
+            if(COOKIENAME.equals(cookie.getName())){
+                token = cookie.getValue();
+                break;
+            }
+        }
+        if(token == null){
+            return null;
+        }
+
         RedisSerializer redisSerializer = new StringRedisSerializer();
         redisTemplate.setKeySerializer(redisSerializer);
 
-        String userJson = (String) redisTemplate.opsForValue().get("USER" + token);
-        User user = null;
+        String userJson = (String) redisTemplate.opsForValue().get(token);
+        Map<String,Object> userMap;
         try {
-            user = objectMapper.readValue(userJson, User.class);
+            userMap = objectMapper.readValue(userJson, Map.class);
         } catch (Exception e) {
             return null;
         }
         redisTemplate.expire("USER" + token, 30, TimeUnit.MINUTES);
-        return user;
-    }
 
-    @Override
-    public String SaveUser(User user) {
-        RedisSerializer redisSerializer = new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-
-        String token = UUID.randomUUID().toString();
-        Cookie cookie = new Cookie("userToken", token);
-
-        redisTemplate.opsForValue().set("USER" + token, user);
-        redisTemplate.expire("USER" + token, 30, TimeUnit.MINUTES);
-
-        return token;
+        return userMap;
     }
 }

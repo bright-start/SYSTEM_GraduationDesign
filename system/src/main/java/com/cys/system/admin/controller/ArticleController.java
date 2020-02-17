@@ -13,8 +13,10 @@ import com.cys.system.common.util.TimeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/article")
@@ -76,53 +78,50 @@ public class ArticleController {
     }
 
     /**
-     * @param token 用户标识信息
      * @return
      */
-    @PutMapping("/increaseBrowse")
-    public Result increaseBrowseNum(String token, Integer articleId) throws UnauthorizedException {
-        User user = ssoService.getUserByToken(token);
-        if (user == null) {
+    @GetMapping("/increaseBrowse")
+    public Result increaseBrowseNum(HttpServletRequest request,Integer articleId) throws UnauthorizedException {
+        Map<String, Object> userMap = ssoService.getUser(request);
+        if (userMap == null && userMap.isEmpty()) {
             throw new UnauthorizedException();
         }
-        return articleService.increaseBrowseNum(articleId, user.getUserId());
+        return articleService.increaseBrowseNum(articleId, (Integer)userMap.get("userId"));
     }
 
     /**
-     * @param token 用户标识信息
      * @return
      */
-    @PostMapping("/increaseLoveNum")
-    public Result increaseLoveNum(String token, Integer articleId, Integer islove) throws UnauthorizedException {
-        User user = ssoService.getUserByToken(token);
-        if (user == null) {
+    @PutMapping("/increaseLoveNum")
+    public Result increaseLoveNum(HttpServletRequest request, Integer articleId, Integer islove) throws UnauthorizedException {
+        Map<String, Object> userMap = ssoService.getUser(request);
+        if (userMap == null && userMap.isEmpty()) {
             throw new UnauthorizedException();
         }
-        return articleService.increaseLoveNum(articleId, user.getUserId(), islove);
+        return articleService.increaseLoveNum(articleId, (Integer)userMap.get("userId"), islove);
     }
 
     /**
-     * @param token 用户标识信息
      * @return
      */
     @PostMapping("/command/commit")
-    public Result commitCommand(String token, @RequestBody Command command) throws UnauthorizedException {
-        User user = ssoService.getUserByToken(token);
-        if (user == null) {
+    public Result commitCommand(HttpServletRequest request, @RequestBody Command command) throws Exception {
+        Map<String, Object> userMap = ssoService.getUser(request);
+        if (userMap == null && userMap.isEmpty()) {
             throw new UnauthorizedException();
         }
-        command.setUserId(user.getUserId());
+        command.setUserId((Integer)userMap.get("userId"));
         command.setCreateTime(TimeConverter.DateToString(new Date()));
         return articleService.commitCommand(command);
     }
 
     @DeleteMapping("/command/delete")
-    private Result deleteCommand(String token, Integer commandId) throws UnauthorizedException {
-        User user = ssoService.getUserByToken(token);
-        if (user == null) {
+    public Result deleteCommand(HttpServletRequest request, Integer commandId) throws UnauthorizedException {
+        Map<String, Object> userMap = ssoService.getUser(request);
+        if (userMap == null && userMap.isEmpty()) {
             throw new UnauthorizedException();
         }
-        return articleService.deleteCommand(commandId, user.getUserId());
+        return articleService.deleteCommand(commandId, (Integer)userMap.get("userId"));
     }
 
 }

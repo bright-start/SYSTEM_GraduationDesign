@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.SpecificationMapper">
+    <resultMap id="specificationMap" type="Specification">
+        <id column="specification_id" property="id"/>
+        <result column="specification_type" property="specificationType"/>
+        <result column="specification_desc" property="specificationDesc"/>
+        <result column="iscustom" property="isCustom"/>
+        <result column="shop_id" property="shopId"/>
+    </resultMap>
+    <select id="listSpecification" resultMap="specificationMap" parameterType="Specification">
+        select * from specification
+        where (
+            iscustom = 0
+            <if test="shopId != null">
+                or shop_id = #{shopId}
+            </if>
+        )
+        <if test="specificationType != null">
+            and specification_type like concat('%',#{specificationType},'%')
+        </if>
+        order by specification_id
+    </select>
+    <select id="getSpecificationById" parameterType="java.lang.Integer" resultMap="specificationMap">
+        select * from specification where specification_id=#{id}
+    </select>
+    <select id="count" resultType="java.lang.Long" parameterType="Specification">
+        select count(specification_id)
+        from specification
+        <if test="specificationType != null">
+            where specification_type like concat('%',#{specificationType},'%')
+        </if>
+    </select>
+    <insert id="insertSpecification" parameterType="Specification">
+        insert into specification(
+        specification_type,
+        specification_desc
+        <if test="isCustom != null">
+            ,iscustom
+        </if>
+        <if test="shopId != null">
+            ,shop_id
+        </if>
+        ) values(
+        #{specificationType},
+        #{specificationDesc}
+        <if test="isCustom != null">
+            ,#{isCustom}
+        </if>
+        <if test="shopId != null">
+            ,#{shopId}
+        </if>
+        )
+    </insert>
+    <update id="updateSpecificationBySpecification" parameterType="Specification">
+        update specification
+        set
+        specification_type=#{specificationType},
+        specification_desc=#{specificationDesc},
+        where
+        iscustom=#{isCustom}
+        and shop_id=#{shopId}
+        and specification_id=#{id}
+    </update>
+    <delete id="deleteSpecificationById">
+        delete from specification where specification_id=#{id}
+        <if test="shopId != null">
+            and shop_id = #{shopId}
+        </if>
+    </delete>
+</mapper>

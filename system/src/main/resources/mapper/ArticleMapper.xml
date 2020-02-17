@@ -97,12 +97,17 @@
     </delete>
     <update id="increaseBrowseNum" parameterType="java.lang.Integer">
         update article
-        set aricle_browsenum=article_browsenum+1
+        set article_browsenum=article_browsenum+1
         where article_id = #{id}
     </update>
     <update id="increaseLoveNum" parameterType="java.lang.Integer">
         update article
-        set artilce_lovenum = article_lovenum+1
+        set article_lovenum = article_lovenum+1
+        where article_id = #{id}
+    </update>
+    <update id="decreaseLoveNum" parameterType="java.lang.Integer">
+        update article
+        set article_lovenum = article_lovenum-1
         where article_id = #{id}
     </update>
     <update id="updateStatusById" parameterType="java.lang.Integer">

@@ -14,6 +14,7 @@
     </resultMap>
     <select id="findPasswordByUsername" parameterType="java.lang.String" resultMap="userMap">
         select
+        user_id,
         username,
         password,
         role_id,
@@ -28,6 +29,15 @@
         from _user
         where username=#{username}
     </select>
+    <select id="findStatus" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select status
+        from _user
+        where username=#{username}
+    </select>
+    <update id="changeStatus">
+        update _user set status=#{status}
+        where username=#{username}
+    </update>
     <insert id="registry" parameterType="User">
         <selectKey resultType="java.lang.Integer"  order="AFTER" keyProperty="userId" >
             select currval('user_u_id_seq'::regclass) as user_id

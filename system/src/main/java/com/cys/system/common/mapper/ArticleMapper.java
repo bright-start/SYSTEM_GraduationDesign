@@ -16,11 +16,13 @@ public interface ArticleMapper {
 
     void deleteArticleById(Integer id);
 
-    void increaseBrowseNum();
+    void increaseBrowseNum(Integer id);
 
-    void increaseLoveNum();
+    void increaseLoveNum(Integer id);
 
     void updateStatusById(Integer id);
 
     List<TimeTask> listTimeTask();
+
+    void decreaseLoveNum(Integer id);
 }

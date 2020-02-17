@@ -45,8 +45,10 @@ public class UserServiceImpl implements UserService {
 
         PageHelper.startPage(start, rows);
         List<Map> userList = userMapper.listUser(user);
+
         PageInfo<Map> pageInfo = new PageInfo<>();
         pageInfo.setTotal(count);
+        pageInfo.setPageNum(pageNum);
         pageInfo.setList(userList);
         return new Result().success(pageInfo);
     }

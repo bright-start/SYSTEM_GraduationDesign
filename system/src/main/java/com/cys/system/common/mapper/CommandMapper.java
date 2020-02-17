@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface CommandMapper {
-    Integer addCommand(Command command);
+    void addCommand(Command command);
 
     void deleteCommand(@Param("commandId") Integer commandId, @Param("userId") Integer userId);
 

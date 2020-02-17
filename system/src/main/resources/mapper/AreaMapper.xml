@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.AreaMapper">
+    <resultMap id="areaMap" type="Area">
+        <id column="area_id" property="id"/>
+        <result column="area" property="area"/>
+        <result column="area_code" property="areaCode"/>
+    </resultMap>
+    <select id="listArea" resultMap="areaMap" parameterType="Area">
+        select * from area
+        <if test="area != null">
+            where area like concat('%',#{area},'%')
+        </if>
+        order by area_id
+    </select>
+    <select id="getAreaById" parameterType="java.lang.Integer" resultMap="areaMap">
+        select * from area where area_id=#{id}
+    </select>
+    <select id="count" resultType="java.lang.Long" parameterType="Area">
+        select count(area_id)
+        from area
+        <if test="area != null">
+            where area like concat('%',#{area},'%')
+        </if>
+    </select>
+    <insert id="insertArea" parameterType="Area">
+        insert into area(area) values(#{area})
+    </insert>
+    <update id="updateAreaByArea" parameterType="Area">
+        update area set area=#{area}
+        where brand_id=#{id}
+    </update>
+    <delete id="deleteAreaById" parameterType="java.lang.Integer">
+        delete from area where area_id=#{id}
+    </delete>
+</mapper>

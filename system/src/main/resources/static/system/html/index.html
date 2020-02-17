@@ -9,8 +9,6 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
           name="viewport">
-
-
     <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
     <link rel="stylesheet"
@@ -24,6 +22,7 @@
     <script src="../plugins/angularjs/angular.min.js"></script>
     <script type="text/javascript" src="../js/base.js"></script>
     <script type="text/javascript" src="../js/service/loginService.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
     <script type="text/javascript" src="../js/controller/loginController.js"></script>
 
     <script type="text/javascript">
@@ -33,14 +32,12 @@
                 iframeid.height = document.documentElement.clientHeight;
             }
         }
-
-
     </script>
 
 </head>
 
-<body ng-app="system" ng-controller="loginController" class="hold-transition skin-green sidebar-mini"
-      ng-init="loadLoginUser()">
+<body ng-app="system" ng-controller="loginController" ng-init="loadLoginUser()"
+      class="hold-transition skin-green sidebar-mini">
 
 <div class="wrapper">
 
@@ -239,7 +236,7 @@
                     <li class="dropdown user user-menu"><a href="#"
                                                            class="dropdown-toggle" data-toggle="dropdown"> <img
                             src="../images/user2-160x160.jpg" class="user-image"
-                            alt="User Image"> <span class="hidden-xs">{{loginName}}</span>
+                            alt="User Image"> <span id="loginUserFlag" ng-value="loginUserInfo.userId" class="hidden-xs">{{loginUserInfo.username}}</span>
                     </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
@@ -247,7 +244,7 @@
                                                          class="img-circle" alt="User Image">
 
                                 <p>
-                                    {{loginName}} <small>最后登录 11:20AM</small>
+                                    {{loginUserInfo.username}} <small>最后登录 11:20AM</small>
                                 </p></li>
 
                             <!-- Menu Footer-->
@@ -363,11 +360,17 @@
                         <li id="admin-login"><a href="type_template.html"
                                                 target="iframe"> <i class="fa fa-circle-o"></i>模板管理
                         </a></li>
-                        <li id="admin-login"><a href="item_cat.html" target="iframe">
-                            <i class="fa fa-circle-o"></i>分类管理
+                        <li id="admin-login"><a href="area.html" target="iframe">
+                            <i class="fa fa-circle-o"></i>区域管理
                         </a></li>
-                        <li id="admin-login"><a href="goods.html" target="iframe">
+                        <li id="admin-login"><a href="goods_examine.html" target="iframe">
                             <i class="fa fa-circle-o"></i>商品审核
+                        </a></li>
+                        <li id="admin-login"><a href="goods_edit.html" target="iframe">
+                            <i class="fa fa-circle-o"></i>发布商品
+                        </a></li>
+                        <li id="admin-login"><a href="goods_list.html" target="iframe">
+                            <i class="fa fa-circle-o"></i>商品列表
                         </a></li>
                     </ul>
                 </li>

@@ -2,8 +2,10 @@ package com.cys.sso.controller;
 
 import com.cys.sso.pojo.Result;
 import com.cys.sso.pojo.UserFingerprint;
+import com.cys.sso.service.TokenService;
 import com.cys.sso.service.UserService;
 import java.util.regex.Pattern;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TokenService tokenService;
 
     private Pattern emailFormatCheck= Pattern.compile("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$");
     private Pattern phoneFormatCheck = Pattern.compile("^1[34578]\\d{9}$");
@@ -43,9 +48,9 @@ public class UserController {
 
 
     @GetMapping("/loadUser")
-    public Result loadUser() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return (new Result()).success(username);
+    public Result loadUser(HttpServletRequest request) {
+        Result userInfo = tokenService.getToken(request);
+        return userInfo;
     }
 
     @GetMapping("/logoutSuccess")

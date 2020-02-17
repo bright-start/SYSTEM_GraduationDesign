@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.BrandMapper">
+    <resultMap id="brandMap" type="Brand">
+        <id column="brand_id" property="id"/>
+        <result column="brand_name" property="brandName"/>
+    </resultMap>
+    <select id="listBrand" resultMap="brandMap" parameterType="Brand">
+        select * from brand
+        <if test="brandName != null">
+            where brandName like concat('%',#{brandName},'%')
+        </if>
+        order by brand_id
+    </select>
+    <select id="getBrandById" parameterType="java.lang.Integer" resultMap="brandMap">
+        select * from brand where brand_id=#{id}
+    </select>
+    <select id="count" resultType="java.lang.Long" parameterType="Brand">
+        select count(brand_id)
+        from brand
+        <if test="brandName != null">
+            where brandName like concat('%',#{brandName},'%')
+        </if>
+    </select>
+    <insert id="insertBrand" parameterType="Brand">
+        insert into brand(brand_name) values(#{brandName})
+    </insert>
+    <update id="updateBrandByBrand" parameterType="Brand">
+        update brand set brand_name=#{brandName}
+        where brand_id=#{id}
+    </update>
+    <delete id="deleteBrandById" parameterType="java.lang.Integer">
+        delete from brand where brand_id=#{id}
+    </delete>
+</mapper>

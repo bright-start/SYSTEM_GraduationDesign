@@ -31,7 +31,7 @@ app.controller("ipinfoController", function ($scope, $controller, ipinfoService)
                 } else {
                     $scope.loglist = null;
                     $("#responseTable").css({
-                        "background-image": "url('../images/nomore.png')"
+                        "background-image": "url('http://www.cys.com:9200/system/system/images/nomore.png')"
                     });
                     $("#responseTable thead").css({
                         "visibility": "hidden"

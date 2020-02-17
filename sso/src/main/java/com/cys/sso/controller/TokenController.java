@@ -3,10 +3,7 @@ package com.cys.sso.controller;
 import com.cys.sso.pojo.Result;
 import com.cys.sso.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -20,8 +17,8 @@ public class TokenController {
     private TokenService tokenService;
 
     @RequestMapping({"/redirectPage"})
-    public Result LoginSuccessAndRedirectPage(HttpServletResponse response) {
-        return tokenService.buildToken(response);
+    public Result LoginSuccessAndRedirectPage(HttpServletRequest request,HttpServletResponse response) {
+        return tokenService.buildToken(request,response);
     }
 
     @GetMapping("/getToken")

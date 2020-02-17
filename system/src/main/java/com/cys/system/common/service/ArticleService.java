@@ -22,7 +22,7 @@ public interface ArticleService {
 
     Result increaseLoveNum(Integer articleId, Integer userId, Integer islove);
 
-    Result commitCommand(Command command);
+    Result commitCommand(Command command) throws Exception;
 
     Result deleteCommand(Integer commandId, Integer userId);
 

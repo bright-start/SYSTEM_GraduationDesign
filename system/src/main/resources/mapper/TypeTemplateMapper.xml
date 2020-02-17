@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.TypeTemplateMapper">
+    <resultMap id="typeTemplateMap" type="TypeTemplate">
+        <id column="type_template_id" property="id"/>
+        <result column="type_template_name" property="typeTemplateName"/>
+        <result column="brands" property="brands"/>
+        <result column="specifications" property="specifications"/>
+        <result column="custom_attribute_item" property="customAttributeItem"/>
+    </resultMap>
+    <select id="listTypeTemplate" resultMap="typeTemplateMap" parameterType="TypeTemplate">
+        select * from type_template
+        <if test="typeTemplateName != null">
+            where type_template_name like concat('%',#{typeTemplateName},'%')
+        </if>
+        order by type_template_name
+    </select>
+    <select id="findTypeTemplateById" parameterType="java.lang.Integer" resultMap="typeTemplateMap">
+        select * from type_template where type_template_id=#{id}
+    </select>
+    <select id="count" resultType="java.lang.Long" parameterType="TypeTemplate">
+        select count(type_template_id) from type_template
+        <if test="typeTemplateName != null">
+            where type_template_name like concat('%',#{typeTemplateName},'%')
+        </if>
+    </select>
+    <insert id="insertTypeTemplate" parameterType="TypeTemplate">
+        insert into type_template(
+        type_template_name,
+        brands,
+        specifications
+        <if test="customAttributeItem != null">
+            ,custom_attribute_item
+        </if>
+        ) values(
+        #{typeTemplateName}
+        #{brands}
+        #{specifications}
+        <if test="customAttributeItem != null">
+            ,#{customAttributeItem}
+        </if>
+        )
+    </insert>
+    <update id="updateTypeTemplateByTemplate" parameterType="TypeTemplate">
+        update type_template set
+        type_template_name=#{type_template_name},
+        brands=#{brands},
+        specifications=#{specifications}
+        <if test="customAttributeItem != null">
+            ,custom_attribute_item=#{customAttributeItem}
+        </if>
+        where type_template_id=#{id}
+    </update>
+    <delete id="deleteTypeTemplateById" parameterType="java.lang.Integer">
+        delete from type_template where type_template_id=#{id}
+    </delete>
+</mapper>

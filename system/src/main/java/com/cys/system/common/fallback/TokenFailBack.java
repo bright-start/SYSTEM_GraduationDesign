@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class TokenFailBack implements TokenController {
 
     @Override
-    public Result getToken() {
+    public Result getToken(String token) {
         return new Result().error(500,"服务器繁忙！");
     }
 

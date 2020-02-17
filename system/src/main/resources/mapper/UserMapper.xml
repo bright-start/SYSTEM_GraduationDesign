@@ -24,7 +24,6 @@
     <select id="listUser" parameterType="User" resultType="java.util.Map">
         select
         username,
-        password,
         sex,
         image,
         role_id,

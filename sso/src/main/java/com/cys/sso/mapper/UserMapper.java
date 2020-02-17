@@ -14,4 +14,8 @@ public interface UserMapper {
     User findPasswordByUsername(@Param("username") String username);
 
     Integer checkUsername(String username);
+
+    Integer findStatus(String username);
+
+    void changeStatus(@Param("username") String username,@Param("status") Integer status);
 }

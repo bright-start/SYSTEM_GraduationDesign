@@ -1,4 +1,4 @@
-app.controller("articleController", function ($scope, $controller, $location, articleService, uploadService) {
+app.controller("articleController", function ($scope, $controller, $location, articleService, uploadService, commentService) {
 
     $controller("baseController", {$scope: $scope});
 
@@ -23,24 +23,19 @@ app.controller("articleController", function ($scope, $controller, $location, ar
 
     $scope.findOne = function () {
         var id = $location.search()["id"];
-        console.log("查询文章id:"+id);
+        console.log("查询文章id:" + id);
+        if(typeof(id) === "undefined"){
+            return;
+        }
         // 发送请求
         articleService.findOne(id).success(function (data) {
-            $scope.entity = data.data;
             console.log(data.data);
+            $scope.entity = data.data;
+
+            $scope.browse(id);
         })
     };
 
-    $scope.increaseBrowseNum = function(){
-        var id = $location.search()["id"];
-        // 发送请求
-        articleService.increaseBrowseNum(id).success(function (data) {
-            if(data.code === 200) {
-                $scope.entity.article.browseNum = $scope.entity.article.browseNum + 1;
-                console.log("浏览量+1");
-            }
-        })
-    };
 
     // 初始化对象
     $scope.searchEntity = {status: -1};
@@ -74,6 +69,37 @@ app.controller("articleController", function ($scope, $controller, $location, ar
         })
     };
 
+    $scope.browse = function (articleId) {
+        console.log("浏览");
+        articleService.browse(articleId).success(function (data) {
+            if (data.code === 200) {
+                if (data.data) {
+                    $scope.entity.article.browseNum = $scope.entity.article.browseNum + 1;
+                }
+            }
+        });
+    };
+
+    $scope.islove = 0;
+    $scope.love = function (articleId) {
+        console.log("喜欢");
+        if ($scope.islove === 0) {
+            $scope.islove = 1;
+        } else {
+            $scope.islove = 0;
+        }
+        articleService.love(articleId, $scope.islove).success(function (data) {
+            if (data.code === 200) {
+                if(data.data) {
+                    $scope.entity.article.loveNum = $scope.entity.article.loveNum + 1;
+                }else {
+                    $scope.entity.article.loveNum = $scope.entity.article.loveNum - 1;
+                }
+            }
+        });
+    };
+
+
     $scope.read_file = function () {
         console.log("上传word文件");
         uploadService.parseFile().success(function (data) {
@@ -84,8 +110,48 @@ app.controller("articleController", function ($scope, $controller, $location, ar
             }
         })
     };
+
+
     $scope.changeStatus = function (statusName, status) {
         $scope.statusName = statusName;
         $scope.searchEntity.status = status;
-    }
+    };
+
+    // 评论
+    // 添加函数
+    $scope.addCommand = function (articleId) {
+        console.log("新增评论:articleId" + articleId);
+        $scope.command.articleId = articleId;
+        if ($scope.command.content === "") {
+            return;
+        }
+        commentService.addCommand($scope.command).success(function (data) {
+            // 判断
+            if (data.code === 200) {
+                // 刷新
+                $scope.entity.commandContentList.unshift(data.data);
+                $scope.command.content = "";
+            } else {
+                alert(data.message);
+            }
+        })
+
+    };
+
+    // 初始化对象
+    $scope.command = {};
+
+
+    $scope.deleteCommand = function (index, commandId) {
+        // 发送删除请求
+        commentService.deleteCommand(commandId).success(function (data) {
+            // 判断是否删除成功
+            if (data.code === 200) {
+                // 刷新列表
+                $scope.entity.commandContentList.splice(index, 1);
+            } else {
+                alert("删除失败");
+            }
+        })
+    };
 });

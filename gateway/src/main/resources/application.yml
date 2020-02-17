@@ -2,21 +2,21 @@ server:
   port: 9200
 spring:
   application:
-    name: spring-cloud-gateway
+    name: www.cys.com
   cloud:
     gateway:
       discovery:
         locator:
           enabled: true
           #开启小写后uri也必须小写
-#          lowerCaseServiceId: true
+          lowerCaseServiceId: true
       routes:
         - id: sso
-          uri: lb://SSO
+          uri: lb://sso.cys.com
           predicates:
             - Path=/sso/**
         - id: system
-          uri: lb://SYSTEM
+          uri: lb://system.cys.com
           predicates:
             - Path=/system/**
 
@@ -31,3 +31,10 @@ eureka:
 logging:
   level:
     org.springframework.cloud.gateway: debug
+
+#jwt:
+#  secret:
+#    key: asdfghjkl
+#  blacklist:
+#    key:
+#      format=: WT_BLACKLIST::%s

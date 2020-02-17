@@ -5,11 +5,12 @@ import com.cys.system.common.fallback.TokenFailBack;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Component
 @FeignClient(value = "SSO",path = "/sso",fallback = TokenFailBack.class)
 public interface TokenController {
-    @GetMapping("/getToken")
-    Result getToken();
+    @GetMapping(value = "/getToken",consumes = "application/json")
+    Result getToken(@RequestBody String token);
 
 }

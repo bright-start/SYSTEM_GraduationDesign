@@ -1,5 +1,5 @@
 app.service("loginService", function ($http) {
-    this.loadLoginUser = function (entity) {
-        return $http.post("http://127.0.0.1:8080/system/user/add", entity);
+    this.loadLoginUser = function () {
+        return $http.get("http://www.cys.com:9200/sso/loadUser");
     };
 });
