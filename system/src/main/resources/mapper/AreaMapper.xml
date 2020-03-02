@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cys.system.common.mapper.AreaMapper">
-    <resultMap id="areaMap" type="Area">
+    <resultMap id="areaMap" type="com.cys.system.common.pojo.Area">
         <id column="area_id" property="id"/>
-        <result column="area" property="area"/>
+        <result column="area_name" property="areaName"/>
         <result column="area_code" property="areaCode"/>
     </resultMap>
-    <select id="listArea" resultMap="areaMap" parameterType="Area">
+    <select id="listArea" resultMap="areaMap" parameterType="com.cys.system.common.pojo.Area">
         select * from area
-        <if test="area != null">
-            where area like concat('%',#{area},'%')
+        <if test="areaName != null">
+            where area_name like concat('%',#{areaName},'%')
         </if>
         order by area_id
     </select>
     <select id="getAreaById" parameterType="java.lang.Integer" resultMap="areaMap">
         select * from area where area_id=#{id}
     </select>
-    <select id="count" resultType="java.lang.Long" parameterType="Area">
+    <select id="count" resultType="java.lang.Long" parameterType="com.cys.system.common.pojo.Area">
         select count(area_id)
         from area
-        <if test="area != null">
-            where area like concat('%',#{area},'%')
+        <if test="areaName != null">
+            where area_name like concat('%',#{areaName},'%')
         </if>
     </select>
-    <insert id="insertArea" parameterType="Area">
-        insert into area(area) values(#{area})
+    <select id="findAreaList" resultMap="areaMap">
+        select *
+        from area
+    </select>
+    <insert id="insertArea" parameterType="com.cys.system.common.pojo.Area">
+        insert into area(area_name,area_code) values(#{areaName},#{areaCode})
     </insert>
-    <update id="updateAreaByArea" parameterType="Area">
-        update area set area=#{area}
+    <update id="updateAreaByArea" parameterType="com.cys.system.common.pojo.Area">
+        update area set area_name=#{areaName},
+        area_code=#{areaCode}
         where brand_id=#{id}
     </update>
     <delete id="deleteAreaById" parameterType="java.lang.Integer">

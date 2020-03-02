@@ -41,6 +41,16 @@ public class SpecificationController {
         }
     }
 
+    @GetMapping("/findSpecificationList")
+    public Result findSpecificationList(HttpServletRequest request) throws UnauthorizedException {
+        Map<String, Object> userMap = ssoService.getUser(request);
+        if (userMap == null && userMap.isEmpty()) {
+            throw new UnauthorizedException();
+        }
+        Integer shopId = (Integer) userMap.get("shopId");
+        return specificationService.findSpecificationList(shopId);
+    }
+
     @GetMapping("/get")
     public Result get(Integer id) {
         return specificationService.getSpecificationById(id);
@@ -52,8 +62,8 @@ public class SpecificationController {
         if (userMap == null && userMap.isEmpty()) {
             throw new UnauthorizedException();
         }
-        List<List<Map>> list = (List<List<Map>>)userMap.get("authorities");
-        String role = (String)list.get(0).get(0).get("role");
+        List<Map> list = (List<Map>)userMap.get("authorities");
+        String role = (String)list.get(0).get("role");
         if(role.contains("SHOP")) {
             Integer shopId = (Integer) userMap.get("shopId");
             specificationService.deleteSpecificationByIds(ids,shopId);
@@ -64,8 +74,22 @@ public class SpecificationController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody(required = true) Specification specification) {
-        specificationService.insertSpecification(specification);
+    public Result add(@RequestBody(required = true) Specification specification,HttpServletRequest request) throws UnauthorizedException {
+        Map<String, Object> userMap = ssoService.getUser(request);
+        if (userMap == null && userMap.isEmpty()) {
+            throw new UnauthorizedException();
+        }
+        List<Map> list = (List<Map>)userMap.get("authorities");
+        String role = (String)list.get(0).get("role");
+        if(role.contains("SHOP")) {
+            Integer shopId = (Integer) userMap.get("shopId");
+            specification.setIsCustom(1);
+            specification.setShopId(shopId);
+            specificationService.insertSpecification(specification);
+        }else{
+            specificationService.insertSpecification(specification);
+        }
+
         return new Result().success("新增成功");
     }
 

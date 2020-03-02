@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -25,6 +26,7 @@ import java.util.Date;
 @Configuration
 @EnableScheduling
 @EnableAsync
+@Order(1)
 public class IPFilter implements HandlerInterceptor {
 
     private static final Logger logger = LoggerFactory.getLogger(IPRecord.class);
@@ -127,6 +129,9 @@ public class IPFilter implements HandlerInterceptor {
         // 判断一秒访问次数是否超过阈值，超过拉黑名单
         IPRecord ipRecord = ipRecodeService.getIPRecode(AesUtil.encrypt(IP));
         if (ipRecord != null) {
+            if(ipRecord.getBlackList() != null && "1".equals(AesUtil.decrypt(ipRecord.getBlackList()))){
+                throw new Exception("亲，您的访问记录异常,请明天继续访问！");
+            }
             Integer lastbrowseCount = Integer.parseInt(AesUtil.decrypt(ipRecord.getBrowseTotalCount()));
             if (IPBROWSECOUNT != -1) {
                 if (lastbrowseCount - IPBROWSECOUNT > THRESHOLD) {

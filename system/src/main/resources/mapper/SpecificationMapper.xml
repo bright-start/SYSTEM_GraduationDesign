@@ -31,6 +31,13 @@
             where specification_type like concat('%',#{specificationType},'%')
         </if>
     </select>
+    <select id="findSpecificationList" parameterType="java.lang.Integer" resultMap="specificationMap">
+        select * from specification
+        where
+            iscustom = 0
+        or
+            (iscustom=1 and shop_id=#{shopId})
+    </select>
     <insert id="insertSpecification" parameterType="Specification">
         insert into specification(
         specification_type,

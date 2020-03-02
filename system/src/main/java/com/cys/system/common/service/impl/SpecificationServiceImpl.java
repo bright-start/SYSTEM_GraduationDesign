@@ -101,4 +101,10 @@ public class SpecificationServiceImpl implements SpecificationService {
 
     }
 
+    @Override
+    public Result findSpecificationList(Integer shopId) {
+        List<Specification> specificationList = specificationMapper.findSpecificationList(shopId);
+        return new Result().success(specificationList);
+    }
+
 }

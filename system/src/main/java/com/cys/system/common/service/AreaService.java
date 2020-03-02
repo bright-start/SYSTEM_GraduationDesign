@@ -17,4 +17,5 @@ public interface AreaService {
 
     Result updateAreaByArea(Area area);
 
+    Result findAreaList();
 }

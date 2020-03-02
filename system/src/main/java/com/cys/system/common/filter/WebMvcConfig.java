@@ -19,7 +19,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     private TokenFilter tokenFilter;
 
-    private static final List<String> EXCLUDE_PATH = Arrays.asList("/html/**", "css/**", "js/**", "/plugins/**", "/ip/**");
+    private static final List<String> EXCLUDE_PATH = Arrays.asList("/html/**", "css/**", "js/**", "/plugins/**", "/images/**","/ip/**");
     private static final List<String> TOKEN_EXCLUDE_PATH = Arrays.asList("/getToken","/html/**", "css/**", "js/**", "/plugins/**", "/ip/**");
 
     @Override

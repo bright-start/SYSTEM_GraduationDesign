@@ -1,5 +1,6 @@
 package com.cys.system.common.mapper;
 
+import com.cys.system.common.common.pojo.Result;
 import com.cys.system.common.pojo.Area;
 import com.cys.system.common.pojo.Brand;
 
@@ -17,4 +18,6 @@ public interface AreaMapper {
     void updateAreaByArea(Area area);
 
     void insertArea(Area area);
+
+    List<Area> findAreaList();
 }

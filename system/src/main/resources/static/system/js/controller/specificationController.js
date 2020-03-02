@@ -7,7 +7,7 @@ app.controller("specificationController", function ($scope,$controller, specific
         // 初始化返回对象
         var obj = null;
         console.log($scope.entity.specificationDesc.join(","));
-        $scope.entity.specificationDesc = $scope.entity.specificationDesc.join(",");
+        $scope.entity.specificationDesc = JSON.stringify($scope.entity.specificationDesc);
         // 判断是否是添加
         if ($scope.entity.id != null) {
             obj = specificationService.update($scope.entity);
@@ -31,7 +31,7 @@ app.controller("specificationController", function ($scope,$controller, specific
         // 发送请求
         specificationService.findOne(id).success(function (data) {
             $scope.entity = data.data;
-            $scope.entity.specificationDesc = $scope.entity.specificationDesc.split(",");
+            $scope.entity.specificationDesc = JSON.parse($scope.entity.specificationDesc);
         })
     };
 
@@ -45,7 +45,7 @@ app.controller("specificationController", function ($scope,$controller, specific
             if (data.code === 200) {
                 $scope.list = data.data.list;
                 for(var i = 0;i < $scope.list.length;i++){
-                    $scope.list[i].specificationDesc = $scope.list[i].specificationDesc.split(",");
+                    $scope.list[i].specificationDesc = JSON.parse($scope.list[i].specificationDesc);
                 }
                 $scope.paginationConf.totalItems = data.data.total;// 更新总记录数
             } else {

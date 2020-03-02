@@ -18,4 +18,5 @@ public interface BrandService {
 
     Result updateBrandByBrand(Brand brand);
 
+    Result findBrandList();
 }

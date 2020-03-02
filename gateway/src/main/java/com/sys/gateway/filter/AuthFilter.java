@@ -32,11 +32,8 @@
 //
 //    @Value("${jwt.secret.key}")
 //    private String secretKey;
-//
-//    @Value("${auth.skip.urls}")
-//    private String[] skipAuthUrls;
-//
-//    @Value("${jwt.blacklist.key.format}")
+
+    //    @Value("${jwt.blacklist.key.format}")
 //    private String jwtBlacklistKeyFormat;
 //
 //    @Override

@@ -18,7 +18,6 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
 
-@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = true, rollbackFor = {Exception.class})
 @Service
 public class AreaServiceImpl implements AreaService {
 
@@ -90,6 +89,12 @@ public class AreaServiceImpl implements AreaService {
         areaMapper.updateAreaByArea(area);
         redisTemplate.delete("brand");
         return new Result().success();
+    }
+
+    @Override
+    public Result findAreaList() {
+        List<Area> areaList = areaMapper.findAreaList();
+        return new Result().success(areaList);
     }
 
 }

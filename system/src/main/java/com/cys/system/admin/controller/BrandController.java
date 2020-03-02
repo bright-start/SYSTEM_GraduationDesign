@@ -35,6 +35,11 @@ public class BrandController {
         }
     }
 
+    @GetMapping("/findBrandList")
+    public Result findBrandList(){
+        return brandService.findBrandList();
+    }
+
     @GetMapping("/get")
     public Result get(Integer id) {
         return brandService.getBrandById(id);

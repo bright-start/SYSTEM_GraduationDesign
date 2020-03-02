@@ -1,0 +1,100 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /system
+#编码设置
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+      force-request: true
+      force-response: true
+#数据库配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://127.0.0.1:5432/system
+#缓存配置
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-idle: 10
+        min-idle: 5
+        max-wait: -1ms
+    timeout: 1000ms
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: system.cys.com
+
+#mybatis配置
+mybatis:
+  mapper-locations: mapper/*.xml
+  type-aliases-package: com.cys.system.common.pojo
+#mybatis.type-handlers-package=com.cys.system.common.pojo
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+
+#断路器设置
+feign:
+  hystrix:
+    enabled: true
+  httpclient:
+    enabled: true
+#mq配置
+#spring.rabbitmq.host=127.0.0.1
+#spring.rabbitmq.username=testmq
+#spring.rabbitmq.password=testmq
+#spring.rabbitmq.port=5672
+#spring.rabbitmq.virtual-host=/testmq
+#日志配置
+logging:
+  level:
+    com:
+      cys:
+        system:
+          common:
+            mapper: debug
+#logging.level.com.cys.system=debug
+
+# 分布式文件系统fastdfs配置
+fdfs:
+  # socket连接超时时长
+  soTimeout: 1500
+  # 连接tracker服务器超时时长
+  connectTimeout: 600
+  pool:
+    # 从池中借出的对象的最大数目
+    max-total: 153
+    # 获取连接时的最大等待毫秒数100
+    max-wait-millis: 102
+  # 缩略图生成参数，可选
+  thumbImage:
+    width: 150
+    height: 150
+  # 跟踪服务器tracker_server请求地址,支持多个，这里只有一个，如果有多个在下方加- x.x.x.x:port
+  trackerList:
+    - 10.211.55.32:22122
+  #
+  # 存储服务器storage_server访问地址
+  web-server-url: http://10.211.55.32/
+  spring:
+    http:
+      multipart:
+        max-file-size: 100MB # 最大支持文件大小
+        max-request-size: 100MB # 最大支持请求大小
+

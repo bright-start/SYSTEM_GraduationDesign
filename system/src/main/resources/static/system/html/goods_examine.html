@@ -48,14 +48,15 @@
 			<div class="pull-left">
 				<div class="form-group form-inline">
 					<div class="btn-group">
-						<button type="button" class="btn btn-default" title="删除">
-							<i class="fa fa-trash-o" ng-click="dele();"></i> 删除
-						</button>
 						<button type="button" class="btn btn-default" title="审核通过">
-							<i class="fa fa-check" ng-click="changeStatus('1');"></i> 审核通过
+							<i class="fa fa-check" ng-click="changeStatus(null,'3');"></i> 审核通过
 						</button>
-						<button type="button" class="btn btn-default" title="驳回">
-							<i class="fa fa-ban" ng-click="changeStatus('2');"></i> 驳回
+						<button type="button" class="btn btn-default" title="驳回" data-toggle="modal" data-target="#errorMsg" ng-click="isBatch(true);">
+							<i class="fa fa-ban"></i> 驳回
+						</button>
+						<button type="button" class="btn btn-default" title="初始化商品搜索引擎">
+							<i class="fa fa-ban" ng-click="importGoods();"></i>
+							初始化商品搜索引擎
 						</button>
 						<button type="button" class="btn btn-default" title="刷新">
 							<i class="fa fa-refresh" onclick="window.location.reload();"></i>
@@ -99,27 +100,27 @@
 				<tbody>
 					<tr ng-repeat="entity in list">
 						<td><input type="checkbox"></td>
-						<td>{{entity.goods.id}}</td>
-						<td>{{entity.goods.goodsImage}}</td>
-						<td>{{entity.goods.goodsName}}</td>
-						<td>{{entity.goods.goodsPrice}}￥</td>
+						<td>{{entity.id}}</td>
+						<td>{{entity.goodsImages}}</td>
+						<td>{{entity.goodsName}}</td>
+						<td>{{entity.goodsPrice}}￥</td>
 						<td>{{entity.brand.brandName}}</td>
-<!--						<td>{{entity.goods.monthSale}}</td>-->
-						<td>{{entity.goods.stock}}</td>
+<!--						<td>{{entity.monthSale}}</td>-->
+						<td>{{entity.stock == null ? '/' : entity.stock}}</td>
 						<td>
-							<span ng-if="entity.goods.status==0">未上架</span>
-							<span ng-if="entity.goods.status==1">待审核</span>
-							<span ng-if="entity.goods.status==2">审核通过</span>
-							<span ng-if="entity.goods.status==3">审核未通过</span>
-							<span ng-if="entity.goods.status==4">已上架</span>
-							<span ng-if="entity.goods.status==5">无货</span>
-							<span ng-if="entity.goods.status==6">已下架</span>
+							<span ng-if="entity.status==0">未上架</span>
+							<span ng-if="entity.status==1">待审核</span>
+							<span ng-if="entity.status==2">审核未通过</span>
+							<span ng-if="entity.status==3">审核通过</span>
+							<span ng-if="entity.status==4">已上架</span>
+							<span ng-if="entity.status==5">无货</span>
+							<span ng-if="entity.status==6">已下架</span>
 						</td>
-						<td>{{entity.area.area}}</td>
+						<td>{{entity.area.areaName}}</td>
 						<td>{{entity.shop.shopName}}</td>
-						<td>{{entity.goods.createTime}}</td>
-						<td>{{entity.goods.upperSelfTime}}</td>
-						<td>{{entity.goods.lowerSelfTime}}</td>
+						<td>{{entity.createTime}}</td>
+						<td>{{entity.upperSelfTime}}</td>
+						<td>{{entity.lowerSelfTime}}</td>
 						<td class="text-center">
 							<button type="button" class="btn bg-olive btn-xs"
 								data-toggle="modal" data-target="#goodsModal"
@@ -151,9 +152,9 @@
 
 					<ul class="nav nav-tabs">
 						<li class="active"><a href="#home" data-toggle="tab">基本信息</a></li>
-						<li><a href="#linkman" data-toggle="tab">商品列表</a></li>
-						<li><a href="#ceo" data-toggle="tab">其他信息</a></li>
-						<li><a href="#bank" data-toggle="tab">审核状态</a></li>
+						<li><a href="#productList" data-toggle="tab">商品列表</a></li>
+						<li><a href="#otherInfo" data-toggle="tab">其他信息</a></li>
+						<li><a href="#markStatus" data-toggle="tab">审核状态</a></li>
 					</ul>
 
 					<!-- 选项卡开始 -->
@@ -163,67 +164,65 @@
 							<table class="table table-bordered table-striped" width="800px">
 								<tr>
 									<td>商品id</td>
-									<td>{{entity.goods.id}}</td>
+									<td>{{entity.id}}</td>
 								</tr>
 								<tr>
 									<td>商品图片</td>
-									<td>{{entity.goods.goodsImages}}</td>
+									<td>{{entity.goodsImages}}</td>
 								</tr>
 								<tr>
 									<td>商品名称</td>
-									<td>{{entity.goods.goodsName}}</td>
+									<td>{{entity.goodsName}}</td>
+								</tr>
+								<tr>
+									<td>商品副标题</td>
+									<td>{{entity.goodsCaption}}</td>
 								</tr>
 								<tr>
 									<td>商品价格</td>
-									<td>{{entity.goods.goodsPrice}}￥</td>
+									<td>{{entity.goodsPrice}}￥</td>
 								</tr>
 								<tr>
 									<td>商品介绍</td>
-									<td>{{entity.desc}}</td>
+									<td>{{entity.goodsIntroduce}}</td>
 								</tr>
 								<tr>
-								<tr>
-									<td>货品月销量</td>
-									<td>{{entity.category1Id}}</td>
-								</tr>
 								<tr>
 									<td>货品库存</td>
-									<td>{{entity.category2Id}}</td>
-								</tr>
-								<tr>
-									<td>货品推荐人数</td>
-									<td>{{entity.category3Id}}</td>
+									<td>{{entity.stock == null ? '/' : entity.stock}}</td>
 								</tr>
 								<tr>
 									<td>货品优惠</td>
-									<td>{{entity.category3Id}}</td>
+									<td>{{entity.goodsDiscount}}</td>
 								</tr>
 								<tr>
 									<td>货品邮费</td>
-									<td>{{entity.category3Id}}</td>
+									<td>{{entity.goodsPostage}}</td>
 								</tr>
 							</table>
 						</div>
-						<div class="tab-pane fade" id="linkman">
-							<br>
-							<table class="table table-bordered table-striped">
-
-							</table>
-						</div>
-						<div class="tab-pane fade" id="certificate">
+						<div class="tab-pane fade" id="productList">
 							<br>
 							<table class="table table-bordered table-striped">
 								<tr ng-repeat="product in entity.productList">
 									<td>{{product.productImage}}</td>
 									<td>{{product.productName}}</td>
 									<td>{{product.productPrice}}¥</td>
-									<td>{{product.specification_desc}}/{{product.specification_type}}</td>
+									<td>{{product.specificationDesc}}/{{product.specificationType}}</td>
 								</tr>
 							</table>
 						</div>
-						<div class="tab-pane fade" id="ceo">
+						<div class="tab-pane fade" id="otherInfo">
 							<br>
 							<table class="table table-bordered table-striped">
+								<tr>
+									<td>货品月销量</td>
+									<td>{{entity.monthSale}}</td>
+								</tr>
+								<tr>
+									<td>货品推荐人数</td>
+									<td>{{entity.recomment}}</td>
+								</tr>
 								<tr>
 									<td>商品品牌</td>
 									<td>{{entity.brand.brandName}}</td>
@@ -242,24 +241,24 @@
 								</tr>
 							</table>
 						</div>
-						<div class="tab-pane fade" id="bank">
+						<div class="tab-pane fade" id="markStatus">
 							<br>
 							<table class="table table-bordered table-striped">
 								<tr>
 									<td>商品状态</td>
 									<td>
-										<span ng-if="entity.goods.status==1">未上架</span>
-										<span ng-if="entity.goods.status==4">已上架</span>
-										<span ng-if="entity.goods.status==5">无货</span>
-										<span ng-if="entity.goods.status==6">已下架</span>
+										<span ng-if="entity.status < 4">未上架</span>
+										<span ng-if="entity.status==4">已上架</span>
+										<span ng-if="entity.status==5">无货</span>
+										<span ng-if="entity.status==6">已下架</span>
 									</td>
 								</tr>
 								<tr>
-									<td>审核状态</td>
-									<td>
-										<span ng-if="entity.goods.status==1">待审核</span>
-										<span ng-if="entity.goods.status==2">审核通过</span>
-										<span ng-if="entity.goods.status==3">审核不通过</span>
+									<td style="valign:middle">审核状态</td>
+									<td style="valign:middle">
+										<span ng-if="entity.status == 1" style="background-image:url('../images/mark/examine_wait.png');background-size: 100px auto;display:block;width:100px;height:34px;"></span>
+										<span ng-if="entity.status >= 3" style="background-image:url('../images/mark/examine_success.png');background-size: 100px auto;display:block;width:100px;height:34px;"></span>
+										<span ng-if="entity.status == 2" style="background-image:url('../images/mark/examine_fail.png');background-size: 100px auto;display:block;width:100px;height:34px;"></span>
 									</td>
 								</tr>
 							</table>
@@ -269,11 +268,40 @@
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-success" data-dismiss="modal"
-						aria-hidden="true" ng-click="changeStatus(entity.id,'1');">审核通过</button>
-					<button class="btn btn-danger" data-dismiss="modal"
-						aria-hidden="true" ng-click="changeStatus(entity.id,'2');">审核未通过</button>
+						aria-hidden="true" ng-click="changeStatus(entity.id,'2');">审核通过</button>
+					<button class="btn btn-danger"
+						aria-hidden="true" data-toggle="modal" ng-click="isBatch(false);" data-target="#errorMsg">审核未通过</button>
 					<button class="btn btn-default" data-dismiss="modal"
 						aria-hidden="true">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="errorMsg" tabindex="-1" role="dialog"
+		 aria-labelledby="myModalLabel2" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">×
+					</button>
+					<h3 id="myModalLabel2">驳回原因</h3>
+				</div>
+				<div class="modal-body">
+					<table class="table table-bordered table-striped" width="800px">
+						<tr>
+							<td colspan="2"><textarea class="form-control" ng-model="examine_errorMsg"
+													  placeholder="请填写驳回原因" required></textarea></td>
+						</tr>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-success" data-dismiss="modal"
+							aria-hidden="true" ng-click="changeStatus(entity.id,'3');">保存
+					</button>
+					<button class="btn btn-default" data-dismiss="modal"
+							aria-hidden="true">关闭
+					</button>
 				</div>
 			</div>
 		</div>

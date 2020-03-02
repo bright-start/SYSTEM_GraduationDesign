@@ -18,6 +18,9 @@ app.service("specificationService", function ($http) {
         return $http.post(basePath+"/specification/list?page=" + page + "&rows=" + rows,
             searchEntity);
     };
+    this.findSpecificationList=function(){
+        return $http.get(basePath+"/specification/findSpecificationList");
+    }
     // 删除
     this.dele = function (selectIds) {
         return $http.delete(basePath+"/specification/delete?ids=" + selectIds);

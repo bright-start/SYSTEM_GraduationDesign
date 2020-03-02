@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.GoodsMapper">
+    <resultMap id="goodsMap" type="Goods">
+        <id column="goods_id" property="id"/>
+        <result column="goods_name" property="goodsName"/>
+        <result column="goods_price" property="goodsPrice"/>
+        <result column="goods_images" property="goodsImages"/>
+        <result column="goods_introduce" property="goodsIntroduce"/>
+        <result column="goods_postage" property="goodsPostage"/>
+        <result column="goods_discount" property="goodsDiscount"/>
+        <result column="goods_month_sale" property="monthSale"/>
+        <result column="goods_recomment" property="recomment"/>
+        <result column="goods_status" property="status"/>
+        <result column="goods_createtime" property="createTime"/>
+        <result column="goods_upperselftime" property="upperSelfTime"/>
+        <result column="goods_lowerselftime" property="lowerSelfTime"/>
+        <result column="goods_caption" property="goodsCaption"/>
+        <result column="goods_packageList" property="goodsPackageList"/>
+        <result column="goods_sale_service" property="goodsSaleService"/>
+        <result column="goods_isenablespec" property="isEnableSpec"/>
+
+        <association property="brand" javaType="Brand">
+            <id column="brand_id" property="id"/>
+            <result column="brand_name" property="brandName"/>
+        </association>
+        <association property="shop" javaType="Shop">
+            <id column="shop_id" property="id"/>
+            <result column="shop_name" property="shopName"/>
+        </association>
+        <association property="area" javaType="com.cys.system.common.pojo.Area">
+            <id column="area_id" property="id"/>
+            <result column="area_name" property="areaName"/>
+        </association>
+        <collection property="productList" ofType="com.cys.system.common.pojo.Product">
+            <id column="product_id" property="id"/>
+            <result column="product_name" property="productName"/>
+            <result column="product_images" property="productImage"/>
+            <result column="product_price" property="productPrice"/>
+            <result column="specification_type" property="specificationType"/>
+            <result column="sepcification_desc" property="specificationDesc"/>
+            <result column="product_stock" property="productStock"/>
+        </collection>
+    </resultMap>
+    <select id="listGoods" resultMap="goodsMap" parameterType="Goods">
+        SELECT
+        "public".area."area_name",
+        "public".shop."shop_name",
+        "public".brand."brand_name",
+        "public".goods."goods_upperselftime",
+        "public".goods."goods_lowerselftime",
+        "public".goods."brand_id",
+        "public".goods."shop_id",
+        "public".goods."area_id",
+        "public".goods."goods_status",
+        "public".goods."goods_recomment",
+        "public".goods."goods_month_sale",
+        "public".goods."goods_images",
+        "public".goods."goods_price",
+        "public".goods."goods_name",
+        "public".goods."goods_id",
+        "public".goods."goods_createtime"
+        FROM
+        "public".shop
+        JOIN "public".goods
+        ON "public".shop."shop_id" = "public".goods."shop_id"
+        JOIN "public".area
+        ON "public".area."area_id" = "public".goods."area_id"
+        JOIN "public".brand
+        ON "public".brand."brand_id" = "public".goods."brand_id"
+    </select>
+    <select id="count" resultType="java.lang.Long" parameterType="Goods">
+        select count(goods_id) from goods
+    </select>
+    <select id="findGoodsById" resultMap="goodsMap" parameterType="java.lang.Integer">
+        SELECT
+        "public".shop."shop_name",
+        "public".goods.*,
+        "public".brand."brand_name",
+        "public".product.*,
+        "public".area."area_name"
+        FROM
+        "public".product
+        JOIN "public".goods
+        ON "public".product."goods_id" = "public".goods."goods_id"
+        JOIN "public".area
+        ON "public".area."area_id" = "public".goods."area_id"
+        JOIN "public".brand
+        ON "public".brand."brand_id" = "public".goods."brand_id"
+        JOIN "public".shop
+        ON "public".shop."shop_id" = "public".goods."shop_id"
+        where
+        "public".goods.goods_id = #{goodsId}
+    </select>
+    <update id="examine">
+        update goods set goods_status=#{status}
+        where goods_id=#{id}
+    </update>
+</mapper>

@@ -33,6 +33,11 @@ public class AreaController {
         }
     }
 
+    @GetMapping("/findAreaList")
+    public Result findAreaList(){
+        return areaService.findAreaList();
+    }
+
     @GetMapping("/get")
     public Result get(Integer id) {
         return areaService.getAreaById(id);

@@ -2,7 +2,7 @@ package com.cys.system.common.pojo;
 
 public class Area {
     private Integer id;
-    private String area;
+    private String areaName;
     private String areaCode;
 
     public Integer getId() {
@@ -13,12 +13,12 @@ public class Area {
         this.id = id;
     }
 
-    public String getArea() {
-        return area;
+    public String getAreaName() {
+        return areaName;
     }
 
-    public void setArea(String area) {
-        this.area = area;
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
     }
 
     public String getAreaCode() {

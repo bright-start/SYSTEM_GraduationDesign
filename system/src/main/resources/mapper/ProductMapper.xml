@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.ProductMapper">
+    <resultMap id="productMap" type="Product">
+        <id column="product_id" property="id"/>
+        <result column="product_name" property="productName"/>
+        <result column="product_images" property="productImage"/>
+        <result column="product_price" property="productPrice"/>
+        <result column="specification_type" property="specificationType"/>
+        <result column="sepcification_desc" property="specificationDesc"/>
+        <result column="product_stock" property="productStock"/>
+    </resultMap>
+
+</mapper>

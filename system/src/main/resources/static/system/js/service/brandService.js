@@ -18,6 +18,9 @@ app.service("brandService", function ($http) {
         return $http.post(basePath+"/brand/list?page=" + page + "&rows=" + rows,
             searchEntity);
     };
+    this.findBrandList = function(){
+        return $http.get(basePath + "/brand/findBrandList");
+    }
     // 删除
     this.dele = function (selectIds) {
         return $http.delete(basePath+"/brand/delete?ids=" + selectIds);

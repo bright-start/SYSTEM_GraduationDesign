@@ -46,7 +46,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
                 roleLevel = "ADMIN";
                 break;
             case 3:
-                roleLevel = "SUPPERADMIN";
+                roleLevel = "SUPERADMIN";
                 break;
             default:
                 roleLevel = "TOURISTS";

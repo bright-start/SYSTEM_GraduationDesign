@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.ShopMapper">
+    <resultMap id="shopMap" type="Shop">
+        <id column="brand_id" property="id"/>
+        <result column="shop_name" property="shopName"/>
+        <result column="shop_desc" property="shopDesc"/>
+        <result column="shop_image" property="shopImage"/>
+        <result column="shop_love" property="shopLove"/>
+        <result column="shop_month_transaction" property="brandName"/>
+        <result column="shop_hot_goods_id" property="shopHotGoods"/>
+        <result column="shop_company" property="shopCompany"/>
+        <result column="shop_bank_card" property="shopBankCard"/>
+        <result column="shop_legel_persion" property="shopLegelPerson"/>
+        <result column="shop_template" property="brandName"/>
+        <result column="shop_createtime" property="shopCreateTime"/>
+        <result column="shop_views" property="shopViews"/>
+        <result column="shop_all_views" property="shopAllViews"/>
+        <result column="shop_all_trading_volume" property="shopAllTradingVolume"/>
+        <result column="shop_trading_volume" property="shopTradingVolume"/>
+        <result column="shop_status" property="shopStatus"/>
+    </resultMap>
+
+</mapper>

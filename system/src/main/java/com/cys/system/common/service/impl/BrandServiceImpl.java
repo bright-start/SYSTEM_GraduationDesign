@@ -112,4 +112,10 @@ public class BrandServiceImpl implements BrandService {
         return new Result().success();
     }
 
+    @Override
+    public Result findBrandList() {
+        List<Brand> brandList = brandMapper.findBrandList();
+        return new Result().success(brandList);
+    }
+
 }

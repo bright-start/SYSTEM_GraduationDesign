@@ -3,6 +3,7 @@ package com.cys.system.common.mapper;
 import com.cys.system.common.pojo.Brand;
 import com.cys.system.common.pojo.Specification;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -19,4 +20,5 @@ public interface SpecificationMapper {
 
     void insertSpecification(Specification specification);
 
+    List<Specification> findSpecificationList(Integer shopId);
 }

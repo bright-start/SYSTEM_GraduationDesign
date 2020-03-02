@@ -18,6 +18,9 @@ app.service("areaService", function ($http) {
         return $http.post(basePath+"/area/list?page=" + page + "&rows=" + rows,
             searchEntity);
     };
+    this.findAreaList = function () {
+        return $http.get(basePath+"/area/findAreaList");
+    };
     // 删除
     this.dele = function (selectIds) {
         return $http.delete(basePath+"/area/delete?ids=" + selectIds);

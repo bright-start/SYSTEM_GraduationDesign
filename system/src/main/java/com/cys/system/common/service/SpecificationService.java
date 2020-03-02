@@ -18,4 +18,5 @@ public interface SpecificationService {
 
     Result updateSpecificationBySpecification(Specification specification,Integer shopId) throws UnauthorizedException;
 
+    Result findSpecificationList(Integer shopId);
 }

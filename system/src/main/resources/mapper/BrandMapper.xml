@@ -22,6 +22,9 @@
             where brandName like concat('%',#{brandName},'%')
         </if>
     </select>
+    <select id="findBrandList" resultMap="brandMap">
+        select * from brand
+    </select>
     <insert id="insertBrand" parameterType="Brand">
         insert into brand(brand_name) values(#{brandName})
     </insert>
