@@ -17,8 +17,8 @@ public class TokenController {
     private TokenService tokenService;
 
     @RequestMapping({"/redirectPage"})
-    public Result LoginSuccessAndRedirectPage(HttpServletRequest request,HttpServletResponse response) {
-        return tokenService.buildToken(request,response);
+    public Result LoginSuccessAndRedirectPage(@RequestParam(required = false)String remoteAddress, HttpServletRequest request,HttpServletResponse response) {
+        return tokenService.buildToken(remoteAddress,request,response);
     }
 
     @GetMapping("/getToken")

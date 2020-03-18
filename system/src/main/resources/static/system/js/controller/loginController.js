@@ -16,4 +16,13 @@ app.controller("loginController", function ($scope, $controller, loginService) {
             }
         });
     };
+
+    $scope.logout = function(){
+        loginService.logout().success(function(data){
+            if(data.code === 200){
+                $scope.loginUserInfo={};
+                console.log(data.message);
+            }
+        });
+    };
 });

@@ -8,11 +8,15 @@ import com.cys.system.common.service.BulletinService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
+@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = true, rollbackFor = {Exception.class})
 @Service
 public class BulletinServiceImpl implements BulletinService {
 
@@ -62,6 +66,7 @@ public class BulletinServiceImpl implements BulletinService {
         return new Result().success("无数据");
     }
 
+    @Transactional(readOnly = false)
     @Override
     public void deleteBulletinById(Integer[] ids) {
         for (Integer id : ids) {
@@ -69,11 +74,13 @@ public class BulletinServiceImpl implements BulletinService {
         }
     }
 
+    @Transactional(readOnly = false)
     @Override
     public void insertBulletin(Bulletin bulletin) {
         bulletinMapper.insertBulletin(bulletin);
     }
 
+    @Transactional(readOnly = false)
     @Override
     public Result updateBulletinByBulletin(Bulletin bulletin) {
         Integer status = bulletinMapper.getStatusById(bulletin.getId());
@@ -85,6 +92,7 @@ public class BulletinServiceImpl implements BulletinService {
         }
     }
 
+    @Transactional(readOnly = false)
     @Override
     public void updateStatusById(Integer id) {
         bulletinMapper.updateStatusById(id);

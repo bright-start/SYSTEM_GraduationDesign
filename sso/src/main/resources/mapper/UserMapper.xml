@@ -11,6 +11,7 @@
         <result column="level" property="level"/>
         <result column="status" property="status"/>
         <result column="disable_time" property="disableTime"/>
+        <result column="shop_id" property="shopId"/>
     </resultMap>
     <select id="findPasswordByUsername" parameterType="java.lang.String" resultMap="userMap">
         select
@@ -18,7 +19,8 @@
         username,
         password,
         role_id,
-        level
+        level,
+        shop_id
         from
         _user
         where

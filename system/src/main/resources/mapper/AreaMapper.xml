@@ -26,6 +26,7 @@
     <select id="findAreaList" resultMap="areaMap">
         select *
         from area
+        order by area_id
     </select>
     <insert id="insertArea" parameterType="com.cys.system.common.pojo.Area">
         insert into area(area_name,area_code) values(#{areaName},#{areaCode})

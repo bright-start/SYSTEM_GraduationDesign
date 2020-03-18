@@ -59,6 +59,10 @@ public class TokenFilter implements HandlerInterceptor {
             return true;
         }
 
+        if("/area/findAreaList".equals(requestURL)){
+            return true;
+        }
+
         Map<String,Object> userMap = ssoService.getUser(request);
         if(userMap == null || userMap.isEmpty()){
             response.sendRedirect(loginUrl);

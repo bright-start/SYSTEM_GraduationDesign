@@ -76,7 +76,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 //        RedisSerializer redisSerializer = new StringRedisSerializer();
 //        redisTemplate.setKeySerializer(redisSerializer);
 //        String code = (String)redisTemplate.opsForValue().get(user.getBindPhone());
-        LoginUser loginUser = new LoginUser(user.getUserId(),username, user.getPassword(), collection);
+        LoginUser loginUser = new LoginUser(user.getUserId(), username, user.getPassword(), collection, user.getShopId());
         return loginUser;
     }
 }

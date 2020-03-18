@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.OrderItemMapper">
+    <resultMap id="orderItemMap" type="OrderItem">
+        <id column="order_item_id" property="itemId"/>
+        <result column="order_item_product_id" property="productId"/>
+        <result column="order_item_product_name" property="productName"/>
+        <result column="order_item_product_price" property="productPrice"/>
+        <result column="order_item_product_count" property="productCount"/>
+        <result column="order_item_product_image" property="productImage"/>
+        <result column="order_item_product_spec" property="spec"/>
+        <result column="order_id" property="orderId"/>
+        <result column="order_item_shop_id" property="shopId"/>
+        <result column="order_item_shop_name" property="shopName"/>
+        <result column="order_item_area_name" property="areaName"/>
+        <result column="order_item_postage" property="postage"/>
+        <result column="order_item_discount" property="discount"/>
+    </resultMap>
+    <insert id="createOrderItem" parameterType="OrderItem">
+        insert into order_item(
+        order_item_product_id,
+        order_item_product_name,
+        order_item_product_price,
+        order_item_product_count,
+        order_item_product_image,
+        order_item_product_spec,
+        order_id,
+        order_item_shop_id,
+        order_item_shop_name,
+        order_item_area_name,
+        order_item_postage,
+        order_item_discount
+        )values(
+        #{productId},
+        #{productName},
+        #{productPrice},
+        #{productCount},
+        #{productImage},
+        #{spec},
+        #{orderId},
+        #{shopId},
+        #{shopName},
+        #{areaName},
+        #{postage},
+        #{discount}
+        )
+    </insert>
+</mapper>

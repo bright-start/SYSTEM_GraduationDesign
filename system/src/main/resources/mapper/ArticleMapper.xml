@@ -66,28 +66,28 @@
     </select>
     <insert id="addArticle" parameterType="Article">
         insert into article(
-        article_name,
-        article_author,
-        article_content,
-        article_createtime,
-        article_browsenum,
-        article_lovenum,
-        article_istop,
-        article_status,
-        article_enabletimetask,
-        article_timetask
+            article_name,
+            article_author,
+            article_content,
+            article_createtime,
+            article_browsenum,
+            article_lovenum,
+            article_istop,
+            article_status,
+            article_enabletimetask,
+            article_timetask
         )
         values (
-        #{name},
-        #{author},
-        #{content},
-        #{createTime},
-        #{browseNum},
-        #{loveNum},
-        #{isTop},
-        #{status},
-        #{enableTimeTask},
-        #{timeTask}
+            #{name},
+            #{author},
+            #{content},
+            #{createTime},
+            #{browseNum},
+            #{loveNum},
+            #{isTop},
+            #{status},
+            #{enableTimeTask},
+            #{timeTask}
         )
     </insert>
     <delete id="deleteArticleById" parameterType="java.lang.Integer">

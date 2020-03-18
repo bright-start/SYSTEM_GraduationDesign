@@ -1,5 +1,6 @@
 package com.cys.system.common.service.impl;
 
+import com.cys.system.common.pojo.OrderItem;
 import com.cys.system.common.service.SSOService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -10,6 +11,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -22,7 +26,7 @@ public class SSOServiceImpl implements SSOService {
     @Resource
     private RedisTemplate redisTemplate;
 
-    private final static String COOKIENAME="SYS-TOKEN";
+    private final static String COOKIENAME = "SYS-TOKEN";
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -31,25 +35,37 @@ public class SSOServiceImpl implements SSOService {
     public Map<String, Object> getUser(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
 
-        if(!(cookies != null && cookies.length > 0)){
+        if (!(cookies != null && cookies.length > 0)) {
             return null;
         }
         String token = null;
         for (Cookie cookie : cookies) {
-            if(COOKIENAME.equals(cookie.getName())){
+            if (COOKIENAME.equals(cookie.getName())) {
                 token = cookie.getValue();
                 break;
             }
         }
-        if(token == null){
+        if (token == null) {
             return null;
         }
 
+        return getUserByToken(token);
+    }
+
+    @Override
+    public Map<String, Object> getUser(String token) {
+        return getUserByToken(token);
+    }
+
+    private Map<String, Object> getUserByToken(String token) {
         RedisSerializer redisSerializer = new StringRedisSerializer();
         redisTemplate.setKeySerializer(redisSerializer);
 
         String userJson = (String) redisTemplate.opsForValue().get(token);
-        Map<String,Object> userMap;
+        if (userJson == null) {
+            return null;
+        }
+        Map<String, Object> userMap;
         try {
             userMap = objectMapper.readValue(userJson, Map.class);
         } catch (Exception e) {

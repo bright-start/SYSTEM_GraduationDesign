@@ -53,7 +53,7 @@ public class UserController {
         return userInfo;
     }
 
-    @GetMapping("/logoutSuccess")
+    @GetMapping("/logoutSafe")
     public Result logout(HttpServletRequest request) {
         this.userService.logout(request);
         return (new Result()).success(200, "安全退出");

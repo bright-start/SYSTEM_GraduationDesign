@@ -14,24 +14,24 @@
             select nextval('command__c_id_seq'::regclass) as commandId
         </selectKey>
         insert into command(
-        c_id,
-        c_command,
-        c_createtime,
-        <if test="responseUserId != null">
-            response_user_id,
-        </if>
-        article_id,
-        user_id
+            c_id,
+            c_command,
+            c_createtime,
+            <if test="responseUserId != null">
+                response_user_id,
+            </if>
+            article_id,
+            user_id
         )
         values (
-        #{commandId},
-        #{content},
-        #{createTime},
-        <if test="responseUserId != null">
-            #{responseUserId},
-        </if>
-        #{articleId},
-        #{userId}
+            #{commandId},
+            #{content},
+            #{createTime},
+            <if test="responseUserId != null">
+                #{responseUserId},
+            </if>
+            #{articleId},
+            #{userId}
         )
     </insert>
     <delete id="deleteCommand">

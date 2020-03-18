@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.OrderMapper">
+    <resultMap id="orderMap" type="Order">
+        <id column="order_id" property="orderId"/>
+        <result column="order_count" property="orderCount"/>
+        <result column="order_total_price" property="totalPrice"/>
+        <result column="order_postage" property="postage"/>
+        <result column="order_discount" property="discount"/>
+        <result column="order_createtime" property="createTime"/>
+        <result column="order_overtime" property="overTime"/>
+        <result column="user_id" property="userId"/>
+        <result column="order_creator" property="creator"/>
+        <result column="order_phone" property="phone"/>
+        <result column="order_address" property="address"/>
+        <result column="order_status" property="status"/>
+        <result column="shop_id" property="shopId"/>
+        <result column="shop_name" property="shopName"/>
+        <result column="pay_type" property="payType"/>
+        <collection property="orderItemList" ofType="com.cys.system.common.pojo.OrderItem">
+            <id column="order_item_id" property="itemId"/>
+            <result column="order_item_product_id" property="productId"/>
+            <result column="order_item_product_name" property="productName"/>
+            <result column="order_item_product_price" property="productPrice"/>
+            <result column="order_item_product_count" property="productCount"/>
+            <result column="order_item_product_image" property="productImage"/>
+            <result column="order_item_product_spec" property="spec"/>
+            <result column="order_id" property="orderId"/>
+            <result column="order_item_shop_id" property="shopId"/>
+            <result column="order_item_shop_name" property="shopName"/>
+            <result column="order_item_area_name" property="areaName"/>
+            <result column="order_item_postage" property="postage"/>
+            <result column="order_item_discount" property="discount"/>
+        </collection>
+    </resultMap>
+    <select id="lookPay" resultMap="orderMap">
+        SELECT
+        "public"."_order".*,
+        "public"."order_item".*
+        FROM
+        "public"."order_item"
+        JOIN "public"."_order"
+        ON "public"."order_item"."order_id" = "public"."_order"."order_id"
+        WHERE
+        <if test="orderId ! = null">
+            order_id = #{orderId} and
+        </if>
+        "public"."_order"."user_id"=#{userId}
+        ORDER BY
+        "public"."_order"."order_overtime" DESC
+    </select>
+    <insert id="createOrder" parameterType="Order">
+        insert into _order(
+        order_id,
+        order_count,
+        order_total_price,
+        order_postage,
+        order_discount,
+        order_createtime,
+        user_id,
+        order_creator,
+        order_phone,
+        order_address,
+        order_status,
+        shop_id,
+        shop_name,
+        pay_type
+        )values(
+        #{orderId},
+        #{orderCount},
+        #{totalPrice},
+        #{postage},
+        #{discount},
+        #{createTime},
+        #{userId},
+        #{creator},
+        #{phone},
+        #{address},
+        #{status},
+        #{shopId},
+        #{shopName},
+        #{payType}
+        )
+    </insert>
+    <update id="updateOrderStatus">
+        update _order set
+        <if test="overTime != null">
+        order_overtime=#{overTime},
+        </if>
+        order_status=${status}
+        where order_id=#{orderId}
+        and user_id=#{userId}
+    </update>
+</mapper>

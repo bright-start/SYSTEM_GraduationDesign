@@ -36,7 +36,7 @@ public class TokenServiceImpl implements TokenService {
     @Autowired
     private UserService userService;
 
-    private final static Gson gson = new GsonBuilder().serializeNulls().create();
+    private final static Gson gson = new Gson();
 
     private final static int LOGINSTAUTS = 1;
 
@@ -59,7 +59,7 @@ public class TokenServiceImpl implements TokenService {
 
     @Transactional(readOnly = false)
     @Override
-    public Result buildToken(HttpServletRequest request,HttpServletResponse response) {
+    public Result buildToken(String remoteAddress,HttpServletRequest request,HttpServletResponse response) {
         RedisSerializer redisSerializer = new StringRedisSerializer();
         redisTemplate.setKeySerializer(redisSerializer);
 
@@ -116,13 +116,16 @@ public class TokenServiceImpl implements TokenService {
 
 
 //        userService.changeStatus(loginUser.getUsername(), LOGINSTAUTS);
+        if(remoteAddress != null){
+            return new Result().success(remoteAddress);
+        }
 
         Collection<? extends GrantedAuthority> authorities = loginUser.getAuthorities();
         Iterator var2 = authorities.iterator();
         if (var2.hasNext()) {
             GrantedAuthority authority = (GrantedAuthority) var2.next();
             String role = authority.getAuthority();
-            return !role.contains("ADMIN") && !role.contains("SHOP") ? (new Result()).success(Config.backPage) : (new Result()).success(Config.testPage);
+            return role.contains("ADMIN") || role.contains("SHOP") ? (new Result()).success(Config.backPage) : (new Result()).success(Config.indexPage);
         } else {
             return (new Result()).success(200, "服务器繁忙，请稍后再试");
         }

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.CartMapper">
+    <resultMap id="cartMap" type="Cart">
+        <id column="cart_id" property="id"/>
+        <result column="cart_count" property="cartCount"/>
+        <result column="cart_total_price" property="totalPrice"/>
+        <result column="cart_postage" property="postage"/>
+        <result column="cart_discount" property="discount"/>
+        <result column="cart_createtime" property="createTime"/>
+        <result column="user_id" property="userId"/>
+        <collection property="cartItemList" ofType="com.cys.system.common.pojo.CartItem">
+            <id column="cart_item_id" property="itemId"/>
+            <result column="cart_item_product_id" property="productId"/>
+            <result column="cart_item_product_name" property="productName"/>
+            <result column="cart_item_product_price" property="productPrice"/>
+            <result column="cart_item_product_count" property="productCount"/>
+            <result column="cart_item_product_image" property="productImage"/>
+            <result column="cart_id" property="cartId"/>
+            <result column="cart_item_shop_id" property="shopId"/>
+            <result column="cart_item_shop_name" property="shopName"/>
+            <result column="cart_item_area_name" property="areaName"/>
+            <result column="cart_item_area_spec" property="spec"/>
+            <result column="cart_item_postage" property="postage"/>
+            <result column="cart_item_discount" property="discount"/>
+        </collection>
+    </resultMap>
+    <select id="listCart" resultMap="cartMap" parameterType="java.lang.Integer">
+        SELECT
+        "public".cart.*,
+        "public"."cart_item".*
+        FROM
+        "public"."cart_item"
+        JOIN "public".cart
+        ON "public"."cart_item"."cart_id" = "public".cart."cart_id"
+        where "public".cart.user_id = #{userId}
+    </select>
+    <insert id="saveCart" parameterType="Cart">
+<!--        <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id">-->
+<!--            select nextval('cart_cart_id_seq'::regclass) as id-->
+<!--        </selectKey>-->
+        <selectKey resultType="java.lang.Integer"  order="AFTER" keyProperty="id" >
+            select currval('cart_cart_id_seq'::regclass) as id
+        </selectKey>
+        insert into cart(
+        cart_createtime,
+        user_id
+        )values(
+        #{createTime},
+        #{userId}
+        )
+    </insert>
+    <update id="updateCart" parameterType="Cart">
+        update cart set
+        cart_count=#{cartCount}
+        cart_total_price=#{totalPrice}
+        cart_postage=#{postage}
+        cart_discount=#{discount}
+        where id=#{id}
+    </update>
+    <delete id="clearCart" parameterType="java.lang.Integer">
+        delete from cart where user_id=#{userId}
+    </delete>
+</mapper>

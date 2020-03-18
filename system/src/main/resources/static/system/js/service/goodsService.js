@@ -25,12 +25,16 @@ app.service('goodsService',function($http){
 	this.update=function(entity){
 		return  $http.post(basePath+"/goods/update",entity );
 	}
-	//删除
-	this.dele=function(ids){
-		return $http.get(basePath+"/goods/delete?ids="+ids);
+	//商家更新商品状态
+	this.updateStatus=function(ids,status){
+		return $http.put(basePath+"/goods/updateStatus?ids="+ids+"&status="+status);
 	}
 	//搜索
 	this.search=function(page,rows,searchEntity){
 		return $http.post(basePath+"/goods/search?page="+page+"&rows="+rows, searchEntity);
-	}    	
+	}
+	//初始化已上架商品搜索引擎
+	this.importGoods=function(p){
+		return $http.get(basePath+"/goods_engine/importGoods");
+	}
 });

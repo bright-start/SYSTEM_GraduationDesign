@@ -10,16 +10,16 @@
     </select>
     <insert id="addContact">
         insert into article_user_flag(
-        article_id,
-        u_id,
-        isbrowse,
-        islove
+            article_id,
+            u_id,
+            isbrowse,
+            islove
         )
         values(
-        #{articleId},
-        #{userId},
-        1,
-        0
+            #{articleId},
+            #{userId},
+            1,
+            0
         )
     </insert>
     <update id="updateContact">

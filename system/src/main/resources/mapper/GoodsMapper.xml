@@ -16,7 +16,7 @@
         <result column="goods_upperselftime" property="upperSelfTime"/>
         <result column="goods_lowerselftime" property="lowerSelfTime"/>
         <result column="goods_caption" property="goodsCaption"/>
-        <result column="goods_packageList" property="goodsPackageList"/>
+        <result column="goods_package_list" property="goodsPackageList"/>
         <result column="goods_sale_service" property="goodsSaleService"/>
         <result column="goods_isenablespec" property="isEnableSpec"/>
 
@@ -35,10 +35,10 @@
         <collection property="productList" ofType="com.cys.system.common.pojo.Product">
             <id column="product_id" property="id"/>
             <result column="product_name" property="productName"/>
-            <result column="product_images" property="productImage"/>
+            <result column="product_image" property="productImage"/>
             <result column="product_price" property="productPrice"/>
-            <result column="specification_type" property="specificationType"/>
-            <result column="sepcification_desc" property="specificationDesc"/>
+            <result column="specification" property="spec"/>
+            <result column="goods_id" property="goodsId"/>
             <result column="product_stock" property="productStock"/>
         </collection>
     </resultMap>
@@ -68,6 +68,15 @@
         ON "public".area."area_id" = "public".goods."area_id"
         JOIN "public".brand
         ON "public".brand."brand_id" = "public".goods."brand_id"
+        <where>
+            <if test="status != null">
+                "public".goods.goods_status=#{status}
+            </if>
+            <if test="goodsName != null">
+                "public".goods.goods_name like concat('%',#{goodsName},'%')
+            </if>
+        </where>
+        order by "public".goods.goods_id
     </select>
     <select id="count" resultType="java.lang.Long" parameterType="Goods">
         select count(goods_id) from goods
@@ -90,10 +99,91 @@
         JOIN "public".shop
         ON "public".shop."shop_id" = "public".goods."shop_id"
         where
-        "public".goods.goods_id = #{goodsId}
+        "public".goods.goods_id = #{id}
     </select>
-    <update id="examine">
+    <select id="getStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select goods_status from goods where goods_id =#{id}
+    </select>
+    <select id="listDeleteGoods" resultType="java.util.Map">
+        select goods_id,goods_lowerselftime from goods
+    </select>
+    <select id="findGoodsNameAndShopIdById" parameterType="java.lang.Integer" resultType="java.util.Map">
+        select goods_name,shop_id from goods where goods_id=#{id}
+    </select>
+    <select id="findGoodGoods" resultType="java.util.Map">
+        SELECT
+        "public".goods."goods_id",
+        "public".goods."goods_name",
+        "public".goods."goods_price",
+        "public".goods."goods_images",
+        "public".goods."goods_month_sale",
+        "public".goods."goods_recomment",
+        "public".goods."goods_caption"
+        FROM
+        "public".goods
+        ORDER BY
+        "public".goods."goods_recomment" DESC
+        limit 4
+    </select>
+    <update id="updateStatus">
         update goods set goods_status=#{status}
         where goods_id=#{id}
     </update>
+    <insert id="addGoods" parameterType="Goods">
+        <selectKey resultType="java.lang.Integer"  order="AFTER" keyProperty="id" >
+            select currval('goods_good_id_seq'::regclass) as id
+        </selectKey>
+        insert into goods(
+        goods_name,
+        goods_price,
+        goods_images,
+        goods_introduce,
+        goods_status,
+        goods_postage,
+        goods_discount,
+        goods_createtime,
+        goods_caption,
+        goods_package_list,
+        goods_sale_service,
+        goods_isenablespec,
+        shop_id,
+        area_id,
+        brand_id
+        )
+        values(
+        #{goodsName},
+        #{goodsPrice},
+        #{goodsImages},
+        #{goodsIntroduce},
+        #{status},
+        #{goodsPostage},
+        #{goodsDiscount},
+        #{createTime},
+        #{goodsCaption},
+        #{goodsPackageList},
+        #{goodsSaleService},
+        #{isEnableSpec},
+        #{shopId},
+        #{areaId},
+        #{brandId}
+        )
+    </insert>
+    <update id="updateGoods" parameterType="Goods">
+        update goods set
+        goods_name=#{goodsName},
+        goods_price=#{goodsPrice},
+        goods_images=#{goodsImages},
+        goods_introduce=#{goodsIntroduce},
+        goods_postage=#{goodsPostage},
+        goods_discount=#{goodsDiscount},
+        goods_createtime=#{createTime},
+        goods_caption=#{goodsCaption},
+        goods_package_list=#{goodsPackageList},
+        goods_sale_service=#{goodsSaleService},
+        goods_isenablespec=#{isEnableSpec}
+        where goods_id = #{id}
+    </update>
+    <delete id="deleteGoodsById" parameterType="java.lang.Integer">
+        delete goods where goods_id=#{id}
+    </delete>
 </mapper>

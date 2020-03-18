@@ -1,7 +1,7 @@
 package com.cys.system.common.callcontroller;
 
 import com.cys.system.common.common.pojo.Result;
-import com.cys.system.common.fallback.TokenFailBack;
+import com.cys.system.common.callcontroller.fallback.TokenFailBack;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;

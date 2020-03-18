@@ -22,7 +22,7 @@ public class SSOApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/sso/**").allowedOrigins("www.cys.com");
+                registry.addMapping("/sso/**").allowedOrigins("http://www.cys.com:9200");
             }
         };
     }

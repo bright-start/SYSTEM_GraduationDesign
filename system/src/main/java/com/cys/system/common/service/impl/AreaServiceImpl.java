@@ -18,6 +18,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
 
+@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = true, rollbackFor = {Exception.class})
 @Service
 public class AreaServiceImpl implements AreaService {
 

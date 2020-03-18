@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.GoodsSummaryMapper">
+    <resultMap id="goodsSummaryMap" type="GoodsSummary">
+        <id column="product_id" property="productId"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="product_name" property="goodsName"/>
+        <result column="product_image" property="goodsImage"/>
+        <result column="product_price" property="goodsPrice"/>
+        <result column="area_name" property="areaName"/>
+        <result column="goods_recomment" property="goodsRecomment"/>
+        <result column="b_enabletimetask" property="shopName"/>
+        <result column="goods_month_sale" property="goodsMonthSale"/>
+    </resultMap>
+    <select id="listImportGoods" resultMap="goodsSummaryMap">
+        SELECT
+        "public".goods."goods_id",
+        "public".product."product_id",
+        "public".product."product_price",
+        "public".product."product_name",
+        "public".product."product_image",
+        "public".shop."shop_name",
+        "public".area."area_name",
+        "public".goods."goods_recomment",
+        "public".goods."goods_month_sale"
+        FROM
+        "public".area
+        JOIN "public".goods
+        ON "public".area."area_id" = "public".goods."area_id"
+        JOIN "public".shop
+        ON "public".shop."shop_id" = "public".goods."shop_id"
+        JOIN "public".product
+        ON "public".product."goods_id" = "public".goods."goods_id"
+        ORDER BY
+        "public".goods."goods_id" DESC
+    </select>
+    <select id="findGoodsSummaryById" parameterType="java.lang.Integer" resultMap="goodsSummaryMap">
+        SELECT
+        "public".goods."goods_id",
+        "public".product."product_price",
+        "public".product."product_name",
+        "public".product."product_image",
+        "public".shop."shop_name",
+        "public".area."area_name",
+        "public".goods."goods_recomment",
+        "public".goods."goods_month_sale"
+        FROM
+        "public".area
+        JOIN "public".goods
+        ON "public".area."area_id" = "public".goods."area_id"
+        JOIN "public".shop
+        ON "public".shop."shop_id" = "public".goods."shop_id"
+        JOIN "public".product
+        ON "public".product."goods_id" = "public".goods."goods_id"
+        where "public".goods."goods_id" = #{id}
+    </select>
+
+</mapper>

@@ -4,11 +4,56 @@
     <resultMap id="productMap" type="Product">
         <id column="product_id" property="id"/>
         <result column="product_name" property="productName"/>
-        <result column="product_images" property="productImage"/>
+        <result column="product_image" property="productImage"/>
         <result column="product_price" property="productPrice"/>
-        <result column="specification_type" property="specificationType"/>
-        <result column="sepcification_desc" property="specificationDesc"/>
+        <result column="specification" property="spec"/>
         <result column="product_stock" property="productStock"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="goods_postage" property="postage"/>
+        <result column="goods_discount" property="discount"/>
+        <result column="area_name" property="areaName"/>
+        <result column="shop_name" property="shopName"/>
+        <result column="shop_id" property="shopId"/>
     </resultMap>
-
+    <select id="findProductInfoById" parameterType="java.lang.Integer" resultMap="productMap">
+        SELECT
+        "public".product."product_id",
+        "public".product."product_name",
+        "public".product."product_image",
+        "public".product."product_price",
+        "public".product.specification,
+        "public".goods."goods_postage",
+        "public".goods."goods_discount",
+        "public".area."area_name",
+        "public".shop."shop_name",
+        "public".shop."shop_id"
+        FROM
+        "public".product
+        JOIN "public".goods
+        ON "public".product."goods_id" = "public".goods."goods_id"
+        JOIN "public".shop
+        ON "public".goods."shop_id" = "public".shop."shop_id"
+        JOIN "public".area
+        ON "public".goods."area_id" = "public".area."area_id"
+        WHERE
+        "public".product."product_id"=#{productId}
+    </select>
+    <insert id="addProduct" parameterType="Product">
+        insert into product(
+            product_name,
+            product_image,
+            product_price,
+            specification,
+            product_stock,
+            goods_id
+        )
+        values(
+            #{productName},
+            #{productImage},
+            #{productPrice},
+            #{spec},
+            #{productStock},
+            #{goodsId}
+        )
+    </insert>
 </mapper>

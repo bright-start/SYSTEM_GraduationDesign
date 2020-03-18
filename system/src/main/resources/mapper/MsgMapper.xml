@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.MsgMapper">
+    <resultMap id="MsgMap" type="Msg">
+        <id column="msg_id" property="id"/>
+        <result column="message" property="message"/>
+        <result column="msg_type" property="msgType"/>
+        <result column="msg_belong" property="msgBelong"/>
+        <result column="read" property="read"/>
+    </resultMap>
+    <insert id="storeMessage" parameterType="Msg">
+        insert into msg(
+        message,
+        msg_type,
+        msg_belong,
+        createtime,
+        read
+        )
+        values(
+        #{message},
+        #{msgType},
+        #{msgBelong},
+        #{createTime},
+        #{read}
+        )
+    </insert>
+</mapper>

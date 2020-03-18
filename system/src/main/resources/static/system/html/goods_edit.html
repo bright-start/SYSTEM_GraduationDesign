@@ -40,7 +40,7 @@
 <body ng-app="system" ng-controller="goodsController"
 	class="
 	hold-transition skin-redsidebar-mini"
-	ng-init="findAreaList();findBrandList();findSpecificationList();findOne();">
+	ng-init="findAreaList();findBrandList();findSpecificationList();findOne_();$scope.entity.productList=[{price:9999999,stockCount:0,status:'0',isDefault:'0'}];">
 
 	<!-- 正文区域 -->
 	<section class="content">
@@ -93,7 +93,8 @@
 									<tr>
 										<td><select ng-model="entity.areaId"
 													ng-options="area.id as area.areaName for area in areaList"
-													class="form-control"></select></td>
+													class="form-control"
+													required></select></td>
 										<td>
 									</tr>
 								</table>
@@ -101,7 +102,7 @@
 							<div class="col-md-2 title">商品名称</div>
 							<div class="col-md-10 data">
 								<input type="text" class="form-control"
-									ng-model="entity.goods.goodsName" placeholder="商品名称" value="">
+									ng-model="entity.goodsName" placeholder="商品名称" value="" required>
 							</div>
 
 							<div class="col-md-2 title">品牌</div>
@@ -113,35 +114,35 @@
 							<div class="col-md-2 title">副标题</div>
 							<div class="col-md-10 data">
 								<input type="text" class="form-control"
-									ng-model="entity.goods.goodsCaption" placeholder="副标题" value="">
+									ng-model="entity.goodsCaption" placeholder="副标题" value="">
 							</div>
 
 							<div class="col-md-2 title">价格</div>
 							<div class="col-md-10 data">
 								<div class="input-group">
 									<span class="input-group-addon">¥</span> <input type="text"
-										ng-model="entity.goods.goodsPrice" class="form-control"
-										placeholder="价格" value="">
+										ng-model="entity.goodsPrice" class="form-control"
+										placeholder="价格" value="" required>
 								</div>
 							</div>
 
 							<div class="col-md-2 title editer">商品介绍</div>
 							<div class="col-md-10 data editer">
 								<textarea name="content"
-									style="width: 800px; height: 400px; visibility: hidden;"></textarea>
+									style="width: 800px; height: 400px; visibility: hidden;" required></textarea>
 							</div>
 
 							<div class="col-md-2 title rowHeight2x">包装列表</div>
 							<div class="col-md-10 data rowHeight2x">
 
 								<textarea rows="4" class="form-control"
-									ng-model="entity.goods.packageList" placeholder="包装列表"></textarea>
+									ng-model="entity.goodsPackageList" placeholder="包装列表"></textarea>
 							</div>
 
 							<div class="col-md-2 title rowHeight2x">售后服务</div>
 							<div class="col-md-10 data rowHeight2x">
 								<textarea rows="4" class="form-control"
-									ng-model="entity.goods.saleService" placeholder="售后服务"></textarea>
+									ng-model="entity.goodsSaleService" placeholder="售后服务"></textarea>
 							</div>
 
 
@@ -172,9 +173,9 @@
 										<th class="sorting">图片</th>
 								</thead>
 								<tbody>
-									<tr ng-repeat="pic in entity.goods.goodsImages">
+									<tr ng-repeat="picUrl in entity.goodsImages">
 										<td><input type="checkbox"></td>
-										<td><img alt="" src="{{pic.url}}" width="100px" height="100px">
+										<td><img alt="" src="{{picUrl}}" width="100px" height="100px">
 										</td>
 										<td><button type="button" class="btn btn-default" title="删除" ng-click="removeImageEntity($index);">
 										<i class="fa fa-trash-o"></i>删除
@@ -205,7 +206,7 @@
 						<div class="row data-type">
 							<div class="col-md-2 title">是否启用规格</div>
 							<div class="col-md-10 data">
-								<input type="checkbox" ng-model="entity.isEnableSpec" ng-true-value="1" ng-false-value="0">
+								<input type="checkbox" ng-model="entity.isEnableSpec" ng-true-value="1" ng-false-value="0" ng-click="clear($event)">
 								<button type="button" class="btn btn-default" title="自定义规格"
 									data-target="#mySpecModal" data-toggle="modal">
 									<i class="fa fa-file-o"></i> 自定义规格
@@ -215,7 +216,7 @@
 						<p>
 						<div>
 
-							<div class="row data-type">
+							<div class="row data-type" ng-if="entity.isEnableSpec==1">
 
 								<div ng-repeat="spec in specificationList">
 									<div class="col-md-2 title">{{spec.specificationType}}</div>
@@ -227,22 +228,22 @@
 								</div>
 							</div>
 
-							<div class="row data-type" ng-if="entity.goods.isEnableSpec==1">
+							<div class="row data-type">
 								<table
 									class="table table-bordered table-striped table-hover dataTable">
 									<thead>
 										<tr>
-											<th class="sorting" ng-repeat="spec in entity.goods.product.specificationTypeList">{{spec.specificationName}}</th>
+											<th class="sorting" ng-repeat="spec in specList">{{spec.attributeName}}</th>
 											<th class="sorting">价格</th>
 											<th class="sorting">库存</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr ng-repeat="item in entity.itemList">
-											<td ng-repeat="specName in entity.goodsDesc.specificationItems">{{item.spec[specName.attributeName]}}</td>
-											<td><input class="form-control" ng-model="item.price" placeholder="价格">
+										<tr ng-repeat="item in entity.productList">
+											<td ng-repeat="specName in specList">{{item.spec[specName.attributeName]}}</td>
+											<td><input class="form-control" ng-model="item.productPrice" placeholder="价格">
 											</td>
-											<td><input class="form-control" ng-model="item.stockCount" placeholder="库存数量">
+											<td><input class="form-control" ng-model="item.productStock" placeholder="库存数量">
 											</td>
 										</tr>
 
@@ -285,13 +286,7 @@
 					<h3 id="myModalLabel">上传商品图片</h3>
 				</div>
 				<div class="modal-body">
-
 					<table class="table table-bordered table-striped">
-						<tr>
-							<td>颜色</td>
-							<td><input class="form-control" placeholder="颜色"
-								ng-model="imageEntity.color"></td>
-						</tr>
 						<tr>
 							<td>商品图片</td>
 							<td>
@@ -299,7 +294,7 @@
 									<tr>
 										<td><input type="file" id="file" />
 											<button class="btn btn-primary" type="button"
-												ng-click="uploadFile()">上传</button></td>
+												ng-click="uploadPhoto()">上传</button></td>
 										<td><img src="{{imageEntity.url}}" width="200px"
 											height="200px"></td>
 									</tr>

@@ -35,6 +35,19 @@ spring:
     allow-bean-definition-overriding: true
   application:
     name: system.cys.com
+  data:
+    elasticsearch:
+      cluster-name: docker-cluster
+      cluster-nodes: 10.211.55.33:9300
+      repositories:
+        enabled: true
+  #mq配置
+  rabbitmq:
+    host: 10.211.55.33
+    username: guest
+    password: guest
+    port: 5672
+    virtual-host: /
 
 #mybatis配置
 mybatis:
@@ -55,12 +68,7 @@ feign:
     enabled: true
   httpclient:
     enabled: true
-#mq配置
-#spring.rabbitmq.host=127.0.0.1
-#spring.rabbitmq.username=testmq
-#spring.rabbitmq.password=testmq
-#spring.rabbitmq.port=5672
-#spring.rabbitmq.virtual-host=/testmq
+
 #日志配置
 logging:
   level:
@@ -88,13 +96,8 @@ fdfs:
     height: 150
   # 跟踪服务器tracker_server请求地址,支持多个，这里只有一个，如果有多个在下方加- x.x.x.x:port
   trackerList:
-    - 10.211.55.32:22122
+    - 47.95.234.255:22122
   #
   # 存储服务器storage_server访问地址
-  web-server-url: http://10.211.55.32/
-  spring:
-    http:
-      multipart:
-        max-file-size: 100MB # 最大支持文件大小
-        max-request-size: 100MB # 最大支持请求大小
+  web-server-url: http://47.95.234.255/
 

@@ -1,0 +1,60 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /search
+#编码设置
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+      force-request: true
+      force-response: true
+  #数据库配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://127.0.0.1:5432/system
+  application:
+    name: search.cys.com
+  data:
+    elasticsearch:
+      cluster-name: docker-cluster
+      cluster-nodes: 10.211.55.33:9300
+      repositories:
+        enabled: true
+  #mq配置
+#  rabbitmq:
+#    host: 127.0.0.1
+#    username: testmq
+#    password: testmq
+#    port: 5672
+#    virtual-host: /testmq
+
+#mybatis配置
+mybatis:
+  mapper-locations: mapper/*.xml
+  type-aliases-package: com.cys.search.pojo
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+
+#断路器设置
+feign:
+  hystrix:
+    enabled: true
+    polling-interval-ms: 2000   #刷新间隔
+  httpclient:
+    enabled: true
+#日志配置
+logging:
+  level:
+    com:
+      cys:
+        search:
+          mapper: debug

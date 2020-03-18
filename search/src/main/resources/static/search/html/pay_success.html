@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<!-- saved from url=(0047)http://lsscpt.com/ORG997/Home/Index/?sid=160414 -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script>var verity_phone=false;</script>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>农特产交易平台</title>
+    <link rel="shortcut icon" type="image/x-icon" href="http://lsscpt.com/ORG997/Home/Index/favicon.ico">
+    <link rel="bookmark" type="image/x-icon" href="http://lsscpt.com/ORG997/Home/Index/favicon.ico">
+    <link href="../css/index.css" rel="stylesheet">
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+
+    <script src="../plugins/angularjs/angular.min.js"></script>
+    <script type="text/javascript" src="../js/base.js"></script>
+    <script type="text/javascript" src="../js/service/areaService.js"></script>
+    <script type="text/javascript" src="../js/service/loginService.js"></script>
+    <script type="text/javascript" src="../js/service/goodsService.js"></script>
+    <script type="text/javascript" src="../js/service/cartService.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/controller/indexController.js"></script>
+</head>
+<body ng-app="system" ng-controller="indexController" ng-init="loadLoginUser();">
+<style>
+    .active {
+        text-decoration: none;
+        color: #fa2b3c;
+        background-color: #fff;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px
+    }
+
+
+
+
+
+
+</style>
+<script>
+    var logo = '';
+    var orgname = '农特产平台';
+    var cart_base_count = '0';
+
+
+
+
+
+
+</script>
+<div class="content_new clearfix">
+
+</div>
+<div class="app-nav" style="position:fixed;z-index:10;">
+    <div class="app-nav-wrap">
+        <a class="logo" href="javascript:void(0)">
+
+            <canvas id="myCanvas" style="width: 180px; padding-top: 2px;"></canvas>
+        </a>
+        <ul class="app-nav-list">
+            <li class=""><a class="active" target="_self" href="index.html">首页</a>
+            </li>
+        </ul>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".app-entry").hover(function () {
+                    $(".app_qcodes").css('display', 'block');
+                }, function () {
+                    $(".app_qcodes").css('display', 'none');
+                })
+            });
+
+
+
+
+
+
+        </script>
+        <div class="app-nav-right">
+            <a class="seller-apply" ng-if="loginUserInfo.username==null"
+               href="http://www.cys.com:9200/sso/sso/html/login.html" target="_self">登陆</a>
+            <a class="seller-apply" ng-if="loginUserInfo.username==null"
+               href="http://www.cys.com:9200/sso/sso/html/registry.html" target="_self">|&nbsp;注册</a>
+            <a class="seller-apply" ng-if="loginUserInfo.username"
+               href="#" target="_blank"><i></i>会员中心</a>
+            <a class="seller-apply" ng-if="loginUserInfo.username"
+               href="javascript:void(0)" ng-click="logout()"><i></i>登出</a>
+        </div>
+    </div>
+</div>
+<script>
+    //lunbo-begin
+    var i = 0;
+    var total = 3;
+    var time;
+    var color = 'orange';
+    if (color == '' || color == "red") {
+        color = '#e63140';
+    }
+    else if (color == "blue") {
+        color = "#2888EA";
+    }
+    else if (color == "orange") {
+        color = "#f66000";
+    }
+    else if (color == "green") {
+        color = "#009237";
+    }
+    $(function () {
+        if (logo == "") {
+            canvas();
+            //smallcanvas();
+        }
+    });
+    function canvas() {
+        var c = document.getElementById("myCanvas");
+        var context = c.getContext("2d");
+        var text = orgname;
+
+        var fontSize = 38;
+        if (text.length > 8) {
+            fontSize = 30;
+        }
+
+        context.fillStyle = color;
+        context.fillRect(0, 0, 600, 200);
+        context.font = "normal " + fontSize + "px Arial";
+        context.fillStyle = "white";
+        context.fillText(text, (c.width - context.measureText(text).width) / 2, c.height / 4);
+        $("#myCanvas").show();
+    }
+
+
+
+
+</script>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<section>
+    <div style="width:400px;margin:0 auto;text-align:center;">
+        <img src="../images/pay_success.jpg" style="width:200px;height:200px" alt="图片">
+        <span style="display:inline-block;font-size:30px;font-weight:300;line-height:200px;color:green;">支付成功</span>
+        <br>
+        <a href="index.html">返回首页</a>
+    </div>
+    
+</section>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<!--底部版权-->
+<div class="clear" style="clear:both;">
+</div>
+
+<div class="footer">
+    <div class="footer-wrapper">
+        <div class="links">
+            <a href="http://lsscpt.com/ORG997/Home/AddStore" target="_blank">商家入驻</a> |
+            <a href="http://lsscpt.com/ORG997/Home/About/?atype=2006">关于我们</a> |
+            <a href="http://lsscpt.com/ORG997/Home/About/?atype=2010">联系方式</a>
+        </div>
+
+        <style type="text/css">
+                .footer_link {
+                    padding-bottom: 10px;
+                    width: 100%;
+                    overflow: hidden;
+                    /*border-top: 1px solid #dedede*/
+                }
+
+                    .footer_link .wrapW {
+                        padding-top: 20px;
+                        position: relative;
+                        width: 1120px;
+                        margin: 0 auto;
+                    }
+
+                        .footer_link .wrapW a {
+                            float: left;
+                        }
+
+                            .footer_link .wrapW a img {
+                                border: 0;
+                                vertical-align: middle;
+                                width: 140px;
+                                height: 60px;
+                            }
+
+
+
+
+
+        </style>
+        <div class="footer_link">
+            <div class="wrapW">
+                <a href="http://www.people.com.cn/" target="_blank"><img src="../images/footmore_01.jpg" alt=""></a>
+                <a href="http://www.xinhuanet.com/" target="_blank"><img src="../images/footmore_02.jpg" alt=""></a>
+                <a href="http://www.cctv.com/" target="_blank"><img src="../images/footmore_03.jpg" alt=""></a>
+                <a href="http://www.gmw.cn/" target="_blank"><img src="../images/footmore_04.jpg" alt=""></a>
+                <a href="http://www.ce.cn/" target="_blank"><img src="../images/footmore_05.jpg" alt=""></a>
+                <a href="http://cn.chinadaily.com.cn/" target="_blank"><img src="../images/footmore_06.jpg"
+                                                                            alt=""></a>
+                <a href="http://www.chinanews.com/" target="_blank"><img src="../images/footmore_07.jpg" alt=""></a>
+                <a href="http://www.chinaso.com/" target="_blank"><img src="../images/footmore_08.jpg" alt=""></a>
+            </div>
+        </div>
+
+        <div class="copyright" style="margin:20px 0 10px">
+
+            <div id="copyright">(c)2019-2020 农特产交易平台 All Rights Reserved |</div>
+        </div>
+
+
+    </div>
+</div>
+</body>
+</html>

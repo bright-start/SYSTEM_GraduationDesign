@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<!-- saved from url=(0047)http://lsscpt.com/ORG997/Home/Index/?sid=160414 -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script>var verity_phone=false;</script>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>农特产交易平台</title>
+    <link rel="shortcut icon" type="image/x-icon" href="http://lsscpt.com/ORG997/Home/Index/favicon.ico">
+    <link rel="bookmark" type="image/x-icon" href="http://lsscpt.com/ORG997/Home/Index/favicon.ico">
+    <link href="../css/index.css" rel="stylesheet">
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+
+    <script src="../plugins/angularjs/angular.min.js"></script>
+    <script type="text/javascript" src="../js/base.js"></script>
+    <script type="text/javascript" src="../js/service/areaService.js"></script>
+    <script type="text/javascript" src="../js/service/loginService.js"></script>
+    <script type="text/javascript" src="../js/service/goodsService.js"></script>
+    <script type="text/javascript" src="../js/service/cartService.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/controller/indexController.js"></script>
+</head>
+<body ng-app="system" ng-controller="indexController" ng-init="lookNoPayOrder();loadLoginUser();">
+<style>
+    .active {
+        text-decoration: none;
+        color: #fa2b3c;
+        background-color: #fff;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px
+    }
+
+
+
+
+
+</style>
+<script>
+    var logo = '';
+    var orgname = '农特产平台';
+    var cart_base_count = '0';
+
+
+
+
+
+</script>
+<div class="content_new clearfix">
+
+</div>
+<div class="app-nav" style="position:fixed;z-index:10;">
+    <div class="app-nav-wrap">
+        <a class="logo" href="javascript:void(0)">
+
+            <canvas id="myCanvas" style="width: 180px; padding-top: 2px;"></canvas>
+        </a>
+        <ul class="app-nav-list">
+            <li class=""><a class="active" target="_self" href="index.html">首页</a>
+            </li>
+        </ul>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".app-entry").hover(function () {
+                    $(".app_qcodes").css('display', 'block');
+                }, function () {
+                    $(".app_qcodes").css('display', 'none');
+                })
+            });
+
+
+
+
+
+
+
+
+
+        </script>
+        <div class="app-nav-right">
+            <a class="seller-apply" ng-if="loginUserInfo.username==null"
+               href="http://www.cys.com:9200/sso/sso/html/login.html" target="_self">登陆</a>
+            <a class="seller-apply" ng-if="loginUserInfo.username==null"
+               href="http://www.cys.com:9200/sso/sso/html/registry.html" target="_self">|&nbsp;注册</a>
+            <a class="seller-apply" ng-if="loginUserInfo.username"
+               href="#" target="_blank"><i></i>会员中心</a>
+            <a class="seller-apply" ng-if="loginUserInfo.username"
+               href="javascript:void(0)" ng-click="logout()"><i></i>登出</a>
+        </div>
+    </div>
+</div>
+<script>
+    //lunbo-begin
+    var i = 0;
+    var total = 3;
+    var time;
+    var color = 'orange';
+    if (color == '' || color == "red") {
+        color = '#e63140';
+    }
+    else if (color == "blue") {
+        color = "#2888EA";
+    }
+    else if (color == "orange") {
+        color = "#f66000";
+    }
+    else if (color == "green") {
+        color = "#009237";
+    }
+    $(function () {
+        if (logo == "") {
+            canvas();
+            //smallcanvas();
+        }
+    });
+    function canvas() {
+        var c = document.getElementById("myCanvas");
+        var context = c.getContext("2d");
+        var text = orgname;
+
+        var fontSize = 38;
+        if (text.length > 8) {
+            fontSize = 30;
+        }
+
+        context.fillStyle = color;
+        context.fillRect(0, 0, 600, 200);
+        context.font = "normal " + fontSize + "px Arial";
+        context.fillStyle = "white";
+        context.fillText(text, (c.width - context.measureText(text).width) / 2, c.height / 4);
+        $("#myCanvas").show();
+    }
+
+
+
+
+
+
+
+</script>
+
+<!--条件搜索-->
+<section>
+    <div></div>
+</section>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<!--搜索结果-->
+<section>
+    <div ng-if="noPayOrderList != null">
+        <div style="width:1000px;margin: 0 auto;">
+            <ul ng-repeat="noPayOrderMap in noPayOrderList">
+                <li ng-repeat="(shopId,orderList) in noPayOrderMap">
+                    <input type="hidden" ng-model="shopId">
+                    <div style="color:red;font-size:20px;">{{orderList[0][0].shopName}}</div>
+                    <ul style="text-align:center;width:980px;padding:10px;background-color:white;box-shadow: 0px 0px 5px #e0dddd;">
+                        <li ng-repeat="orderItem in orderList[0][1]">
+                            <table style="width:100%;height:120px;font-size:24px;font-weight:500;">
+                                <tr style="margin:5px;">
+                                    <td>
+                                        <span style="width:100px;height:100px;background-image:url({{orderItem.productImage}});background-size: 100% 100%;line-height:120px;display: inline-block;"></span>
+                                    </td>
+                                    <td>{{orderItem.productName}}</td>
+                                    <td>价格:¥{{orderItem.productPrice}}</td>
+                                    <td>数量:{{orderItem.productCount}}</td>
+                                </tr>
+                            </table>
+                        </li>
+                    </ul>
+                    <div style="overflow:hidden">
+                        <div style="float:right;font-size:20px;color:orange;">
+                            <span>折扣:{{orderList[0][0].discount || 0.00}}</span>
+                            <span>邮费:{{orderList[0][0].postage || 0.00}}</span>
+                            <span>订单项数量:{{orderList[0][0].orderCount}}</span>
+                            <span>订单总价格:¥{{orderList[0][0].totalPrice}}</span>
+                            <span ng-click="deleteOrder($event,orderList[0][0].orderId)" style="text-align:center;width:90px;height:28px;line-height:28px;background-color: #eae9e7;display:inline-block;">删除订单</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div style="overflow:hidden;width:1000px;margin:0 auto;height:520px;margin-bottom:40px;">
+            <div style="width:650px;margin:40px auto;overflow:hidden;font-size:20px;font-weight:500;background-color:white;box-shadow: 0px 0px 5px #e0dddd;padding:50px 20px;float:left;">
+                <span style="float:left;line-height:48px;color:#d8a74d">支付方式</span>
+                <ul style="overflow:hidden;color:white;" id="bb">
+                    <style>
+                        .ys{
+                            border: 4px solid #2a6bf1;
+                        }
+                        .ns{
+                            border: 4px solid #d8a74d;
+                        }
+                    </style>
+                    <li ng-click="payType('货到付款')" class="ys"
+                        style="float:left;margin-left:20px;padding:5px;background-color: #8ed2f3;">
+                        货到付款
+                    </li>
+                    <li ng-click="payType('支付宝')" class="ns"
+                        style="float:left;margin-left:20px;padding:5px;background-color: #8ed2f3;">
+                        支付宝
+                    </li>
+                    <li ng-click="payType('微信')" class="ns"
+                        style="float:left;margin-left:20px;padding:5px;background-color: #8ed2f3;">
+                        微信
+                    </li>
+                    <li ng-click="payType('银行卡')" class="ns"
+                        style="float:left;margin-left:20px;padding:5px;background-color: #8ed2f3;">
+                        银行卡
+                    </li>
+                </ul>
+                <div style="padding:40px 0px">
+                    <span id="card" style="display:none"><span>银行卡号:</span><input type="text" ng-model="order.creator"
+                                                                                  style="width:500px;height:40px;font-size:30px;margin-left:20px;"><br><br>
+                    </span>
+                    <span>收货人:&nbsp;&nbsp;&nbsp;</span><input type="text" ng-model="order.creator"
+                                                              style="width:500px;height:40px;font-size:30px;margin-left:20px;"><br><br>
+                    <span>手机号:&nbsp;&nbsp;&nbsp;</span><input type="text" ng-model="order.phone"
+                                                              style="width:500px;height:40px;font-size:30px;margin-left:20px;"><br><br>
+                    <span>收货地址:</span><input type="text" ng-model="order.address"
+                                             style="width:500px;height:40px;font-size:30px;margin-left:20px;"><br>
+                </div>
+            </div>
+            <div style="width:240px;text-align:center;float:left;background-color:white;box-shadow: 0px 0px 5px #e0dddd;padding:30px 20px;margin: 40px 0px 20px 30px;">
+                <div style="margin:10px 0px;font-size:20px;">
+                    <span style="display:inline-block;">商品总价格:¥&nbsp;<strong
+                            style="color:red;">{{totalPrice}}</strong></span><br>
+                    <span style="display:inline-block;height:40px;line-height:40px;border: 4px solid #ea3434;background: #f1992d;padding:3px 10px;margin-top:30px"
+                          ng-click="pay()">付款</span>
+                </div>
+            </div>
+            <div style="width:240px;height:161px;text-align:center;float:left;background-color:white;box-shadow: 0px 0px 5px #e0dddd;padding:30px 20px;margin: 15px 0px 0px 30px;">
+                <div style="width:40px;height40px;"></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+
+        <!--    查询数据为空图片-->
+        <div style="width:1190px;margin: 40px auto;text-align:center" ng-if="noPayOrderList == null">
+            <img src="../images/null.png" style="width:900px;height:400px;border-radius:20px;opacity:0.8" alt="">
+        </div>
+</section>
+
+<!--底部版权-->
+<div class="clear" style="clear:both;">
+</div>
+
+<div class="footer">
+    <div class="footer-wrapper">
+        <div class="links">
+            <a href="http://lsscpt.com/ORG997/Home/AddStore" target="_blank">商家入驻</a> |
+            <a href="http://lsscpt.com/ORG997/Home/About/?atype=2006">关于我们</a> |
+            <a href="http://lsscpt.com/ORG997/Home/About/?atype=2010">联系方式</a>
+        </div>
+
+        <style type="text/css">
+                .footer_link {
+                    padding-bottom: 10px;
+                    width: 100%;
+                    overflow: hidden;
+                    /*border-top: 1px solid #dedede*/
+                }
+
+                    .footer_link .wrapW {
+                        padding-top: 20px;
+                        position: relative;
+                        width: 1120px;
+                        margin: 0 auto;
+                    }
+
+                        .footer_link .wrapW a {
+                            float: left;
+                        }
+
+                            .footer_link .wrapW a img {
+                                border: 0;
+                                vertical-align: middle;
+                                width: 140px;
+                                height: 60px;
+                            }
+
+
+
+        </style>
+        <div class="footer_link">
+            <div class="wrapW">
+                <a href="http://www.people.com.cn/" target="_blank"><img src="../images/footmore_01.jpg" alt=""></a>
+                <a href="http://www.xinhuanet.com/" target="_blank"><img src="../images/footmore_02.jpg" alt=""></a>
+                <a href="http://www.cctv.com/" target="_blank"><img src="../images/footmore_03.jpg" alt=""></a>
+                <a href="http://www.gmw.cn/" target="_blank"><img src="../images/footmore_04.jpg" alt=""></a>
+                <a href="http://www.ce.cn/" target="_blank"><img src="../images/footmore_05.jpg" alt=""></a>
+                <a href="http://cn.chinadaily.com.cn/" target="_blank"><img src="../images/footmore_06.jpg"
+                                                                            alt=""></a>
+                <a href="http://www.chinanews.com/" target="_blank"><img src="../images/footmore_07.jpg" alt=""></a>
+                <a href="http://www.chinaso.com/" target="_blank"><img src="../images/footmore_08.jpg" alt=""></a>
+            </div>
+        </div>
+
+        <div class="copyright" style="margin:20px 0 10px">
+
+            <div id="copyright">(c)2019-2020 农特产交易平台 All Rights Reserved |</div>
+        </div>
+    </div>
+</div>
+<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script type="text/javascript">
+    $("body").on('click',"#bb>li",function(){
+        console.log($(this).text());
+        $(this).removeClass("ns").addClass("ys").siblings().removeClass("ys").addClass("ns");
+
+<!--        if($(this).index()==4){-->
+<!--            $("#card").css("display","block");-->
+<!--        }else{-->
+<!--            $("#card").css("display","none");-->
+<!--        }-->
+    })
+
+
+</script>
+</body>
+</html>

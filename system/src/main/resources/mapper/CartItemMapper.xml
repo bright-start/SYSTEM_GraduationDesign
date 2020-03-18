@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.CartItemMapper">
+    <resultMap id="cartItemMap" type="CartItem">
+        <id column="cart_item_id" property="itemId"/>
+        <result column="cart_item_product_id" property="productId"/>
+        <result column="cart_item_product_name" property="productName"/>
+        <result column="cart_item_product_price" property="productPrice"/>
+        <result column="cart_item_product_count" property="productCount"/>
+        <result column="cart_item_product_image" property="productImage"/>
+        <result column="cart_item_product_spec" property="spec"/>
+        <result column="cart_id" property="cartId"/>
+        <result column="cart_item_shop_id" property="shopId"/>
+        <result column="cart_item_shop_name" property="shopName"/>
+        <result column="cart_item_postage" property="postage"/>
+        <result column="cart_item_discount" property="discount"/>
+    </resultMap>
+    <update id="updateCartItem" parameterType="CartItem">
+        update cart_item set
+        cart_item_product_count=#{productCount},
+        cart_item_postage=#{postage},
+        cart_item_discount=#{discount}
+        where cart_item_id=#{itemId}
+    </update>
+    <insert id="saveCartItem" parameterType="CartItem">
+        insert into cart_item(
+        cart_item_product_id,
+        cart_item_product_name,
+        cart_item_product_price,
+        cart_item_product_count,
+        cart_item_product_image,
+        cart_item_shop_id,
+        cart_item_shop_name,
+        cart_item_postage,
+        cart_item_discount,
+        cart_id
+        )values(
+        #{productId},
+        #{productName},
+        #{productPrice},
+        #{productCount},
+        #{productImage},
+        #{shopId},
+        #{shopName},
+        #{postage},
+        #{discount},
+        #{cartId}
+        )
+    </insert>
+    <delete id="deleteCartItem" parameterType="java.lang.Integer">
+        delete from cart_item where cart_item_product_id=#{productId}
+    </delete>
+    <select id="findCartItemByCartId" parameterType="java.lang.Integer" resultType="java.lang.Long">
+        select count(cart_item_id) from cart_item where cart_id=#{cartId}
+    </select>
+    <select id="getCartItemByItemId" parameterType="java.lang.Integer" resultMap="cartItemMap">
+        SELECT
+        "public"."cart_item".*
+        FROM
+        "public"."cart_item"
+        WHERE
+        "public"."cart_item"."cart_item_id"=#{id}
+    </select>
+</mapper>

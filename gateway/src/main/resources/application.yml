@@ -11,6 +11,10 @@ spring:
           #开启小写后uri也必须小写
           lowerCaseServiceId: true
       routes:
+        - id: index
+          uri: http://www.cys.com:9200/
+          predicates:
+            - Path=/
         - id: sso
           uri: lb://sso.cys.com
           predicates:
@@ -19,6 +23,10 @@ spring:
           uri: lb://system.cys.com
           predicates:
             - Path=/system/**
+        - id: search
+          uri: lb://search.cys.com
+          predicates:
+            - Path=/search/**
 
 eureka:
   client:

@@ -9,8 +9,13 @@ public class Product {
     private String productImage;
     private Double productPrice;
     private Integer productStock;
-    private String specificationType;
-    private String specificationDesc;
+    private String spec;
+    private Integer goodsId;
+    private Double postage;
+    private Double discount;
+    private String areaName;
+    private String shopName;
+    private Integer shopId;
 
     public Integer getId() {
         return id;
@@ -52,20 +57,59 @@ public class Product {
         this.productStock = productStock;
     }
 
-    public String getSpecificationType() {
-        return specificationType;
+    public String getSpec() {
+        return spec;
     }
 
-    public void setSpecificationType(String specificationType) {
-        this.specificationType = specificationType;
+    public void setSpec(String spec) {
+        this.spec = spec;
     }
 
-    public String getSpecificationDesc() {
-        return specificationDesc;
+    public Integer getGoodsId() {
+        return goodsId;
     }
 
-    public void setSpecificationDesc(String specificationDesc) {
-        this.specificationDesc = specificationDesc;
+    public void setGoodsId(Integer goodsId) {
+        this.goodsId = goodsId;
     }
 
+    public Double getPostage() {
+        return postage;
+    }
+
+    public void setPostage(Double postage) {
+        this.postage = postage;
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
+    }
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public Integer getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Integer shopId) {
+        this.shopId = shopId;
+    }
 }

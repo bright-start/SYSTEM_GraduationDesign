@@ -11,9 +11,7 @@ public class Config {
 
     public static String backPage;
 
-    public static String index;
-
-    public static String testPage;
+    public static String indexPage;
 
 
     public static String cookieName;
@@ -24,13 +22,8 @@ public class Config {
     }
 
     @Value("${redirectPage2}")
-    public void setIndex(String index) {
-        Config.index = index;
-    }
-
-    @Value("${testPage}")
-    public void setTestPage(String testPage) {
-        Config.testPage = testPage;
+    public void setIndex(String indexPage) {
+        Config.indexPage = indexPage;
     }
 
     @Value("${cookieName}")
