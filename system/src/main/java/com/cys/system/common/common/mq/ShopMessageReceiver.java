@@ -1,6 +1,7 @@
 package com.cys.system.common.common.mq;
 
 import com.cys.system.common.config.Config;
+import com.cys.system.common.config.OnlyOneClassConfig;
 import com.cys.system.common.mapper.GoodsEngineMapper;
 import com.cys.system.common.mapper.GoodsMapper;
 import com.cys.system.common.mapper.GoodsSummaryMapper;
@@ -22,7 +23,6 @@ import java.util.Map;
 public class ShopMessageReceiver {
 
     final static Logger log = LoggerFactory.getLogger(ShopMessageReceiver.class);
-    final static Gson gson = new Gson();
 
     @Resource
     GoodsSummaryMapper goodsSummaryMapper;
@@ -39,7 +39,7 @@ public class ShopMessageReceiver {
     @RabbitListener(queues = "product_message_queue")
     public void process(String msg){
 
-        Map map = gson.fromJson(msg,Map.class);
+        Map map = OnlyOneClassConfig.gson.fromJson(msg,Map.class);
         Integer id = (Integer) map.get("id");
         Integer status = (Integer) map.get("status");
 

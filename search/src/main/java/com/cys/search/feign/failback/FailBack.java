@@ -7,6 +7,7 @@ import com.cys.search.pojo.SearchEntity;
 import com.cys.search.pojo.Result;
 import org.springframework.stereotype.Component;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Component
@@ -67,7 +68,7 @@ public class FailBack implements SystemInterface {
     }
 
     @Override
-    public Result lookPay() {
+    public Result lookPay(Integer status,Integer userId,String orderId) {
         return new Result().success(503,"error");
     }
 
@@ -78,6 +79,6 @@ public class FailBack implements SystemInterface {
 
     @Override
     public List<AuthUrl> getAllAuthUrl() {
-        return null;
+        return new LinkedList<>();
     }
 }

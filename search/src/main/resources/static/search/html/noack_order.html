@@ -22,7 +22,7 @@
     <script type="text/javascript" src="../js/controller/baseController.js"></script>
     <script type="text/javascript" src="../js/controller/indexController.js"></script>
 </head>
-<body ng-app="system" ng-controller="indexController" ng-init="lookPayOrder();loadLoginUser();">
+<body ng-app="system" ng-controller="indexController" ng-init="lookPayOrder(3);loadLoginUser();">
 <style>
     .active {
         text-decoration: none;
@@ -180,13 +180,9 @@
                     <div style="float:left;font-size:14px;color:orange;">
                         <span>支付方式:{{payOrder.payType}}</span>
                         <span>订单状态:
-                            <i ng-if="payOrder.status==0">未付款</i>
                             <i ng-if="payOrder.status==1">已付款</i>
                             <i ng-if="payOrder.status==2">已受理</i>
                             <i ng-if="payOrder.status==3">寄送中</i>
-                            <i ng-if="payOrder.status==4"> </i>
-                            <i ng-if="payOrder.status==5">订单异常</i>
-                            <i ng-if="payOrder.status==6">已拦截</i>
                         </span>
                     </div>
                 </div>
@@ -206,6 +202,12 @@
                     <div style="float:left;font-size:14px;color:#e0e0df;">
                         <span>订单创建时间:{{payOrder.createTime}}</span>
                         <span>订单完成时间:{{payOrder.overTime}}</span>
+                    </div>
+                </div>
+                <div style="overflow:hidden">
+                    <div style="float:left;font-size:14px;color:#e0e0df;">
+                        <span>确认收货</span><br>
+                        <span>撤回订单</span>
                     </div>
                 </div>
             </li>

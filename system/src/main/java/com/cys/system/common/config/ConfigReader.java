@@ -15,7 +15,6 @@ import java.io.*;
 public class ConfigReader {
 
     private final static Logger logger = LoggerFactory.getLogger(ConfigReader.class);
-    private final static Gson gson = new GsonBuilder().serializeNulls().create();
 
     public ConfigReader() {
         try {
@@ -35,7 +34,7 @@ public class ConfigReader {
 //            String decrypt = AesUtil.decrypt(new String(bytes1));
 //
 //            String jsonStr = decrypt.toString().replace(" ","");
-            gson.fromJson(new String(bytes1), ConfigValue.class);
+            OnlyOneClassConfig.gson.fromJson(new String(bytes1), ConfigValue.class);
 
         } catch (Exception e) {
             logger.error("初始化配置文件错误");
@@ -57,7 +56,7 @@ public class ConfigReader {
             outputStream.flush();
 
             byte[] bytes1 = outputStream.toByteArray();
-            String json = gson.toJson(new String(bytes1), ConfigValue.class);
+            String json = OnlyOneClassConfig.gson.toJson(new String(bytes1), ConfigValue.class);
             String encrypt = AesUtil.encrypt(json);
 
             Resource resource2 = new ClassPathResource("config/config.json");

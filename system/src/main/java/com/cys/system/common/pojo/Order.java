@@ -168,12 +168,19 @@ public class Order {
         this.noPayList = noPayList;
     }
 
+    /**
+     * 重写hashCode和equal使order作为map的key，不会发生内存溢出问题
+     */
     @Override
     public int hashCode() {
         if(orderId == null || shopId == null){
             return super.hashCode();
         }
 
+
+        /**
+         * 一种标准hashCode写法
+         */
         int result = 17;
         result = 31 * result + orderId.hashCode();
         result = 31 * result + shopId.hashCode();

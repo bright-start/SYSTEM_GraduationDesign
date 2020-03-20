@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+          name="viewport">
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../plugins/angularjs/angular.min.js"></script>
+    <script type="text/javascript" src="../js/base.js"></script>
+    <script type="text/javascript" src="../js/service/userService.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/controller/userController.js"></script>
+</head>
+<body ng-app="system" ng-controller="userController" ng-init="loadUserInfo()">
+
+<div class="panel panel-info">
+    <div class="panel-body">
+        我的资料
+    </div>
+    <div class="panel-footer">
+        <div style="width:350px;margin:0 auto">
+            <img src="{{userInfo.image}}" style="width:200px;height:200px;border-radius:50%;" alt="">
+            <br>
+            <h2>账号&nbsp;<span class="label label-default">{{userInfo.username}}</span></h2>
+            <h2 ng-if="userInfo.sex != null">性别&nbsp;
+                <span ng-if="userInfo.sex == 0" class="label label-default">男</span>
+                <span ng-if="userInfo.sex == 1" class="label label-default">女</span>
+            </h2>
+            <h2>绑定手机号&nbsp;<span class="label label-default">{{userInfo.bind_phone}}</span></h2>
+            <h2>角色&nbsp;<span class="label label-default">{{roleNameList[userInfo.role_id]}}</span></h2>
+            <h2>是否拥有店铺&nbsp;
+                <span ng-if="userInfo.shop_id != null" class="label label-default">是</span>
+                <span ng-if="userInfo.shop_id == null" class="label label-default">否</span></h2>
+            <h2>收货人&nbsp;<span class="label label-default">{{userInfo.real_name==""?"暂无":userInfo.creator}}</span></h2>
+            <h2>联系方式&nbsp;<span class="label label-default">{{userInfo.phone==""?"暂无":userInfo.phone}}</span></h2>
+            <h2>收货地址&nbsp;<span class="label label-default">{{userInfo.address==""?"暂无":userInfo.address}}</span></h2>
+            <h5>上次登陆时间&nbsp;<span class="label label-default">{{userInfo.lastlogintime}}</span></h5>
+            <h5>注册时间&nbsp;<span class="label label-default">{{userInfo.registrytime}}</span></h5>
+            <!--        <button type="button" class="btn btn-info" ng-click="updateUser();">修改信息</button>-->
+        </div>
+    </div>
+</div>
+</body>
+</html>

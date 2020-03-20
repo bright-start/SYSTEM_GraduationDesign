@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+          name="viewport">
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../plugins/angularjs/pagination.css">
+    <script src="../plugins/angularjs/angular.min.js"></script>
+    <script src="../plugins/angularjs/pagination.js"></script>
+    <script type="text/javascript" src="../js/base_pagination.js"></script>
+    <script type="text/javascript" src="../js/service/orderService.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/controller/orderController.js"></script>
+</head>
+<body ng-app="system" ng-controller="orderController"
+      class="hold-transition skin-red sidebar-mini">
+<div class="box-header with-border">
+    <h3 class="box-title">订单管理</h3>
+</div>
+<div class="box-body">
+    <!-- 数据表格 -->
+    <div class="table-box">
+        <!--工具栏-->
+        <div class="pull-left">
+            <div class="form-group form-inline">
+                <div class="btn-group">
+                    <div class="has-feedback"></div>
+                    <button type="button" class="btn btn-default" title="受理"
+                            ng-click="updateStatus(2,-1)">
+                        <i class="fa fa-file-o"></i> 受理
+                    </button>
+                    <button type="button" class="btn btn-default" title="拦截"
+                            ng-click="updateStatus(6,-1)">
+                        <i class="fa fa-trash-o"></i> 拦截
+                    </button>
+                    <button type="button" class="btn btn-default" title="刷新"
+                            onclick="window.location.reload();">
+                        <i class="fa fa-refresh"></i> 刷新
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="box-tools pull-right">
+            订单号：
+            <span class="layui-input-inline">
+				<input type="text" ng-model="searchEntity.orderId" autocomplete="off">
+			</span>
+            <span class="layui-input-inline">
+                <!-- Single button -->
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">
+                      <span ng-model="searchEntity.status">{{statusName}}</span><span
+                          class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#" ng-click="changeStatus('全部订单',-1)">全部订单</a></li>
+                    <li><a href="#" ng-click="changeStatus('待受理',1)">待受理</a></li>
+                    <li><a href="#" ng-click="changeStatus('已受理',2)">已受理</a></li>
+                    <li><a href="#" ng-click="changeStatus('寄送中',3)">寄送中</a></li>
+                    <li><a href="#" ng-click="changeStatus('已完成',4)">已完成</a></li>
+                    <li><a href="#" ng-click="changeStatus('订单异常',5)">订单异常</a></li>
+                  </ul>
+                </div>
+            </span>
+            <button ng-click="reloadList();" class="btn btn-default">查询</button>
+            <div class="has-feedback"></div>
+        </div>
+    </div>
+</div>
+<table class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th style="padding-right: 0px">
+            <input type="checkbox" title="全选">
+        </th>
+        <th>订单号</th>
+        <th>订单总价格</th>
+        <th>订单状态</th>
+        <th>支付方式</th>
+        <th>收货人</th>
+        <th>联系方式</th>
+        <th>收货地址</th>
+        <th>订单完成时间</th>
+        <th>订单创建时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="entity in list">
+        <td>
+            <input type="checkbox" ng-click="updateSelection($event,entity.id)"/>
+        </td>
+        <td>{{entity.orderId}}</td>
+        <td>{{entity.totalPrice}}</td>
+        <td>
+            <span ng-if="entity.status == 1">已付款</span>
+            <span ng-if="entity.status == 2">已受理</span>
+            <span ng-if="entity.status == 3">寄送中</span>
+            <span ng-if="entity.status == 4">已收货</span>
+            <span ng-if="entity.status == 5">订单异常</span>
+        </td>
+        <td>{{entity.payType}}</td>
+        <td>{{entity.creator}}</td>
+        <td>{{entity.phone}}</td>
+        <td>{{entity.address}}</td>
+        <td>{{entity.createTime}}</td>
+        <td>{{entity.overTime==null?"未完成":entity.overTime}}</td>
+        <td class="text-center">
+            <button type="button" class="btn bg-olive btn-xs"
+                    ng-click="updateStatus(2,entity.orderId)">受理
+            </button>
+            <button type="button" class="btn bg-olive btn-xs"
+                    ng-click="updateStatus(2,entity.orderId)">拦截
+            </button>
+            <button type="button" class="btn bg-olive btn-xs"
+                    data-toggle="modal" ng-click="findOne(entity.id)"
+                    data-target="#editModal">详情
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<!--数据列表/-->
+<tm-pagination conf="paginationConf"></tm-pagination>
+<!-- 编辑窗口 -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">×
+                </button>
+                <h3 id="myModalLabel">编辑公告</h3>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-striped" width="800px">
+                    <input type="hidden" ng-model="entity.id"/>
+                    <tr>
+                        <td>标题</td>
+                        <td><input class="form-control" ng-model="entity.title"
+                                   placeholder="标题格式 [标题]"></td>
+                    </tr>
+                    <tr>
+                        <td>作者</td>
+                        <td><input class="form-control" ng-model="entity.author"
+                                   placeholder="作者"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">内容</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><textarea class="form-control" ng-model="entity.content"
+                                                  placeholder="请编辑内容"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">是否开启定时发布任务<input type="checkbox"
+                                                         ng-model="entity.enabletimetask"
+                                                         ng-click="updateStatus(entity.enabletimetask)"
+                                                         ng-value="0"/>{{entity.enabletimetask}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" ng-if="entity.enabletimetask">
+                            <input class="form-control" ng-model="entity.enabletimetask?entity.timetask:'null'"
+                                   placeholder=""></td>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" data-dismiss="modal"
+                        aria-hidden="true" ng-click="save()">保存
+                </button>
+                <button class="btn btn-default" data-dismiss="modal"
+                        aria-hidden="true">关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

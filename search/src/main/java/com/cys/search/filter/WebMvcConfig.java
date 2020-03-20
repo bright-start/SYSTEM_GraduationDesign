@@ -15,8 +15,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private static final List<String> EXCLUDE_PATH = Arrays.asList("/html/**", "css/**", "js/**", "/plugins/**", "/images/**");
     private static final List<String> TOKEN_EXCLUDE_PATH = Arrays.asList("/auth/getAll","/html/**", "css/**", "js/**", "/plugins/**");
 
-//    @Autowired
-//    private TokenFilter tokenFilter;
+    @Autowired
+    private TokenFilter tokenFilter;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -24,6 +24,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new TokenFilter()).addPathPatterns("/system/**").excludePathPatterns(TOKEN_EXCLUDE_PATH);
+        registry.addInterceptor(tokenFilter).addPathPatterns("/search/**").excludePathPatterns(TOKEN_EXCLUDE_PATH);
     }
 }

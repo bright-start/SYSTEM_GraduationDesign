@@ -3,6 +3,7 @@ package com.cys.system.admin.controller;
 import com.cys.system.common.common.pojo.Result;
 import com.cys.system.common.exception.UnauthorizedException;
 import com.cys.system.common.service.CartService;
+import com.cys.system.common.service.SSOService;
 import com.cys.system.common.service.impl.SSOServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +23,7 @@ public class CartController {
     private CartService cartService;
 
     @Resource
-    private SSOServiceImpl ssoService;
+    private SSOService ssoService;
 
     private Integer volidAndGetUserId(String token) throws UnauthorizedException {
         Map<String, Object> userMap = ssoService.getUser(token);

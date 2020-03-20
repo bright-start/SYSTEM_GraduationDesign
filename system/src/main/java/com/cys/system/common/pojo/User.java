@@ -14,6 +14,7 @@ public class User {
     private Integer status;
     private String disableTime;
     private String bindPhone;
+    private Integer shop_id;
 
     public Integer getUserId() {
         return userId;
@@ -93,5 +94,13 @@ public class User {
 
     public void setBindPhone(String bindPhone) {
         this.bindPhone = bindPhone;
+    }
+
+    public Integer getShop_id() {
+        return shop_id;
+    }
+
+    public void setShop_id(Integer shop_id) {
+        this.shop_id = shop_id;
     }
 }

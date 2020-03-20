@@ -3,6 +3,8 @@ package com.cys.search.filter;
 import com.cys.search.feign.SystemInterface;
 import com.cys.search.pojo.AuthUrl;
 import com.cys.search.service.SSOService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -16,20 +18,21 @@ import java.util.List;
 import java.util.Map;
 
 @Configuration
-@Order(0)
 public class TokenFilter implements HandlerInterceptor {
 
     @Autowired
     private SSOService ssoService;
 
-    @Autowired
-    private SystemInterface systemInterface;
+//    @Autowired
+//    private SystemInterface systemInterface;
 
     protected String loginUrl = "http://www.cys.com:9200/sso/sso/html/login.html";
 
     protected final static String COOKIENAME="SYS-TOKEN";
 
     private final static List<AuthUrl> authUrlList = new LinkedList<>();
+
+    private Logger logger = LoggerFactory.getLogger(TokenFilter.class);
 
 //    @PostConstruct
 //    public void getAllAuthUrl(){
@@ -47,6 +50,7 @@ public class TokenFilter implements HandlerInterceptor {
             return true;
         }
 
+        logger.info(requestURL.toString()+"验证");
         Map<String,Object> userMap = ssoService.getUser(request);
         if(userMap == null || userMap.isEmpty()){
             response.sendRedirect(loginUrl);

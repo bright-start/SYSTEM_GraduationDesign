@@ -49,7 +49,7 @@ public interface SystemInterface {
     Result lookNoPay(@RequestParam String noPayList);
 
     @GetMapping(value = "/order/lookPay")
-    Result lookPay(@RequestParam Integer userId,@RequestParam(required = false) String orderId);
+    Result lookPay(@RequestParam(required = false) Integer status,@RequestParam Integer userId,@RequestParam(required = false) String orderId);
 
     @PostMapping(value = "/order/pay",consumes = "application/json")
     Result pay(@RequestBody UpOrder upOrder);

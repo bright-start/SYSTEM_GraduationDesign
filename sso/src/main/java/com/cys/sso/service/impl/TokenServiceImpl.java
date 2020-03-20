@@ -8,7 +8,6 @@ import com.cys.sso.pojo.Result;
 import com.cys.sso.service.TokenService;
 import com.cys.sso.service.UserService;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;

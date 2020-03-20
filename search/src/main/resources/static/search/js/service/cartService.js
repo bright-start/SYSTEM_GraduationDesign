@@ -20,7 +20,7 @@ app.service("cartService", function ($http) {
     this.lookPayOrder = function(){
         return $http.get(basePath+"/order/lookPay");
     };
-    this.lookNoPayOrder = function(){
-        return $http.get(basePath+"/order/lookNoPay");
+    this.lookNoPayOrder = function(status){
+        return $http.get(basePath+"/order/lookNoPay?status="+status);
     };
 });

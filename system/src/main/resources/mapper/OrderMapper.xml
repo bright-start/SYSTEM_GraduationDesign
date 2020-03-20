@@ -42,10 +42,13 @@
         JOIN "public"."_order"
         ON "public"."order_item"."order_id" = "public"."_order"."order_id"
         WHERE
-        <if test="orderId ! = null">
-            order_id = #{orderId} and
-        </if>
         "public"."_order"."user_id"=#{userId}
+        <if test="status != null">
+            and order_status between 1 and 3
+        </if>
+        <if test="orderId != null">
+            and order_id = #{orderId} and
+        </if>
         ORDER BY
         "public"."_order"."order_overtime" DESC
     </select>
@@ -89,6 +92,39 @@
         </if>
         order_status=${status}
         where order_id=#{orderId}
-        and user_id=#{userId}
+        <if test="userId != null">
+            and user_id=#{userId}
+        </if>
+        <if test="shopId != null">
+            and shop_id=#{shopId}
+        </if>
     </update>
+    <select id="count" parameterType="Order" resultType="java.lang.Long">
+        select count(order_id) from _order
+        <where>
+            <if test="shopId != null">
+                shop_id =#{shopId}
+            </if>
+            <if test="status != null">
+                and order_status =#{status}
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId}
+            </if>
+        </where>
+    </select>
+    <select id="list" parameterType="Order" resultMap="orderMap">
+        select * from _order
+        <where>
+            <if test="shopId != null">
+                shop_id =#{shopId}
+            </if>
+            <if test="status != null">
+                and order_status =#{status}
+            </if>
+            <if test="orderId != null">
+                and order_id = #{orderId}
+            </if>
+        </where>
+    </select>
 </mapper>

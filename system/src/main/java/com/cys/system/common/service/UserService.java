@@ -7,4 +7,8 @@ public interface UserService {
     Result listUser(Integer page, Integer rows, User user);
 
     Result nouse(Integer[] ids);
+
+    Result load(Integer userId);
+
+    Result modifyPassword(Integer userId,String passwordInfo);
 }

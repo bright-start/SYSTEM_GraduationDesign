@@ -1,11 +1,21 @@
 package com.cys.system.common.common.pojo;
 
 public class UpOrder {
+    private Integer userId;
     private String creator;
     private Integer phone;
     private String address;
     private String payType;
     private String noPayList;
+
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
     public String getCreator() {
         return creator;

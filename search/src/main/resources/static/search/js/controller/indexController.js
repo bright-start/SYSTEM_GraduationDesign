@@ -291,13 +291,13 @@ app.controller("indexController", function ($scope,$controller,$location,areaSer
          });
       }
 
-     $scope.lookPayOrder = function(){
-          cartService.lookPayOrder().success(function(data){
+     $scope.lookPayOrder = function(status){
+          cartService.lookPayOrder(status).success(function(data){
                if(data.code === 200){
                    $scope.payOrderList = data.data;
                    console.log($scope.payOrderList);
                }else{
-//                    window.location.href="http://www.cys.com:9200/search/search/html/500.html";
+                    window.location.href="http://www.cys.com:9200/search/search/html/500.html";
                }
           });
      }

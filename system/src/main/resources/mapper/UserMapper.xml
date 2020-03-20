@@ -12,6 +12,7 @@
         <result column="status" property="status"/>
         <result column="disable_time" property="disableTime"/>
         <result column="bind_phone" property="bindPhone"/>
+        <result column="shop_id" property="shopId"/>
     </resultMap>
     <select id="getUserById" parameterType="java.lang.Integer" resultMap="userMap">
         select
@@ -65,4 +66,23 @@
             </if>
         </where>
     </select>
+    <select id="volidUser" resultMap="userMap">
+        select * from _user
+        where user_id=#{userId}
+        and password = #{password}
+    </select>
+    <select id="load" resultType="java.util.Map">
+        SELECT
+        "public"."_user".*,
+        "public"."user_info".*
+        FROM
+        "public"."user_info"
+        JOIN "public"."_user"
+        ON "public"."user_info"."user_id" = "public"."_user"."user_id"
+        where "public"."_user"."user_id"=#{userId}
+    </select>
+    <update id="updatePassword">
+        update _user set password = #{password}
+        where user_id = #{userId}
+    </update>
 </mapper>

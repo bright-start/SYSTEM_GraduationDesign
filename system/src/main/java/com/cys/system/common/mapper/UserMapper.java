@@ -15,4 +15,10 @@ public interface UserMapper {
     void nouse(@Param("userid") Integer id);
 
     User getUserById(Integer userId);
+
+    Map load(Integer userId);
+
+    User volidUser(@Param("userId") Integer userId, @Param("password") String oldPassword);
+
+    void updatePassword(User user);
 }

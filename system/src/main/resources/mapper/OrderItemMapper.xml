@@ -45,4 +45,8 @@
         #{discount}
         )
     </insert>
+    <select id="findOrderItemByOrderId" parameterType="java.lang.String" resultMap="orderItemMap">
+        select * from order_item
+        where order_id=#{orderId}
+    </select>
 </mapper>
