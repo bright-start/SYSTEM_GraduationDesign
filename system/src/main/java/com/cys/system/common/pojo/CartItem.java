@@ -14,6 +14,7 @@ public class CartItem {
     private Integer cartId;
     private String areaName;
     private String spec;
+    private String noBuyReason;
 
     public Integer getItemId() {
         return itemId;
@@ -119,4 +120,11 @@ public class CartItem {
         this.spec = spec;
     }
 
+    public String getNoBuyReason() {
+        return noBuyReason;
+    }
+
+    public void setNoBuyReason(String noBuyReason) {
+        this.noBuyReason = noBuyReason;
+    }
 }

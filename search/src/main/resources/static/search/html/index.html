@@ -18,13 +18,15 @@
     <script src="../plugins/angularjs/angular.min.js"></script>
     <script type="text/javascript" src="../js/base.js"></script>
     <script type="text/javascript" src="../js/service/areaService.js"></script>
+    <script type="text/javascript" src="../js/service/bulletinService.js"></script>
+    <script type="text/javascript" src="../js/service/articleService.js"></script>
     <script type="text/javascript" src="../js/service/loginService.js"></script>
     <script type="text/javascript" src="../js/service/goodsService.js"></script>
     <script type="text/javascript" src="../js/service/cartService.js"></script>
     <script type="text/javascript" src="../js/controller/baseController.js"></script>
     <script type="text/javascript" src="../js/controller/indexController.js"></script>
 </head>
-<body ng-app="system" ng-controller="indexController" ng-init="findAreaList();loadLoginUser();findGoodGoods();">
+<body ng-app="system" ng-controller="indexController" ng-init="findAreaList();loadBulletinList();loadArticleList();loadLoginUser();findGoodGoods();">
 
 <style>
     .active {
@@ -271,6 +273,28 @@
         context.fillText(text, (c.width - context.measureText(text).width) / 2, c.height / 4);
         $("#myCanvas").show();
     }
+    function timer(opj){
+		$(opj).find('ul').animate({
+			marginTop : "-3.5rem"
+			},500,function(){
+			$(this).css({marginTop : "0.0rem"}).find("li:first").appendTo(this);
+		})
+	}
+	$(function(){
+<!--	    jq加载比angularjs加载早，所以延时jq加载时间-->
+	    setTimeout(function(){
+            var num = $('.notice_active').find('li').length;
+            console.log(num);
+            if(num > 1){
+               var time=setInterval('timer(".notice_active")',3500);
+                $('.gg_more a').mousemove(function(){
+                    clearInterval(time);
+                }).mouseout(function(){
+                    time = setInterval('timer(".notice_active")',3500);
+                });
+            }
+		},1000);
+	});
 </script>
 
 <style>
@@ -310,11 +334,60 @@
         opacity:0.9;
         background-color:white;
     }
+    .huadong {
+        width: 60rem;height:4rem;padding: 0.5rem 0 0.3rem 0; border-bottom: 1px solid #F0F0F0; position:relative;font: 12px/1.5 "Hiragino Sans GB","Microsoft YaHei",simsun;margin:0 auto;
+    }
+	.huadong .huabox {
+	    margin:0 auto; width: 80%; line-height: 4rem;
+	}
+	.huadong .hdimg {
+	float:left;line-height:3.5rem;
+	}
+	.huadong .hdimg img {
+	width: 100%; vertical-align:middle;
+	}
+	.huadong h5 {
+	font-size:1rem;float:left; line-height: 2.2rem; margin: 0.8rem 0 0 0;
+	 }
+	.huadong .gg_more { float: left;}
+	.huadong .gg_more a { font-size: 0.8rem; text-decoration:none;}
 
+	.huadong .notice_active {
+			float: left;
+			width: 85%;
+			height: 4rem;
+			padding: 0;
+			overflow: hidden;
+			position: relative;
+	}
+	.huadong .notice_active li{
+	list-style-type:none;line-height: 3.5rem;overflow: hidden;
+	}
+	.huadong .notice_active li.notice_active_ch span {
+	color:#656972;font-size:1rem;display: block;overflow: hidden; width:80%;float: left;
+	overflow: hidden;margin:0 0 2rem 0;
+	}
 </style>
+
 <!--第一屏-->
 <div class="tms-module">
-    <div class="tms-module-wrap" style="margin-top:61px;">
+    <div class="huadong" style="top: 35px;">
+        <div class="huabox">
+            <div class="hdimg"><img src="../images/lingdang.png"></div>
+            <h5>【公告】</h5>
+            <div class="notice_active">
+                <ul>
+                    <li class="notice_active_ch" ng-repeat="bulletin in bulletinList">
+                        <span>{{bulletin.title}}&nbsp;{{bulletin.content}}</span>
+
+                        <em>{{bulletin.updateTime}}</em>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <div class="tms-module-wrap" style="margin-top:21px;">
         <style>
             .tms-module .c-nav .active .catidmi a {
                 background-color: #fff;
@@ -506,7 +579,7 @@
 </style>
 
 
-<div class="index_pro_list" style="margin-top:71px;">
+<div class="index_pro_list" style="margin-top:121px;">
     <div class="tit">
         <p class="fl">
             <i></i>
@@ -621,63 +694,19 @@
                 <a href="#"
                    target="_blank"
                    style="overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;line-height: 32px;"><i
-                        class="toutiao">头条</i>常喝“药酒”可以补肾强身?保健酒到底有多优秀?你该“清醒”了</a>
+                        class="toutiao">头条</i></a>
                 <br>
-                王思露营养师 2020年03月11日 21:26...
+
             </p>
 
             <ul>
-                <li style="overflow: hidden;">
+                <li style="overflow: hidden;" ng-repeat="article in articleList">
                     <i></i>
-                    <a href="#"
+                    <a href="article_template.html#?id={{article.id}}"
                        target="_blank" style="display: inline-block;vertical-align: top;width: 75%;">
-                        <span>...贵公司的椰岛鹿龟酒的确能称之为保健酒中的茅台。...|茅台...</span>
-                    </a><span class="fr">03-13 08:38</span>
+                        <span>{{article.name}}</span>
+                    </a><span class="fr">{{article.releaseTime}}</span>
                 </li>
-                <li style="overflow: hidden;">
-                    <i></i>
-                    <a href="#"
-                       target="_blank" style="display: inline-block;vertical-align: top;width: 75%;">
-                        <span>三箭齐发|青岛啤酒按下投资建设“快进键”</span>
-                    </a><span class="fr">03-13 08:38</span>
-                </li>
-                <li style="overflow: hidden;">
-                    <i></i>
-                    <a href="#" target="_blank"
-                       style="display: inline-block;vertical-align: top;width: 75%;">
-                        <span>富瑞:料第三季啤酒销量回复增长 看好华润啤酒及青岛啤酒</span>
-                    </a><span class="fr">03-13 08:38</span>
-                </li>
-                <li style="overflow: hidden;">
-                    <i></i>
-                    <a href="#"
-                       target="_blank" style="display: inline-block;vertical-align: top;width: 75%;">
-                        <span>山东平度:青岛啤酒100万千升扩建项目开工,打造亚洲最大啤酒产业基地</span>
-                    </a><span class="fr">03-13 08:38</span>
-                </li>
-                <li style="overflow: hidden;">
-                    <i></i>
-                    <a href="#"
-                       target="_blank" style="display: inline-block;vertical-align: top;width: 75%;">
-                        <span>乐惠国际(603076)中标1.608亿元巴西喜力啤酒项目</span>
-                    </a><span class="fr">03-13 08:38</span>
-                </li>
-                <li style="overflow: hidden;">
-                    <i></i>
-                    <a href="#"
-                       target="_blank" style="display: inline-block;vertical-align: top;width: 75%;">
-                        <span>乐惠国际(603076)中标巴西喜力啤酒项目 今年累计获得海外订单3.21...</span>
-                    </a><span class="fr">03-13 08:38</span>
-                </li>
-                <li style="overflow: hidden;">
-                    <i></i>
-                    <a href="#" target="_blank"
-                       style="display: inline-block;vertical-align: top;width: 75%;">
-                        <span>春日饮酒:偏爱温壶黄酒解清趣</span>
-                    </a><span class="fr">03-13 08:38</span>
-                </li>
-
-
             </ul>
             <ul>
                 <li>
@@ -738,7 +767,7 @@
                         class="red">1、</i>白酒送双,红酒送单,以酒送礼都有哪些讲究?这些假酒千万不能送</a>
                 一个小酒酒 2019年10月19日 10:15 ...
 <!--                <span style="display:block;text-align:right;">-->
-        
+
         10-21 09:30
     </span>
             </p>
@@ -759,7 +788,7 @@
                         class="red">3、</i>一罐啤酒、二两白酒、二两红酒,哪个会被查出酒驾?交警实测答案揭晓!</a>
                 盐山交警 3小时前 志愿者喝了红酒一杯(1...
 <!--                <span style="display:block;text-align:right;">-->
-        
+
         10-21 09:30
     </span>
             </p>
@@ -769,7 +798,7 @@
                         class="red">4、</i>总裁为帮兄弟开销路,竟让下属没每人去买10瓶红酒,公司给报销</a>
                 凤凰网 2019年10月20日 18:42 ...
 <!--                <span style="display:block;text-align:right;">-->
-        
+
         10-21 09:30
     </span>
             </p>

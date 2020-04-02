@@ -20,4 +20,6 @@ public interface BulletinService {
     Result updateBulletinByBulletin(Bulletin bulletin);
 
     void updateStatusById(Integer id);
+
+    Result loadBulletinList();
 }

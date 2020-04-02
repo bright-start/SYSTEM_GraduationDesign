@@ -21,8 +21,18 @@ public class IndexController {
         return indexInterface.findAreaList();
     }
 
+    @GetMapping("/loadBulletinList")
+    public Result loadBulletinList(){
+        return indexInterface.loadBulletinList();
+    }
+
     @GetMapping("/findGoodGoods")
     public Result findGoodGoods(){
         return indexInterface.findGoodGoods();
+    }
+
+    @GetMapping("/loadArticleList")
+    public Result loadArticleList(){
+        return indexInterface.loadArticleList();
     }
 }

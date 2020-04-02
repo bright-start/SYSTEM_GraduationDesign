@@ -1,19 +1,28 @@
 package com.cys.search.feign.failback;
 
 import com.cys.search.feign.SystemInterface;
-import com.cys.search.pojo.AuthUrl;
-import com.cys.search.pojo.UpOrder;
-import com.cys.search.pojo.SearchEntity;
-import com.cys.search.pojo.Result;
+import com.cys.search.pojo.*;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class FailBack implements SystemInterface {
     @Override
     public Result findAreaList() {
+        return new Result().success(503,"无数据");
+    }
+
+    @Override
+    public Result loadBulletinList() {
+        return new Result().success(503,"无数据");
+    }
+
+    @Override
+    public Result loadArticleList() {
         return new Result().success(503,"无数据");
     }
 
@@ -78,7 +87,37 @@ public class FailBack implements SystemInterface {
     }
 
     @Override
-    public List<AuthUrl> getAllAuthUrl() {
-        return new LinkedList<>();
+    public Result deleteOrder(String orderToken) {
+        return new Result().success(503,"error");
+    }
+
+    @Override
+    public Map<String, List<AuthUrl>> listAllRoleAuthUrl() {
+        return new HashMap<>();
+    }
+
+    @Override
+    public Result getArticleById(Integer id) {
+        return new Result().success(503,"error");
+    }
+
+    @Override
+    public Result increaseBrowseNum(Integer userId,Integer articleId) {
+        return new Result().success(503,"error");
+    }
+
+    @Override
+    public Result increaseLoveNum(Integer userId,Integer articleId, Integer islove) {
+        return new Result().success(503,"error");
+    }
+
+    @Override
+    public Result commitCommand(Command command) {
+        return new Result().success(503,"error");
+    }
+
+    @Override
+    public Result deleteCommand(Integer userId,Integer commandId) {
+        return new Result().success(503,"error");
     }
 }

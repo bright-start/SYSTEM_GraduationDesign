@@ -88,6 +88,9 @@ public class TokenServiceImpl implements TokenService {
             }
         }
 
+
+        userService.updateLoginTimeById(loginUser.getUserId());
+
         String token = UUID.randomUUID().toString().replaceAll("-","");
         redisTemplate.opsForValue().set(token,gson.toJson(loginUser));
         redisTemplate.expire(token,30, TimeUnit.MINUTES);

@@ -23,4 +23,7 @@ app.service("cartService", function ($http) {
     this.lookNoPayOrder = function(status){
         return $http.get(basePath+"/order/lookNoPay?status="+status);
     };
+    this.deleteOrder = function(orderId){
+        return $http.get(basePath+"/order/delete?orderId="+orderId);
+    }
 });

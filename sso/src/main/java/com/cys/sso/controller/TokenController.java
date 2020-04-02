@@ -26,6 +26,4 @@ public class TokenController {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         return tokenService.getToken(request);
     }
-
-
 }

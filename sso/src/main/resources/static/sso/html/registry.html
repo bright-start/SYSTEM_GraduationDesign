@@ -7,30 +7,9 @@
     <!-- Meta-Tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    <meta name="keywords"
-          content="Key Login Form a Responsive Web Template, Bootstrap Web Templates, Flat Web Templates, Android Compatible Web Template, Smartphone Compatible Web Template, Free Webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola Web Design">
-    <script>
-        addEventListener("load", function () {
-            setTimeout(hideURLbar, 0);
-        }, false);
-
-        function hideURLbar() {
-            window.scrollTo(0, 1);
-        }
-    </script>
-    <!-- //Meta-Tags -->
-    <!-- Index-Page-CSS -->
-    <link rel="stylesheet" href="../css/registry_style.css" type="text/css" media="all">
-    <!-- //Custom-Stylesheet-Links -->
-    <!--fonts -->
-    <!-- //fonts -->
     <link rel="stylesheet" href="../css/font-awesome.min.css" type="text/css" media="all">
-    <!-- //Font-Awesome-File-Links -->
-
+    <link rel="stylesheet" href="../css/registry_style.css" type="text/css" media="all">
 </head>
-<!-- //Head -->
-<!-- Body -->
-
 <body>
 
 <section class="main">
@@ -38,7 +17,7 @@
 
         <div class="bottom-grid">
             <div class="logo">
-                <h1><a href="#"><span class="fa fa-key"></span> Key</a></h1>
+                <h1><a href="javascript:void(0)"><span class="fa fa-key"></span> Key</a></h1>
             </div>
             <div class="links">
                 <ul class="links-unordered-list">
@@ -49,7 +28,7 @@
                         <a href="#" class="">About Us</a>
                     </li>
                     <li class="active">
-                        <a href="#" class="">Register</a>
+                        <a href="registry.html" class="">Register</a>
                     </li>
                     <li class="">
                         <a href="#" class="">Contact</a>
@@ -59,7 +38,7 @@
         </div>
         <div class="content-w3ls">
             <div class="text-center" style="margin-bottom: 10px;">
-                <span class="fa"><img src="../images/default.jpeg" alt="头像"
+                <span class="fa"><img id="show_img" src="../images/default.jpeg" alt="头像"
                                       style="height: 80px;width: 80px; background-position: top; border-radius: 50%;"/></span>
             </div>
             <div class="text-center"
@@ -71,7 +50,7 @@
             </div>
             <div id="user_show" style="height: 330px;overflow: scroll">
                 <div class="content-bottom">
-                    <form action="#" id="dataForm" onsubmit="return false;">
+                    <form id="dataForm" onsubmit="return false;">
                         <div class="field-group">
                             <span class="fa fa-photo" aria-hidden="true"></span>
                             <div class="wthree-field">
@@ -85,7 +64,7 @@
                         <div class="field-group">
                             <span class="fa fa-user" aria-hidden="true" id="flag"></span>
                             <div class="wthree-field">
-                                <input name="username" id="text1" type="text" value="" placeholder="昵称/手机号/邮箱" required
+                                <input name="username" id="text1" type="text" value="" placeholder="账号" required
                                        autocomplete="off"><br>
                             </div>
                         </div>
@@ -133,26 +112,8 @@
                             <p class="fa fa-info" id="tip4"
                                style="color:darkgray;margin-left: 20px;margin-top: 2px;"></p>
                         </div>
-                        <div class="field-group">
-                            <span class="fa fa-pencil-square" aria-hidden="true"></span>
-                            <div class="wthree-field">
-                                <input name="realName" id="myInput6" type="text" placeholder="真实姓名" autocomplete="off">
-                            </div>
-                        </div>
-                        <div class="field-group">
-                            <span class="fa fa-phone" aria-hidden="true"></span>
-                            <div class="wthree-field">
-                                <input name="phone" id="myInput8" type="text" placeholder="收货手机号" autocomplete="off">
-                            </div>
-                        </div>
-                        <div class="field-group">
-                            <span class="fa fa-home" aria-hidden="true"></span>
-                            <div class="wthree-field">
-                                <input name="address" id="myInput9" type="text" placeholder="收获地址" autocomplete="off">
-                            </div>
-                        </div>
                         <div class="wthree-field">
-                            <button type="submit" class="btn" id="registry" onclick="return false;">Get Started</button>
+                            <button type="submit" class="btn" id="registry" onclick="return false;">会员注册</button>
                         </div>
                         <ul class="list-login-bottom">
                             <li class="">
@@ -170,90 +131,96 @@
                 <div class="content-bottom">
                     <form action="#" id="dataForm" onsubmit="return false;">
                         <div class="field-group">
-                            <span class="fa fa-photo" aria-hidden="true"></span>
+                            <span class="fa fa-user" aria-hidden="true"></span>
                             <div class="wthree-field">
-                                <input name="file" id="myInput4" type="file" placeholder="上传头像">
-                            </div>
-                        </div>
-                        <div style="width: 320px">
-                            <span class="fa fa-info" id="tip3"
-                                  style="color:darkgray;margin-left: 20px;margin-top: 2px;"></span>
-                        </div>
-                        <div class="field-group">
-                            <span class="fa fa-user" aria-hidden="true" id="flag"></span>
-                            <div class="wthree-field">
-                                <input name="username" id="text1" type="text" value="" placeholder="昵称/手机号/邮箱" required
+                                <input name="username" id="name" type="text" value="" placeholder="会员账号" required
                                        autocomplete="off"><br>
                             </div>
                         </div>
                         <div style="width: 320px">
-                            <span class="fa fa-info" id="tip1"
-                                  style="color:red;margin-left: 20px;margin-top: 2px;"></span>
+                            <span class="fa fa-info" id="tip11"
+                                  style="color:darkgray;margin-left: 20px;margin-top: 2px;"></span>
                         </div>
                         <div class="field-group">
                             <span class="fa fa-lock" aria-hidden="true"></span>
                             <div class="wthree-field">
-                                <input id="myInput" type="Password" placeholder="Password" required autocomplete="off">
+                                <input id="pass" type="Password" placeholder="会员密码" required autocomplete="off">
                             </div>
                         </div>
                         <div style="width: 320px">
-                            <p class="fa fa-info" id="tip2"
+                            <p class="fa fa-info" id="tip12"
                                style="color:darkgray;margin-left: 20px;margin-top: 2px;"></p>
-                        </div>
-                        <div class="field-group">
-                            <span class="fa fa-lock" aria-hidden="true"></span>
-                            <div class="wthree-field">
-                                <input name="password" id="myInput2" type="Password" placeholder="RepeatPassword"
-                                       required autocomplete="off">
-
-                            </div>
-                        </div>
-                        <div class="field-group">
-                            <span class="fa fa-male" aria-hidden="true"></span>
-                            <div class="wthree-field">
-                                <input name="sex" id="myInput3" type="text" placeholder="性别" required
-                                       autocomplete="off" list="sex">
-                                <datalist id="sex">
-                                    <option>男</option>
-                                    <option>女</option>
-                                </datalist>
-                            </div>
                         </div>
                         <div class="field-group">
                             <span class="fa fa-mobile-phone" aria-hidden="true"></span>
                             <div class="wthree-field">
-                                <input name="bindPhone" id="myInput5" type="text" placeholder="绑定手机号" required
+                                <input name="bindPhone" id="bindPhone" type="text" placeholder="绑定手机号" required
                                        autocomplete="off">
                             </div>
                         </div>
-                        <div style="width: 320px">
-                            <p class="fa fa-info" id="tip4"
-                               style="color:darkgray;margin-left: 20px;margin-top: 2px;"></p>
-                        </div>
                         <div class="field-group">
-                            <span class="fa fa-pencil-square" aria-hidden="true"></span>
+                            <span class="fa fa-photo" aria-hidden="true"></span>
                             <div class="wthree-field">
-                                <input name="realName" id="myInput6" type="text" placeholder="真实姓名" autocomplete="off">
+                                <input name="file" id="logo_file" type="file" placeholder="上传店铺logo">
                             </div>
+                        </div>
+                        <div style="width: 320px">
+                            <span class="fa fa-info" id="tip13"
+                                  style="color:darkgray;margin-left: 20px;margin-top: 2px;"></span>
                         </div>
                         <div class="field-group">
                             <span class="fa fa-phone" aria-hidden="true"></span>
                             <div class="wthree-field">
-                                <input name="phone" id="myInput8" type="text" placeholder="收货手机号" autocomplete="off">
+                                <input name="shopName" id="shopName" type="text" placeholder="店铺名字" autocomplete="off">
                             </div>
                         </div>
                         <div class="field-group">
                             <span class="fa fa-home" aria-hidden="true"></span>
                             <div class="wthree-field">
-                                <input name="address" id="myInput9" type="text" placeholder="收获地址" autocomplete="off">
+                                <input name="shopDesc" id="shopDesc" type="text" placeholder="店铺描述" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-home" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="shopCompany" id="shopCompany" type="text" placeholder="店铺所属公司"
+                                       autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-home" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="legelPerson" id="legelPerson" type="text" placeholder="店铺法人"
+                                       autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-home" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="bankCard" id="bankCard" type="text" placeholder="店铺收支银行卡"
+                                       autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-home" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="sendPhone" id="sendPhone" type="text" placeholder="寄件电话"
+                                       autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <span class="fa fa-home" aria-hidden="true"></span>
+                            <div class="wthree-field">
+                                <input name="sendAddress" id="sendAddress" type="text" placeholder="寄件地址"
+                                       autocomplete="off">
                             </div>
                         </div>
                         <div class="wthree-field">
-                            <button type="submit" class="btn" id="registry" onclick="return false;">Get Started</button>
+                            <button type="submit" class="btn" id="shop_registry" onclick="return false;">申请店铺</button>
                         </div>
                         <ul class="list-login-bottom">
                             <li class="">
-                                <a href="#" class="">Create Account</a>
+                                <a href="login.html" class="">没有会员号，点击创建</a>
                             </li>
                             <li class="">
                                 <a href="#" class="text-right">Need Help?</a>
@@ -290,11 +257,16 @@
 <script type="text/javascript">
 
     $("#user_show").show();
+    $("#shop_show").hide();
     $("#role").val(0);
     $("#tip1").hide();
     $("#tip2").hide();
     $("#tip3").hide();
     $("#tip4").hide();
+
+    $("#tip11").hide();
+    $("#tip12").hide();
+    $("#tip13").hide();
 
 
     $("#user").click(function () {
@@ -303,6 +275,7 @@
         $("#role").val(0);
         $("#user_show").show();
         $("#shop_show").hide();
+        $("#role").val(0);
     });
     $("#shop").click(function () {
         $("#user").css({"color": "lightslategray"});
@@ -310,27 +283,90 @@
         $("#role").val(1);
         $("#shop_show").show();
         $("#user_show").hide();
+        $("#role").val(1);
     });
 
     $("#myInput4").change(function () {
         var filePath = document.getElementById("myInput4").value;
         var mimeTypeList = ["jpg", "jpeg", "png"];
         var isAllow = false;
-        for (mimeType in mimeTypeList) {
-            if (filePath.endsWith(mimeType)) {
+        var ext = filePath.substring(filePath.lastIndexOf(".")+1);
+        console.log(ext);
+        for (var i=0;i< mimeTypeList.length;i++) {
+            if (ext === mimeTypeList[i]) {
                 isAllow = true;
             }
         }
         if (!isAllow) {
             $("#tip3").html("&nbsp;非法格式,只允许上传jpg,jpeg,png格式文件").show();
+        }else{
+            $("#tip3").html("").hide();
+            var formData = new FormData();
+            formData.append("file", $('#myInput4')[0].files[0]);
+            $.ajax({
+                //文件上传并回显
+                url: "/sso/upload",
+                type: "POST",
+                data: formData,
+                /**
+                *必须false才会自动加上正确的Content-Type
+                */
+                contentType: false,
+                /**
+                * 必须false才会避开jQuery对 formdata 的默认处理
+                * XMLHttpRequest会对 formdata 进行正确的处理
+                */
+                processData: false,
+                success: function(data){
+                    if(data.code === 200){
+                        $("#show_img").attr("src",data.data);
+                    }
+                }
+            })
         }
     });
 
-    $("#myInput4").change(function () {
-        $.ajax({
-            //文件上传并回显
-        })
+   $("#logo_file").change(function () {
+        var filePath = document.getElementById("logo_file").value;
+        var mimeTypeList = ["jpg", "jpeg", "png"];
+        var isAllow = false;
+        var ext = filePath.substring(filePath.lastIndexOf(".")+1);
+        console.log(ext);
+        for (var i=0;i< mimeTypeList.length;i++) {
+            if (ext === mimeTypeList[i]) {
+                isAllow = true;
+            }
+        }
+        if (!isAllow) {
+            $("#tip13").html("&nbsp;非法格式,只允许上传jpg,jpeg,png格式文件").show();
+        }else{
+            $("#tip13").html("").hide();
+
+            var formData = new FormData();
+            formData.append("file", $('#logo_file')[0].files[0]);
+            $.ajax({
+                //文件上传并回显
+                url: "/sso/upload",
+                type: "POST",
+                data: formData,
+                /**
+                *必须false才会自动加上正确的Content-Type
+                */
+                contentType: false,
+                /**
+                * 必须false才会避开jQuery对 formdata 的默认处理
+                * XMLHttpRequest会对 formdata 进行正确的处理
+                */
+                processData: false,
+                success: function(data){
+                    if(data.code === 200){
+                        $("#show_img").attr("src",data.data);
+                    }
+                }
+            })
+        }
     });
+
 
     $("#text1").blur(function () {
         var username = $("#text1").val();
@@ -425,10 +461,7 @@
                 bindPhone: $("#myInput5").val()
             },
             userInfo: {
-                loginType: "PC",
-                realName: $("#myInput6").val(),
-                phone: $("#myInput8").val(),
-                address: $("#myInput9").val()
+                loginType: "PC"
             }
         };
         var data = JSON.stringify(obj);
@@ -444,11 +477,47 @@
             },
             success: function (data) {
                 if (data.code === 200) {
-
+                    window.location.href="login.html";
                 }
             }
         })
     });
+    $("#shop_registry").click(function () {
+
+        var obj = {
+            roleId: $("#role").val(),
+            username: $("#name").val(),
+            password: $("#pass").val(),
+            bindPhone: $("#bindPhone").val(),
+            logoPath: $("#logo_path").val(),
+            shopName: $("#shopName").val(),
+            shopDesc: $("#shopDesc").val(),
+            shopCompany: $("#shopCompany").val(),
+            bankCard: $("#bankCard").val(),
+            legelPerson: $("#legelPerson").val(),
+            phone: $("#sendPhone").val(),
+            address:$("#sendAddress").val()
+        };
+        var data = JSON.stringify(obj);
+        console.log(data);
+        $.ajax({
+            url: "/sso/shop/registry",
+            type: "POST",
+            data: data,
+            contentType: "application/json;utf-8",
+            dataType: "json",
+            before: function (data) {
+
+            },
+            success: function (data) {
+                if (data.code === 200) {
+                    console.log("已申请店铺");
+                    window.location.href="login.html";
+                }
+            }
+        })
+    });
+
 </script>
 </body>
 </html>

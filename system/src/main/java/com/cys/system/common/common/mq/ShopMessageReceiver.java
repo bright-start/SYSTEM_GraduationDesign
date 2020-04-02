@@ -43,10 +43,18 @@ public class ShopMessageReceiver {
         Integer id = (Integer) map.get("id");
         Integer status = (Integer) map.get("status");
 
-        GoodsSummary goodsSummary = goodsSummaryMapper.findGoodsSummaryById(id);
-        goodsEngineMapper.save(goodsSummary);
+        //上架
+        if(status == 4) {
+            GoodsSummary goodsSummary = goodsSummaryMapper.findGoodsSummaryById(id);
+            goodsEngineMapper.save(goodsSummary);
+        }
+        //下架
+        if(status == 6){
+            goodsEngineMapper.deleteById(id);
+        }
 
         Map info = goodsMapper.findGoodsNameAndShopIdById(id);
+
 
         String message = "[" + (String)info.get("goods_name") + "]" + Config.GOODS_STATUS_LIST[status];
         log.info(message);

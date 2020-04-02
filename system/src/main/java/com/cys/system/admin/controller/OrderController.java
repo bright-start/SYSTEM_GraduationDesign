@@ -26,7 +26,7 @@ public class OrderController {
     private SSOService ssoService;
 
     @PostMapping("/build")
-    public Result buildOrder(@RequestBody Integer[] ids) {
+    public Result buildOrder(@RequestBody Integer[] ids) throws NoSuchFieldException {
         return orderService.buildOrder(ids);
     }
 
@@ -35,6 +35,11 @@ public class OrderController {
         List<String> noPays = OnlyOneClassConfig.gson.fromJson(noPayList, List.class);
 
         return orderService.lookNoPay(noPays);
+    }
+
+    @DeleteMapping("/delete")
+    Result deleteOrder(@RequestParam String payToken){
+        return orderService.deleteOrder(payToken);
     }
 
     @GetMapping("/lookPay")

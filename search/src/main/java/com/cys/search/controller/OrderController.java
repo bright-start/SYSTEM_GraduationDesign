@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -74,7 +76,29 @@ public class OrderController{
             upOrder.setNoPayList(gson.toJson(noPayList));
             return systemInterface.pay(upOrder);
         }else {
-            return new Result().success();
+            return new Result().success(200,"获取支付订单异常,重试或者联系客服");
+        }
+    }
+    @DeleteMapping("/delete")
+    public Result deleteOrder(@RequestParam String payCode,HttpServletRequest request,HttpServletResponse response){
+        List<String> noPayList = ssoService.getNoPayCode(request);
+        if(noPayList.size() > 0) {
+            String payToken  = null;
+            for (String noPayCode : noPayList) {
+                if(noPayCode.contains(payCode)){
+                    payToken = payCode;
+
+                    Cookie newCookie = new Cookie(payToken, "1");
+                    newCookie.setMaxAge(0);
+                    newCookie.setPath("/");
+                    newCookie.setHttpOnly(true);
+                    response.addCookie(newCookie);
+                    break;
+                }
+            }
+            return systemInterface.deleteOrder(payToken);
+        }else {
+            return new Result().success(200,"订单获取异常,重试或者联系客服");
         }
     }
 }

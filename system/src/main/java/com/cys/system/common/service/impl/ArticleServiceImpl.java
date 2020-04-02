@@ -114,6 +114,12 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public Result loadArticleList() {
+        List<Article> articles = articleMapper.loadArticleList();
+        return new Result().success(articles);
+    }
+
+    @Override
     public Result getArticleById(Integer id) {
 
         Article article = articleMapper.getArticleById(id);

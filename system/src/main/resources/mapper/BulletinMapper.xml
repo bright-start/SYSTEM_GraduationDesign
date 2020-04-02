@@ -34,6 +34,14 @@
         </where>
         order by b_updatetime desc
     </select>
+    <select id="loadBulletinList" resultMap="bulletinMap">
+        select
+        *
+        from bulletin
+        where b_status = 1
+        order by b_updatetime desc
+        limit 2
+    </select>
     <select id="getBulletinById" parameterType="java.lang.Integer" resultMap="bulletinMap">
         select * from bulletin where b_id = #{id}
     </select>

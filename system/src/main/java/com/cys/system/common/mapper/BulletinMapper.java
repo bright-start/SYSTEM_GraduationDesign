@@ -1,5 +1,6 @@
 package com.cys.system.common.mapper;
 
+import com.cys.system.common.common.pojo.Result;
 import com.cys.system.common.pojo.Bulletin;
 import com.cys.system.common.pojo.TimeTask;
 import org.apache.ibatis.annotations.Param;
@@ -24,4 +25,6 @@ public interface BulletinMapper {
     void updateStatusById(@Param("id") Integer id);
 
     void insertBulletin(Bulletin bulletin);
+
+    List<Bulletin> loadBulletinList();
 }

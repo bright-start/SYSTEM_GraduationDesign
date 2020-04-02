@@ -13,6 +13,7 @@ import com.cys.system.common.util.TimeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Date;
@@ -62,6 +63,11 @@ public class ArticleController {
         }
     }
 
+    @GetMapping("/loadArticleList")
+    public Result loadArticleList(){
+        return articleService.loadArticleList();
+    }
+
     @GetMapping("/get")
     public Result getArticleById(Integer id) {
         return articleService.getArticleById(id);
@@ -81,47 +87,47 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/increaseBrowse")
-    public Result increaseBrowseNum(HttpServletRequest request,Integer articleId) throws UnauthorizedException {
-        Map<String, Object> userMap = ssoService.getUser(request);
-        if (userMap == null && userMap.isEmpty()) {
-            throw new UnauthorizedException();
-        }
-        return articleService.increaseBrowseNum(articleId, (Integer)userMap.get("userId"));
+    public Result increaseBrowseNum(Integer userId,Integer articleId) throws UnauthorizedException {
+//        Map<String, Object> userMap = ssoService.getUser(request);
+//        if (userMap == null && userMap.isEmpty()) {
+//            throw new UnauthorizedException();
+//        }
+        return articleService.increaseBrowseNum(articleId, userId);
     }
 
     /**
      * @return
      */
     @PutMapping("/increaseLoveNum")
-    public Result increaseLoveNum(HttpServletRequest request, Integer articleId, Integer islove) throws UnauthorizedException {
-        Map<String, Object> userMap = ssoService.getUser(request);
-        if (userMap == null && userMap.isEmpty()) {
-            throw new UnauthorizedException();
-        }
-        return articleService.increaseLoveNum(articleId, (Integer)userMap.get("userId"), islove);
+    public Result increaseLoveNum(Integer userId, Integer articleId, Integer islove) throws UnauthorizedException {
+//        Map<String, Object> userMap = ssoService.getUser(request);
+//        if (userMap == null && userMap.isEmpty()) {
+//            throw new UnauthorizedException();
+//        }
+        return articleService.increaseLoveNum(articleId, userId, islove);
     }
 
     /**
      * @return
      */
     @PostMapping("/command/commit")
-    public Result commitCommand(HttpServletRequest request, @RequestBody Command command) throws Exception {
-        Map<String, Object> userMap = ssoService.getUser(request);
-        if (userMap == null && userMap.isEmpty()) {
-            throw new UnauthorizedException();
-        }
-        command.setUserId((Integer)userMap.get("userId"));
+    public Result commitCommand(@RequestBody Command command) throws Exception {
+//        Map<String, Object> userMap = ssoService.getUser(request);
+//        if (userMap == null && userMap.isEmpty()) {
+//            throw new UnauthorizedException();
+//        }
+//        command.setUserId(userId);
         command.setCreateTime(TimeConverter.DateToString(new Date()));
         return articleService.commitCommand(command);
     }
 
     @DeleteMapping("/command/delete")
-    public Result deleteCommand(HttpServletRequest request, Integer commandId) throws UnauthorizedException {
-        Map<String, Object> userMap = ssoService.getUser(request);
-        if (userMap == null && userMap.isEmpty()) {
-            throw new UnauthorizedException();
-        }
-        return articleService.deleteCommand(commandId, (Integer)userMap.get("userId"));
+    public Result deleteCommand(Integer userId, Integer commandId) throws UnauthorizedException {
+//        Map<String, Object> userMap = ssoService.getUser(request);
+//        if (userMap == null && userMap.isEmpty()) {
+//            throw new UnauthorizedException();
+//        }
+        return articleService.deleteCommand(commandId, userId);
     }
 
 }

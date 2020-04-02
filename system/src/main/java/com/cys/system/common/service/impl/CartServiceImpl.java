@@ -1,11 +1,13 @@
 package com.cys.system.common.service.impl;
 
+import com.cys.system.common.mapper.GoodsMapper;
 import com.cys.system.common.pojo.Cart;
 import com.cys.system.common.pojo.CartItem;
 import com.cys.system.common.common.pojo.Result;
 import com.cys.system.common.mapper.CartItemMapper;
 import com.cys.system.common.mapper.CartMapper;
 import com.cys.system.common.mapper.ProductMapper;
+import com.cys.system.common.pojo.Goods;
 import com.cys.system.common.pojo.Product;
 import com.cys.system.common.service.CartService;
 import com.cys.system.common.util.TimeConverter;
@@ -29,6 +31,9 @@ public class CartServiceImpl implements CartService {
 
     @Resource
     private CartItemMapper cartItemMapper;
+
+    @Resource
+    private GoodsMapper goodsMapper;
 
     @Override
     public Result addCart(Integer productId, Integer productNum, Integer userId) {
@@ -121,6 +126,14 @@ public class CartServiceImpl implements CartService {
             for (CartItem cartItem : cartItemList) {
                 if(cartItem.getShopId() == key){
                     List<CartItem> cartItems = cartItemMap.get(key);
+                    Product product = productMapper.findProductInfoById(cartItem.getProductId());
+                    if(cartItem.getProductCount() >product.getProductStock()){
+                        cartItem.setNoBuyReason("库存不足");
+                    }
+                    Goods goods = goodsMapper.findGoodsById(product.getGoodsId());
+                    if(goods.getStatus() == 6){
+                        cartItem.setNoBuyReason("已下架");
+                    }
                     cartItems.add(cartItem);
                     cartItemMap.put(key,cartItems);
                 }

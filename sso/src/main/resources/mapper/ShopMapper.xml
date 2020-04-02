@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.sso.mapper.ShopMapper">
+    <resultMap id="shopMap" type="Shop">
+        <id column="shop_id" property="shopId"/>
+        <result column="shop_name" property="shopName"/>
+        <result column="shop_desc" property="shopDesc"/>
+        <result column="shop_image" property="logoPath"/>
+        <result column="shop_company" property="shopCompany"/>
+        <result column="shop_bank_card" property="bankCard"/>
+        <result column="shop_legel_person" property="legelPerson"/>
+        <result column="shop_createtime" property="createtime"/>
+        <result column="shop_status" property="status"/>
+        <result column="u_id" property="uid"/>
+        <result column="shop_send_phone" property="phone"/>
+        <result column="shop_address" property="address"/>
+        <result column="shop_love" property="shopLove"/>
+        <result column="shop_hot_goods_id" property="hotGoodsId"/>
+        <result column="shop_month_transaction" property="monthTransaction"/>
+        <result column="shop_all_transaction" property="Transaction"/>
+        <result column="shop_views" property="shopViews"/>
+        <result column="shop_all_views" property="shopAllViews"/>
+        <result column="shop_trading_volume" property="shopTradingVolume"/>
+        <result column="shop_all_trading_volume" property="shopAllTradingVolume"/>
+        <result column="shop_template" property="shopTemplate"/>
+
+    </resultMap>
+    <insert id="saveShopInfo" parameterType="Shop">
+        <selectKey resultType="java.lang.Integer"  order="AFTER" keyProperty="shopId" >
+            select currval('shop_shop_id_seq'::regclass) as shopId
+        </selectKey>
+        insert into shop(
+        shop_name,
+        shop_desc,
+        shop_image,
+        shop_company,
+        shop_bank_card,
+        shop_legel_person,
+        shop_createtime,
+        shop_status,
+        shop_send_phone,
+        shop_address
+        )values(
+        #{shopName},
+        #{shopDesc},
+        #{logoPath},
+        #{shopCompany},
+        #{bankCard},
+        #{legelPerson},
+        #{createtime},
+        #{status},
+        #{phone},
+        #{address}
+        )
+
+    </insert>
+    <select id="existShop" parameterType="java.lang.String" resultMap="shopMap">
+        select shop_id from shop
+        where shop_name = #{shopName}
+    </select>
+</mapper>

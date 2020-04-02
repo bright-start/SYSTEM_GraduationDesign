@@ -25,4 +25,6 @@ public interface ArticleMapper {
     List<TimeTask> listTimeTask();
 
     void decreaseLoveNum(Integer id);
+
+    List<Article> loadArticleList();
 }

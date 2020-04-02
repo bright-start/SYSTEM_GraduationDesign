@@ -18,4 +18,6 @@ public interface UserMapper {
     Integer findStatus(String username);
 
     void changeStatus(@Param("username") String username,@Param("status") Integer status);
+
+    void updateUserById(@Param("userId") Integer userId,@Param("shopId") Integer shopId);
 }

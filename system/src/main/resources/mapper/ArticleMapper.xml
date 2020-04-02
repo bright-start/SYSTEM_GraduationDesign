@@ -36,6 +36,15 @@
         </where>
         order by article_createtime desc
     </select>
+    <select id="loadArticleList" resultMap="articleMap">
+        select
+        article_id,
+        article_name,
+        article_releasetime
+        from article
+        where article_status = 1
+        order by article_releasetime desc
+    </select>
     <select id="getArticleById" parameterType="Article" resultMap="articleMap">
         select *
         from article

@@ -39,35 +39,44 @@ public class TokenFilter implements HandlerInterceptor {
 
     protected String loginUrl = "http://www.cys.com:9200/sso/sso/html/login.html";
 
-    protected final static String COOKIENAME="SYS-TOKEN";
+    protected final static String COOKIENAME = "SYS-TOKEN";
 
     private final static List<AuthUrl> authUrlList = new LinkedList<>();
-
-    @PostConstruct
-    public void getAllAuthUrl(){
-        List<AuthUrl> authUrl = authUrlService.getAllAuthUrl();
-        authUrlList.addAll(authUrl);
-    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        StringBuffer requestURL = request.getRequestURL();
+        Map<String, List<AuthUrl>> roleAuthUrl = authUrlService.listAllRoleAuthUrl();
 
-        //权限路径白名单检测排除
-        if(!authUrlList.isEmpty() && authUrlList.toString().contains(requestURL)){
-            return true;
-        }
-
-        if("/area/findAreaList".equals(requestURL)){
-            return true;
-        }
-
-        Map<String,Object> userMap = ssoService.getUser(request);
-        if(userMap == null || userMap.isEmpty()){
+        Map<String, Object> userMap = ssoService.getUser(request);
+        if (userMap == null || userMap.isEmpty()) {
             response.sendRedirect(loginUrl);
             return false;
         }
+
+        //获取访问的url路径
+        StringBuffer requestURL = request.getRequestURL();
+
+        for (Map.Entry<String, List<AuthUrl>> entry : roleAuthUrl.entrySet()) {
+            String roleKey = entry.getKey();
+            List<AuthUrl> roleAuthUrlList = entry.getValue();
+
+            //权限路径白名单检测确认，通过白名单则放行
+            if (!roleAuthUrlList.isEmpty() && roleAuthUrlList.toString().contains(requestURL)) {
+
+                List list = (List) userMap.get("authorities");
+                if (list != null && !list.isEmpty()) {
+                    Map map = (Map) list.get(0);
+                    if (map != null && !map.isEmpty()) {
+                        String role = (String) map.get("role");
+                        if (!(role != null && role.contains(roleKey))) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
         return true;
     }
 }

@@ -1,6 +1,7 @@
 package com.cys.sso.service;
 
 import com.cys.sso.pojo.Result;
+import com.cys.sso.pojo.Shop;
 import com.cys.sso.pojo.User;
 import com.cys.sso.pojo.UserFingerprint;
 
@@ -18,4 +19,8 @@ public interface UserService {
     Integer isLogin(String username);
 
     void changeStatus(String username,Integer status);
+
+    Result shopRegistry(Shop shop, HttpServletRequest request);
+
+    void updateLoginTimeById(Integer userId);
 }

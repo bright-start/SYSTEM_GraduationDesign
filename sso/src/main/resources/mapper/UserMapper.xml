@@ -40,6 +40,11 @@
         update _user set status=#{status}
         where username=#{username}
     </update>
+    <update id="updateUserByUser">
+        update _user set
+        shop_id=#{shopId}
+        where user_id=#{userId}
+    </update>
     <insert id="registry" parameterType="User">
         <selectKey resultType="java.lang.Integer"  order="AFTER" keyProperty="userId" >
             select currval('user_u_id_seq'::regclass) as userId
@@ -63,7 +68,7 @@
         #{level},
         #{status},
         #{disableTime},
-        ${bindPhone}
+        #{bindPhone}
         )
     </insert>
 </mapper>

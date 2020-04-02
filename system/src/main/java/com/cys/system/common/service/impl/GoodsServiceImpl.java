@@ -91,6 +91,10 @@ public class GoodsServiceImpl implements GoodsService {
         if (successFlag == 0) {
             return new Result().success("审核状态更新失败");
         }
+        //下架
+        if(status == 6) {
+            goodsEngineMapper.deleteById(id);
+        }
 
         msgSender.sendToShop(id,status);
 

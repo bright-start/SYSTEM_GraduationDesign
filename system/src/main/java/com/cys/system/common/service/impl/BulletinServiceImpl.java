@@ -97,4 +97,10 @@ public class BulletinServiceImpl implements BulletinService {
     public void updateStatusById(Integer id) {
         bulletinMapper.updateStatusById(id);
     }
+
+    @Override
+    public Result loadBulletinList() {
+        List<Bulletin> bulletins = bulletinMapper.loadBulletinList();
+        return new Result().success(bulletins);
+    }
 }

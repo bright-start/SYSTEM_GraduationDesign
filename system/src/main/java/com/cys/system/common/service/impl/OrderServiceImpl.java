@@ -3,13 +3,10 @@ package com.cys.system.common.service.impl;
 import com.cys.system.common.common.pojo.Result;
 import com.cys.system.common.common.pojo.UpOrder;
 import com.cys.system.common.config.OnlyOneClassConfig;
-import com.cys.system.common.mapper.CartItemMapper;
-import com.cys.system.common.mapper.OrderItemMapper;
-import com.cys.system.common.mapper.OrderMapper;
-import com.cys.system.common.pojo.CartItem;
-import com.cys.system.common.pojo.Order;
-import com.cys.system.common.pojo.OrderItem;
+import com.cys.system.common.mapper.*;
+import com.cys.system.common.pojo.*;
 import com.cys.system.common.service.OrderService;
+import com.cys.system.common.util.CodeConversionUtil;
 import com.cys.system.common.util.TimeConverter;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -27,9 +24,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Type;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Time;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false, rollbackFor = {Exception.class})
 @Service
@@ -47,12 +47,20 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private GoodsMapper goodsMapper;
+
+    @Autowired
+    private ProductMapper productMapper;
+
+    private static final ReentrantLock reentrantLock = new ReentrantLock();
 
     @Override
-    public Result buildOrder(Integer[] ids) {
+    public Result buildOrder(Integer[] ids) throws NoSuchFieldException {
         Map<Integer, Map<Order, List<OrderItem>>> orderMap = new LinkedHashMap<>();
         for (Integer id : ids) {
             CartItem cartItem = cartItemMapper.getCartItemByItemId(id);
+
             Integer shopId = cartItem.getShopId();
             if (orderMap.containsKey(shopId)) {
                 Map<Order, List<OrderItem>> orderListMap = orderMap.get(shopId);
@@ -65,10 +73,25 @@ public class OrderServiceImpl implements OrderService {
             }
         }
 
-        String orderCode = "code_" + UUID.randomUUID().toString().replace("-", "");
+        // 是否处于可卖出状态检测
+        // 。。。
+
+        String json = OnlyOneClassConfig.gson.toJson(orderMap);
+
+        byte[] bt = json.getBytes();
+        MessageDigest sha = null;
+        try {
+            sha = MessageDigest.getInstance("SHA");
+        } catch (NoSuchAlgorithmException e) {
+            throw new NoSuchFieldException();
+        }
+        sha.update(bt);
+        String digest = CodeConversionUtil.byteToHex(sha.digest());
+        String orderCode = "code_" + digest;
+
         RedisSerializer redisSerializer = new StringRedisSerializer();
         redisTemplate.setKeySerializer(redisSerializer);
-        redisTemplate.opsForValue().set(orderCode, OnlyOneClassConfig.gson.toJson(orderMap));
+        redisTemplate.opsForValue().set(orderCode, json);
         redisTemplate.expire(orderCode, 30, TimeUnit.MINUTES);
 
         return new Result().success(orderCode);
@@ -126,24 +149,33 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(readOnly = true)
     @Override
     public Result lookNoPay(List<String> noPayList) {
-        List<Map<Integer, Map<Order, List<OrderItem>>>> noPayOrderList = new LinkedList<>();
+        Map<String,Map<Integer, Map<Order, List<OrderItem>>>> noPayOrderMapList = new HashMap<>();
         RedisSerializer redisSerializer = new StringRedisSerializer();
         redisTemplate.setKeySerializer(redisSerializer);
         for (String noPayCode : noPayList) {
             String noPayOrderJson = (String) redisTemplate.opsForValue().get(noPayCode);
             if (noPayOrderJson != null) {
                 Map<Integer, Map<Order, List<OrderItem>>> noPayOrderMap = (Map<Integer, Map<Order, List<OrderItem>>>) OnlyOneClassConfig.gson.fromJson(noPayOrderJson, Map.class);
-                noPayOrderList.add(noPayOrderMap);
+                noPayOrderMapList.put(noPayCode,noPayOrderMap);
             }
 
         }
-        return new Result().success(noPayOrderList);
+        return new Result().success(noPayOrderMapList);
+    }
+
+    @Override
+    public Result deleteOrder(String payToken) {
+        RedisSerializer redisSerializer = new StringRedisSerializer();
+        redisTemplate.setKeySerializer(redisSerializer);
+
+        redisTemplate.expire(payToken,0,TimeUnit.SECONDS);
+        return new Result().success();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Result lookPay(Integer status,Integer userId, String orderId) {
-        List<Order> orders = orderMapper.lookPay(status,userId, orderId);
+    public Result lookPay(Integer status, Integer userId, String orderId) {
+        List<Order> orders = orderMapper.lookPay(status, userId, orderId);
         return new Result().success(orders);
     }
 
@@ -153,38 +185,94 @@ public class OrderServiceImpl implements OrderService {
         RedisSerializer redisSerializer = new StringRedisSerializer();
         redisTemplate.setKeySerializer(redisSerializer);
 
-        List<String> noPayList = OnlyOneClassConfig.gson.fromJson(upOrder.getNoPayList(), List.class);
-        for (String noPayCode : noPayList) {
 
-            String noPayOrderJson = (String) redisTemplate.opsForValue().get(noPayCode);
-            if (noPayOrderJson != null) {
-                //json转复杂类型map代码，直接转换会破坏原有的数据结构
-                Type type = new TypeToken<Map<Integer, Map<Order, List<OrderItem>>>>() {
-                }.getType();
-                Map<Integer, Map<Order, List<OrderItem>>> noPayOrderMap = OnlyOneClassConfig.gson.fromJson(noPayOrderJson, type);
+        //加锁，预防订单异常时间
+        try {
+            reentrantLock.tryLock(1, TimeUnit.SECONDS);
 
-                for (Map.Entry<Integer, Map<Order, List<OrderItem>>> integerMapEntry : noPayOrderMap.entrySet()) {
+            List<String> noPayList = OnlyOneClassConfig.gson.fromJson(upOrder.getNoPayList(), List.class);
+            for (String noPayCode : noPayList) {
 
-                    Map<Order, List<OrderItem>> orderListMap = integerMapEntry.getValue();
-                    for (Map.Entry<Order, List<OrderItem>> orderListEntry : orderListMap.entrySet()) {
-                        Order order = orderListEntry.getKey();
-                        List<OrderItem> orderItemList = orderListEntry.getValue();
-                        for (OrderItem orderItem : orderItemList) {
-                            orderItemMapper.createOrderItem(orderItem);
+                String noPayOrderJson = (String) redisTemplate.opsForValue().get(noPayCode);
+
+                if (noPayOrderJson != null) {
+                    byte[] bt = noPayOrderJson.getBytes();
+                    MessageDigest sha = null;
+                    try {
+                        sha = MessageDigest.getInstance("SHA");
+                    } catch (NoSuchAlgorithmException e) {
+                        throw new NoSuchFieldException();
+                    }
+                    sha.update(bt);
+                    String digest = CodeConversionUtil.byteToHex(sha.digest());
+                    if(!noPayCode.contains(digest)){
+                        //记录恶意行为
+                        return new Result().success(200,"订单校验失败,可能发生篡改,恶意行为已记录");
+                    }
+
+                    //json转复杂类型map代码，直接转换会破坏原有的数据结构
+                    Type type = new TypeToken<Map<Integer, Map<Order, List<OrderItem>>>>() {
+                    }.getType();
+                    Map<Integer, Map<Order, List<OrderItem>>> noPayOrderMap = OnlyOneClassConfig.gson.fromJson(noPayOrderJson, type);
+
+
+                    //记录库存不足的商品名称
+                    List<Product> products = new LinkedList<>();
+                    List<String> noProductList = new ArrayList<>();
+                    for (Map.Entry<Integer, Map<Order, List<OrderItem>>> integerMapEntry : noPayOrderMap.entrySet()) {
+
+                        Map<Order, List<OrderItem>> orderListMap = integerMapEntry.getValue();
+                        for (Map.Entry<Order, List<OrderItem>> orderListEntry : orderListMap.entrySet()) {
+                            Order order = orderListEntry.getKey();
+                            List<OrderItem> orderItemList = orderListEntry.getValue();
+                            for (int i = 0; i < orderItemList.size(); i++) {
+                                Product product = productMapper.findProductInfoById(orderItemList.get(i).getProductId());
+                                products.add(product);
+                                if(orderItemList.get(i).getProductCount() > product.getProductStock()){
+                                    noProductList.add(orderItemList.get(i).getProductName());
+                                }
+                            }
                         }
-                        order.setStatus(1);
-                        order.setCreateTime(TimeConverter.DateToString(new Date()));
-                        order.setOrderCount(orderItemList.size());
-                        order.setUserId(upOrder.getUserId());
-                        order.setCreator(upOrder.getCreator());
-                        order.setPhone(upOrder.getPhone());
-                        order.setAddress(upOrder.getAddress());
-                        order.setPayType(upOrder.getPayType());
-                        orderMapper.createOrder(order);
+                    }
+                    if(!noProductList.isEmpty()){
+                        return new Result().success(noProductList);
+                    }
+
+                    for (Map.Entry<Integer, Map<Order, List<OrderItem>>> integerMapEntry : noPayOrderMap.entrySet()) {
+
+                        Map<Order, List<OrderItem>> orderListMap = integerMapEntry.getValue();
+                        for (Map.Entry<Order, List<OrderItem>> orderListEntry : orderListMap.entrySet()) {
+                            Order order = orderListEntry.getKey();
+                            List<OrderItem> orderItemList = orderListEntry.getValue();
+                            for (int i = 0; i < orderItemList.size(); i++) {
+                                Product product = products.get(i);
+                                //卖出，更新库存，更新月销量，更新月销售额
+                                product.setProductStock(product.getProductStock()-orderItemList.get(i).getProductCount());
+                                productMapper.updateProduct(product);
+                                goodsMapper.saleGoods(orderItemList.get(i).getProductCount()
+                                        ,product.getGoodsId());
+                                //店铺更新月销售额
+
+                                orderItemMapper.createOrderItem(orderItemList.get(i));
+                            }
+                            order.setStatus(1);
+                            order.setCreateTime(TimeConverter.DateToString(new Date()));
+                            order.setOrderCount(orderItemList.size());
+                            order.setUserId(upOrder.getUserId());
+                            order.setCreator(upOrder.getCreator());
+                            order.setPhone(upOrder.getPhone());
+                            order.setAddress(upOrder.getAddress());
+                            order.setPayType(upOrder.getPayType());
+                            orderMapper.createOrder(order);
+                        }
                     }
                 }
+                redisTemplate.expire(noPayCode, 0, TimeUnit.SECONDS);
             }
-            redisTemplate.expire(noPayCode, 0, TimeUnit.SECONDS);
+        } catch (InterruptedException | NoSuchFieldException e) {
+            return new Result().success(200, "账单生成失败");
+        }finally {
+            reentrantLock.unlock();
         }
 
         //支付  支付失败则不生成最终订单
@@ -215,12 +303,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Result updateStatus(Integer status, String[] orderIds,Integer userId,Integer shopId) {
+    public Result updateStatus(Integer status, String[] orderIds, Integer userId, Integer shopId) {
         for (String orderId : orderIds) {
-            if(status == 4){
-                orderMapper.updateOrderStatus(TimeConverter.DateToString(new Date()),status,orderId,userId,shopId);
-            }else {
-                orderMapper.updateOrderStatus(null,status,orderId,userId,shopId);
+            if (status == 4) {
+                orderMapper.updateOrderStatus(TimeConverter.DateToString(new Date()), status, orderId, userId, shopId);
+            } else {
+                orderMapper.updateOrderStatus(null, status, orderId, userId, shopId);
             }
         }
         return new Result().success();

@@ -29,4 +29,6 @@ public interface ArticleService {
     void updateStatusById(Integer id);
 
     List<TimeTask> listTimeTask();
+
+    Result loadArticleList();
 }

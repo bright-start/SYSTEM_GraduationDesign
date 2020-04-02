@@ -2,21 +2,25 @@ package com.cys.search.feign;
 
 
 import com.cys.search.feign.failback.FailBack;
-import com.cys.search.pojo.AuthUrl;
-import com.cys.search.pojo.UpOrder;
-import com.cys.search.pojo.SearchEntity;
-import com.cys.search.pojo.Result;
+import com.cys.search.pojo.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Component
 @FeignClient(value = "system.cys.com",path = "/system",fallback = FailBack.class)
 public interface SystemInterface {
     @GetMapping("/area/findAreaList")
     Result findAreaList();
+
+    @GetMapping("/bulletin/loadBulletinList")
+    Result loadBulletinList();
+
+    @GetMapping("/article/loadArticleList")
+    Result loadArticleList();
 
     @GetMapping("/goods/findGoodGoods")
     Result findGoodGoods();
@@ -55,5 +59,23 @@ public interface SystemInterface {
     Result pay(@RequestBody UpOrder upOrder);
 
     @GetMapping(value = "/auth/getAll",consumes = "application/json")
-    List<AuthUrl> getAllAuthUrl();
+    Map<String, List<AuthUrl>> listAllRoleAuthUrl();
+
+    @DeleteMapping("/order/delete")
+    Result deleteOrder(@RequestParam String orderToken);
+
+    @GetMapping("/article/get")
+    Result getArticleById(@RequestParam Integer id);
+
+    @GetMapping("/article/increaseBrowseNum")
+    Result increaseBrowseNum(@RequestParam Integer userId,@RequestParam Integer articleId);
+
+    @PutMapping("/article/increaseLoveNum")
+    Result increaseLoveNum(@RequestParam Integer userId,@RequestParam Integer articleId, @RequestParam Integer islove);
+
+    @PostMapping(value = "/article/command/commit",consumes = "application/json")
+    Result commitCommand(@RequestBody Command command);
+
+    @DeleteMapping("/article/command/delete")
+    Result deleteCommand(@RequestParam Integer userId, @RequestParam Integer commandId);
 }

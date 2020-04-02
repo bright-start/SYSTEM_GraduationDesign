@@ -4,11 +4,9 @@ public class UserInfo {
     private Integer userId;
     private String registryTime;
     private String lastLoginTime;
+    private String loginTime;
     private String loginType;
     private String ipAddr;
-    private String phone;
-    private String realName;
-    private String address;
 
 
     public Integer getUserId() {
@@ -51,27 +49,11 @@ public class UserInfo {
         this.ipAddr = ipAddr;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getLoginTime() {
+        return loginTime;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setLoginTime(String loginTime) {
+        this.loginTime = loginTime;
     }
 }

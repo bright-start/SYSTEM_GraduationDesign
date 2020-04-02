@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+          name="viewport">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/clock.css">
+    <link rel="stylesheet" type="text/css" href="../plugins/assets/waifu.css"/>
+
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../plugins/angularjs/angular.min.js"></script>
+    <script type="text/javascript" src="../js/base.js"></script>
+    <script type="text/javascript" src="../js/service/articleService.js"></script>
+    <script type="text/javascript" src="../js/service/commentService.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/controller/articleController.js"></script>
+</head>
+<body ng-app="system" ng-controller="articleController"
+      class="hold-transition skin-red sidebar-mini"
+      ng-init="findOne();" style="background-image:url('../images/article_bg.jpg');">
+<!--页头-->
+<div>
+    <section>
+        <div style="width:100%;height: 50px; margin:0 auto;background-image: url('../images/article_top.jpg');background-size:28% 50px;box-shadow: 0px 10px 5px black;"></div>
+    </section>
+    <div style="position: fixed; left:80px; top: 120px;z-index:10">
+        <div id="landlord">
+            <div class="message" style="opacity:0"></div>
+            <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        </div><div class="waifu">
+        <div class="waifu-tips"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        <div class="waifu-tool">
+            <span class="fui-home"></span>
+            <span class="fui-chat"></span>
+            <span class="fui-eye"></span>
+            <span class="fui-user"></span>
+            <span class="fui-photo"></span>
+            <span class="fui-info-circle"></span>
+            <span class="fui-cross"></span>
+        </div>
+    </div>
+    </div>
+    <div style="clear:both;overflow: hidden;width: 100%;">
+        <div style="width: 25%;float: left;background-color: #275fa5;padding: 10px;text-align: center;">
+            作者
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <!--时钟-->
+            <div style="position:relative;width: 100%;height: 300px;">
+                <div class="fill">
+                    <div class="reference"></div>
+                    <div class="clock" id="utility-clock">
+                        <div class="centre">
+                            <div class="dynamic"></div>
+                            <div class="expand round circle-1"></div>
+                            <div class="anchor hour">
+                                <div class="element thin-hand"></div>
+                                <div class="element fat-hand"></div>
+                            </div>
+                            <div class="anchor minute">
+                                <div class="element thin-hand"></div>
+                                <div class="element fat-hand minute-hand"></div>
+                            </div>
+                            <div class="anchor second">
+                                <div class="element second-hand"></div>
+                            </div>
+                            <div class="expand round circle-2"></div>
+                            <div class="expand round circle-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <br>
+        </div>
+        <div style="width:67.88%;float: left;background-color: rgba(255,255,255,0.7); padding: 40px;">
+            <!--文章主题-->
+            <h1 style="text-align: center;margin-top: 50px;">{{entity.article.name}}</h1>
+            <p style="text-align: center"><span>浏览:{{entity.article.browseNum}}</span>&nbsp;|&nbsp;<span
+                    ng-click="love(entity.article.id)"><img id="loveClick"
+                                                            src="../images/heart.jpeg"
+                                                            style="width: 20px;height: 20px;"
+                                                            alt=""></span>&nbsp;</span>
+                <span>{{entity.article.loveNum}}</span>
+            </p>
+            <!--半透明背景-->
+            <section>
+                <article style="margin-top: 50px;" ng-bind-html="entity.article.content | trustHtml">
+                </article>
+            </section>
+            <!--评论-->
+            <section>
+                <div style="border-radius: 10px;border: 1px dashed slategray; width: 100%;padding: 5px;">
+                    <textarea ng-model="command.content" cols="30" rows="10"
+                              style="width: 100%;margin:0 auto;height: 60px;outline: none;"
+                              placeholder="biu～～～"></textarea>
+                    <br>
+                    <button style="background-color: orange;width: 150px;height: 40px;font-size: 30px;font-size: large;outline: none;"
+                            ng-click="addCommand(entity.article.id)">评论
+                    </button>
+                    <br>
+                    <br>
+                    <br>
+                    <ul style="margin: 0;padding: 0;">
+                        <li style="list-style-type:none;margin-top: 20px;"
+                            ng-repeat="commandContent in entity.commandContentList">
+                            <div style="width: 95%;padding: 20px;color: cornflowerblue;border: 1px solid #f5e79e;background-color:#f5e79e; box-shadow: 0 0 10px #b2b2b2;">
+                                <input type="hidden" ng-model="commandContent.command.commandId">
+                                <div ng-value="commandContent.commandUser.userId">
+                                    <img src="commandContent.commandUser.image" alt="">
+                                    {{commandContent.commandUser.username}}
+                                </div>
+                                <div ng-if="commandContent.responseUser.userId != null"
+                                     ng-value="commandContent.responseUser.userId">
+                                    <img src="commandContent.responseUser.image" alt="">
+                                    {{commandContent.responseUser.username}}
+                                </div>
+                                <div style="padding:10px;color:black;">{{commandContent.command.content}}</div>
+                                <div style="overflow: hidden;">
+                                    <span id="compareUserId"
+                                          style="float:left;padding:5px;background-color: #e6dede;opacity: 0.7;cursor: pointer;"
+                                          ng-value="commandContent.commandUser.userId"
+                                          ng-click="deleteCommand($index,commandContent.command.commandId);">
+                                    删除评论
+                                    </span>
+                                    <span style="float:right;">{{commandContent.command.createTime}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!--页脚-->
+    <section>
+        <div style="background-color: #eaeaea;width:100%;height: 60px;text-align: center;padding: 40px;">
+            <p>客服热线 000-0000 | 投稿邮箱 xxxx@163.com | QQ交流群 000000000</p>
+        </div>
+    </section>
+</div>
+<script src="../js/system/clock.js"></script>
+<script src="../plugins/assets/waifu_tips.js"></script>
+<script src="../plugins/assets/live2d_.js"></script>
+<script type="text/javascript">initModel("../plugins/assets/")</script>
+<!--<script type="text/javascript" charset="utf-8"-->
+<!--        src="../js/girl/L2Dwidget.0.min.js"></script>-->
+<!--<script type="text/javascript" charset="utf-8" src="../js/girl/L2Dwidget.min.js"></script>-->
+<!--<script type="text/javascript">-->
+<!--    L2Dwidget.init({-->
+<!--        "display": {-->
+<!--            "superSample": 2,-->
+<!--            "width": 200,-->
+<!--            "height": 400,-->
+<!--            "position": "left",-->
+<!--            "hOffset": 0,-->
+<!--            "vOffset": 0-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script type="text/javascript">
+    var outer = window.parent;
+    var loginUserFlag = outer.$("#loginUserFlag").attr("value");
+
+    console.log(loginUserFlag);
+
+    $("#compareUserId").change(function () {
+        var commandUserId = $("#compareUserId").attr("value");
+        if (commandUserId === loginUserFlag) {
+            $("#compareUserId").show();
+        }
+        $("#compareUserId").hide();
+
+    });
+
+    $("#loveClick").click(function () {
+        if ($("#loveClick").attr("src") === "../images/heart.jpeg") {
+            $("#loveClick").attr("src", "../images/red_heart.jpg");
+        } else {
+            $("#loveClick").attr("src", "../images/heart.jpeg");
+        }
+    });
+</script>
+
+</body>
+</html>

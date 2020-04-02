@@ -30,7 +30,6 @@ public class TokenFilter implements HandlerInterceptor {
 
     protected final static String COOKIENAME="SYS-TOKEN";
 
-    private final static List<AuthUrl> authUrlList = new LinkedList<>();
 
     private Logger logger = LoggerFactory.getLogger(TokenFilter.class);
 
@@ -45,17 +44,14 @@ public class TokenFilter implements HandlerInterceptor {
 
         StringBuffer requestURL = request.getRequestURL();
 
-        //权限路径白名单检测排除
-        if(!authUrlList.isEmpty() && authUrlList.toString().contains(requestURL)){
-            return true;
-        }
+
 
         logger.info(requestURL.toString()+"验证");
-        Map<String,Object> userMap = ssoService.getUser(request);
-        if(userMap == null || userMap.isEmpty()){
-            response.sendRedirect(loginUrl);
-            return false;
-        }
+//        Map<String,Object> userMap = ssoService.getUser(request);
+//        if(userMap == null || userMap.isEmpty()){
+//            response.sendRedirect(loginUrl);
+//            return false;
+//        }
         return true;
     }
 }

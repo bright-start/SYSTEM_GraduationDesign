@@ -1,6 +1,7 @@
 package com.cys.sso.controller;
 
 import com.cys.sso.pojo.Result;
+import com.cys.sso.pojo.Shop;
 import com.cys.sso.pojo.UserFingerprint;
 import com.cys.sso.service.TokenService;
 import com.cys.sso.service.UserService;
@@ -44,6 +45,11 @@ public class UserController {
     @PostMapping("/registry")
     public Result registry(@RequestBody UserFingerprint userFingerprint,HttpServletRequest request) {
         return this.userService.registry(userFingerprint,request);
+    }
+
+    @PostMapping("/shop/registry")
+    public Result shopRegistry(@RequestBody Shop shop, HttpServletRequest request) {
+        return this.userService.shopRegistry(shop,request);
     }
 
 

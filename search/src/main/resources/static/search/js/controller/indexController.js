@@ -1,4 +1,4 @@
-app.controller("indexController", function ($scope,$controller,$location,areaService,loginService,goodsService,cartService) {
+app.controller("indexController", function ($scope,$controller,$location,areaService,bulletinService,articleService,loginService,goodsService,cartService) {
 
     $controller("baseController", {$scope: $scope});
 
@@ -9,6 +9,23 @@ app.controller("indexController", function ($scope,$controller,$location,areaSer
             }
         });
     };
+
+    $scope.loadBulletinList =function(){
+        bulletinService.loadBulletinList().success(function(data){
+            if(data.code === 200){
+                $scope.bulletinList = data.data;
+            }
+        })
+    }
+
+    $scope.loadArticleList =function(){
+        articleService.loadArticleList().success(function(data){
+            if(data.code === 200){
+                $scope.articleList = data.data;
+            }
+        })
+    }
+
     $scope.loadLoginUser = function () {
         loginService.loadLoginUser().success(function (data) {
             if(data.code === 200){
@@ -244,7 +261,9 @@ app.controller("indexController", function ($scope,$controller,$location,areaSer
      $scope.buildOrder = function(){
         cartService.buildOrder($scope.selectCartIds).success(function(data){
             if(data.code === 200){
-                window.location.href="pay.html";
+                if(data.message="success"){
+                    window.location.href="pay.html";
+                }
             }else{
                  window.location.href="http://www.cys.com:9200/search/search/html/500.html";
             }
@@ -284,7 +303,15 @@ app.controller("indexController", function ($scope,$controller,$location,areaSer
          console.log($scope.order);
          cartService.pay($scope.order).success(function(data){
              if(data.code === 200){
+                if(data.data != null && typeof(data.data) != "undefined"){
+                    var noProductList = [];
+                    for(var i =0;i<data.data.length;i++){
+                        noProductList.push(data.data[i])
+                    }
+                    console.log(noProductList.join(',')+"商品库存不足");
+                }else{
                   window.location.href="pay_success.html";
+                }
              }else{
                   window.location.href="http://www.cys.com:9200/search/search/html/500.html";
              }
@@ -300,5 +327,12 @@ app.controller("indexController", function ($scope,$controller,$location,areaSer
                     window.location.href="http://www.cys.com:9200/search/search/html/500.html";
                }
           });
+     }
+     $scope.deleteOrder = function(payCode){
+        cartService.deleteOrder(payCode).success(function(data){
+            if(data.code === 200){
+                console.log("删除成功");
+            }
+        });
      }
 });

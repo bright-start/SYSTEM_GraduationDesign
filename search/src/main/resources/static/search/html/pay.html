@@ -16,6 +16,8 @@
     <script src="../plugins/angularjs/angular.min.js"></script>
     <script type="text/javascript" src="../js/base.js"></script>
     <script type="text/javascript" src="../js/service/areaService.js"></script>
+    <script type="text/javascript" src="../js/service/bulletinService.js"></script>
+    <script type="text/javascript" src="../js/service/articleService.js"></script>
     <script type="text/javascript" src="../js/service/loginService.js"></script>
     <script type="text/javascript" src="../js/service/goodsService.js"></script>
     <script type="text/javascript" src="../js/service/cartService.js"></script>
@@ -156,7 +158,7 @@
 <section>
     <div ng-if="noPayOrderList != null">
         <div style="width:1000px;margin: 0 auto;">
-            <ul ng-repeat="noPayOrderMap in noPayOrderList">
+            <ul ng-repeat="(payCode,noPayOrderMap) in noPayOrderList">
                 <li ng-repeat="(shopId,orderList) in noPayOrderMap">
                     <input type="hidden" ng-model="shopId">
                     <div style="color:red;font-size:20px;">{{orderList[0][0].shopName}}</div>
@@ -180,7 +182,7 @@
                             <span>邮费:{{orderList[0][0].postage || 0.00}}</span>
                             <span>订单项数量:{{orderList[0][0].orderCount}}</span>
                             <span>订单总价格:¥{{orderList[0][0].totalPrice}}</span>
-                            <span ng-click="deleteOrder($event,orderList[0][0].orderId)" style="text-align:center;width:90px;height:28px;line-height:28px;background-color: #eae9e7;display:inline-block;">删除订单</span>
+                            <span ng-click="deleteOrder($event,payCode)" style="text-align:center;width:90px;height:28px;line-height:28px;background-color: #eae9e7;display:inline-block;">删除订单</span>
                         </div>
                     </div>
                 </li>

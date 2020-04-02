@@ -7,7 +7,7 @@ import com.cys.system.common.pojo.Order;
 import java.util.List;
 
 public interface OrderService {
-    Result buildOrder(Integer[] ids);
+    Result buildOrder(Integer[] ids) throws NoSuchFieldException;
 
     Result lookNoPay(List<String> noPayList);
 
@@ -20,4 +20,6 @@ public interface OrderService {
     Result updateStatus(Integer status, String[] ids,Integer userId,Integer shopId);
 
     Result findOrderItemByOrderId(Integer id);
+
+    Result deleteOrder(String payToken);
 }
