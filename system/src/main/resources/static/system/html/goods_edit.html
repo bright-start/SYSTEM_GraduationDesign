@@ -55,7 +55,7 @@
 					<li class="active"><a href="#home" data-toggle="tab">商品基本信息</a>
 					</li>
 					<li><a href="#pic_upload" data-toggle="tab">商品图片</a></li>
-					<li><a href="#customAttribute" data-toggle="tab">扩展属性</a></li>
+<!--					<li><a href="#customAttribute" data-toggle="tab">扩展属性</a></li>-->
 					<li><a href="#spec" data-toggle="tab">规格</a></li>
 				</ul>
 				<!--tab头/-->
@@ -358,7 +358,13 @@
 		var editor;
 		KindEditor.ready(function (K) {
 			editor = K.create('textarea[name="content"]', {
-				allowFileManager: true
+				allowFileManager:true,
+				uploadJson:"/system/upload/contentPicture",
+				filePostName:'file',
+				afterUpload:function(data){
+					/*上传完成后要做的事情*/
+				},
+				urlType:'absolute'
 			});
 		});
 	</script>

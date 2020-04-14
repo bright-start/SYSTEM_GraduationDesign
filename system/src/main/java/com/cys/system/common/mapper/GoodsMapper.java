@@ -4,6 +4,7 @@ import com.cys.system.common.common.pojo.Result;
 import com.cys.system.common.pojo.Goods;
 import com.cys.system.common.pojo.GoodsSummary;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
@@ -37,4 +38,12 @@ public interface GoodsMapper {
 
     @Update("update goods set goods_month_sale=goods_month_sale+#{num}, where goods_id =#{id}")
     void saleGoods(@Param("num") Integer num,@Param("id") Integer goodsId);
+
+    @Select("SELECT\n" +
+            "count(goods_id)\n" +
+            "FROM\n" +
+            "goods\n" +
+            "WHERE\n" +
+            "goods_status = 4 and shop_id=#{shopId}")
+    Long getPublishedGoodsNum(Integer shopId);
 }

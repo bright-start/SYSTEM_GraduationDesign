@@ -13,7 +13,7 @@ public interface OrderService {
 
     Result lookPay(Integer status,Integer userId,String orderId);
 
-    Result pay(UpOrder upOrder);
+    Result pay(UpOrder upOrder) throws NoSuchFieldException;
 
     Result list(Integer page, Integer rows, Order order);
 

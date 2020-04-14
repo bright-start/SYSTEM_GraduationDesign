@@ -42,7 +42,8 @@
     </update>
     <update id="updateUserByUser">
         update _user set
-        shop_id=#{shopId}
+        shop_id=#{shopId},
+        role_id=1
         where user_id=#{userId}
     </update>
     <insert id="registry" parameterType="User">

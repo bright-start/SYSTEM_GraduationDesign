@@ -7,6 +7,7 @@ import com.cys.system.common.pojo.IPRecord;
 import com.cys.system.common.service.IPLogService;
 import com.cys.system.common.service.IPRecodeService;
 import com.cys.system.common.util.TimeConverter;
+import com.cys.system.common.util.TimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,7 +63,7 @@ public class IPController {
             ipLog.setBrowseDateMonth(s[1]);
             ipLog.setBrowseDateDay(s[2]);
         } else {
-            String date1 = TimeConverter.DateToString(new Date());
+            String date1 = TimeConverter.getInstance().DateToString(new Date(), TimeFormat.Y_M_D_H_M_S);
             String[] s = date1.split(" ")[0].split("-");
             ipLog.setBrowseDateYear(s[0]);
             ipLog.setBrowseDateMonth(s[1]);

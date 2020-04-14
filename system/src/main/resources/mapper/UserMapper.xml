@@ -81,6 +81,9 @@
         ON "public"."user_info"."user_id" = "public"."_user"."user_id"
         where "public"."_user"."user_id"=#{userId}
     </select>
+    <select id="getNumForRole" parameterType="java.lang.Integer" resultType="java.lang.Long">
+        select count(user_id) from _user where role_id = #{roleId}
+    </select>
     <update id="updatePassword">
         update _user set password = #{password}
         where user_id = #{userId}

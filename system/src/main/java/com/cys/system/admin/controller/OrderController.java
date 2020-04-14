@@ -48,7 +48,7 @@ public class OrderController {
     }
 
     @PostMapping("/pay")
-    public Result pay(@RequestBody UpOrder upOrder) {
+    public Result pay(@RequestBody UpOrder upOrder) throws NoSuchFieldException {
         return orderService.pay(upOrder);
     }
 
@@ -59,9 +59,6 @@ public class OrderController {
             throw new UnauthorizedException();
         }
         Integer shopId = (Integer) userMap.get("shopId");
-        if(shopId == null) {
-            throw new UnauthorizedException();
-        }
         order.setShopId(shopId);
         return orderService.list(page,rows,order);
     }

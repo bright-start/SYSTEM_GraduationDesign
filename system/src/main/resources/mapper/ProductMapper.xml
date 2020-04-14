@@ -21,6 +21,8 @@
         "public".product."product_name",
         "public".product."product_image",
         "public".product."product_price",
+        "public".product."product_stock",
+        "public".product."goods_id",
         "public".product.specification,
         "public".goods."goods_postage",
         "public".goods."goods_discount",

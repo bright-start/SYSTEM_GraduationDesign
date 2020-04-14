@@ -7,6 +7,7 @@ import com.cys.system.common.service.IPRecodeService;
 import com.cys.system.common.util.APIUtil;
 import com.cys.system.common.util.AesUtil;
 import com.cys.system.common.util.TimeConverter;
+import com.cys.system.common.util.TimeFormat;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -66,7 +67,7 @@ public class IPRecordServiceImpl implements IPRecodeService {
         IPRecord ip1 = new IPRecord();
         ip1.setIpAddr(AesUtil.encrypt(ip));
         Date date = new Date();
-        String dateToString = TimeConverter.DateToString(date);
+        String dateToString = TimeConverter.getInstance().DateToString(new Date(), TimeFormat.Y_M_D_H_M_S);
         ip1.setFirstBrowseTime(AesUtil.encrypt(dateToString));
         ip1.setBeginBrowseTime(AesUtil.encrypt(dateToString));
         ip1.setBlackList(AesUtil.encrypt("0"));

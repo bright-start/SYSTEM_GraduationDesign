@@ -7,7 +7,7 @@ public class SearchEntity {
     private String goodsCaption;
     private Double goodsPrice;
     private Integer shopId;
-    private Integer areaId;
+    private String areaName;
     private Integer brandId;
     private String orderField;
 
@@ -67,12 +67,12 @@ public class SearchEntity {
         this.shopId = shopId;
     }
 
-    public Integer getAreaId() {
-        return areaId;
+    public String getAreaName() {
+        return areaName;
     }
 
-    public void setAreaId(Integer areaId) {
-        this.areaId = areaId;
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
     }
 
     public Integer getBrandId() {

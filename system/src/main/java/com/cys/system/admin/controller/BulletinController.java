@@ -5,6 +5,7 @@ import com.cys.system.common.exception.InvalidRequestException;
 import com.cys.system.common.pojo.Bulletin;
 import com.cys.system.common.service.BulletinService;
 import com.cys.system.common.util.TimeConverter;
+import com.cys.system.common.util.TimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,7 +51,7 @@ public class BulletinController {
 
     @PostMapping("/add")
     public Result add(@RequestBody(required = true) Bulletin bulletin) {
-        bulletin.setCreateTime(TimeConverter.DateToString(new Date()));
+        bulletin.setCreateTime(TimeConverter.getInstance().DateToString(new Date(), TimeFormat.Y_M_D_H_M_S));
         bulletin.setUpdateTime(bulletin.getCreateTime());
         bulletinService.insertBulletin(bulletin);
         return new Result().success("新增成功");

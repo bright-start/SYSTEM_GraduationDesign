@@ -12,6 +12,7 @@ import com.cys.system.common.pojo.GoodsSummary;
 import com.cys.system.common.pojo.Product;
 import com.cys.system.common.service.GoodsService;
 import com.cys.system.common.util.TimeConverter;
+import com.cys.system.common.util.TimeFormat;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,15 @@ public class GoodsServiceImpl implements GoodsService {
     @Resource
     private ProductMapper productMapper;
 
+    @Resource
+    private GoodsSummaryMapper goodsSummaryMapper;
+
+    @Resource
+    private GoodsEngineMapper goodsEngineMapper;
+
+    @Autowired
+    private MsgSender msgSender;
+
     @Transactional(readOnly = false)
     @Override
     public Result recomment(Integer id,Integer status) {
@@ -44,15 +54,6 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
     }
-
-    @Resource
-    private GoodsSummaryMapper goodsSummaryMapper;
-
-    @Resource
-    private GoodsEngineMapper goodsEngineMapper;
-
-    @Autowired
-    private MsgSender msgSender;
 
     @Override
     public Result listGoods(Integer page, Integer rows, Goods goods) {
@@ -125,7 +126,7 @@ public class GoodsServiceImpl implements GoodsService {
     public Result addGoods(Goods goods, Integer shopId) {
 
         goods.setShopId(shopId);
-        goods.setCreateTime(TimeConverter.DateToString(new Date()));
+        goods.setCreateTime(TimeConverter.getInstance().DateToString(new Date(), TimeFormat.Y_M_D_H_M_S));
         goods.setStatus(0);
         goodsMapper.addGoods(goods);
         List<Product> productList = goods.getProductList();
@@ -141,7 +142,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Transactional(readOnly = false)
     @Override
     public Result updateGoodsByGoods(Goods goods) {
-        goods.setCreateTime(TimeConverter.DateToString(new Date()));
+        goods.setCreateTime(TimeConverter.getInstance().DateToString(new Date(), TimeFormat.Y_M_D_H_M_S));
         goodsMapper.updateGoods(goods);
         List<Product> productList = goods.getProductList();
         for (Product product : productList) {

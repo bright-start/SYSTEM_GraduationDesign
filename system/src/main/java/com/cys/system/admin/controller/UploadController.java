@@ -37,6 +37,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -49,7 +51,7 @@ public class UploadController {
     @Autowired
     private FastFileStorageClient storageClient;
 
-    private static final String PHOTO_DOMAIN = "http://47.95.234.255/";
+    private static final String PHOTO_DOMAIN = "http://10.211.55.33:8888/";
 
     private static final String[] CONTENT_TYPE_LIST = {"image/jpeg","image/png","image/gif"};
 
@@ -71,6 +73,33 @@ public class UploadController {
         return new Result().success("请确保上传文件类型为jpg,png,gif");
     }
 
+
+    @PostMapping("/contentPicture")
+    public Map contentPicture(MultipartFile file, HttpServletRequest request) throws IOException {
+        Map map = new HashMap();
+        if(file == null){
+            map.put("error", 0);
+            map.put("message","图片上传不能未空");
+            return map;
+        }
+        String contentType = file.getContentType();
+        if(contentType == null){
+            map.put("error", 0);
+            map.put("message","上传文件类型无法识别");
+            return map;
+        }else{
+            for (String type : CONTENT_TYPE_LIST) {
+                if(type.equalsIgnoreCase(contentType)){
+                    map.put("error", 0);
+                    map.put("url",savePathToServer(file));
+                    return map;
+                }
+            }
+        }
+        map.put("error", 0);
+        map.put("url","请确保上传文件类型为jpg,png,gif");
+        return map;
+    }
 
     private String savePathToServer(MultipartFile file) throws IOException {
         String photoPath = file.getOriginalFilename();

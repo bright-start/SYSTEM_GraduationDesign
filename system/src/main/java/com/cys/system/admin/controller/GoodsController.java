@@ -25,7 +25,7 @@ public class GoodsController {
     private SSOService ssoService;
 
     @PostMapping("/search")
-    public Result search(Integer page, Integer rows, @RequestBody Goods goods) throws InvalidRequestException {
+    public Result search(Integer page, Integer rows, @RequestBody Goods goods, HttpServletRequest request) throws InvalidRequestException {
 
         if (page == null) {
             page = 1;
@@ -34,10 +34,25 @@ public class GoodsController {
             rows = 10;
         }
         if (rows == 10 || rows == 20 || rows == 30 || rows == 40 || rows == 50) {
-            return goodsService.listGoods(page, rows, goods);
-        } else {
-            throw new InvalidRequestException();
+            Map<String, Object> userMap = ssoService.getUser(request);
+            if (userMap != null && !userMap.isEmpty()) {
+                List list = (List) userMap.get("authorities");
+                if (list != null && !list.isEmpty()) {
+                    Map map = (Map) list.get(0);
+                    if (map != null && !map.isEmpty()) {
+                        String role = (String) map.get("role");
+                        if (role != null && role.contains("SHOP")) {
+                            Integer shopId = (Integer) userMap.get("shopId");
+                            if(shopId != null) {
+                                goods.setShopId(shopId);
+                            }
+                            return goodsService.listGoods(page, rows, goods);
+                        }
+                    }
+                }
+            }
         }
+        throw new InvalidRequestException();
     }
 
     @GetMapping("/findOne")
@@ -137,12 +152,12 @@ public class GoodsController {
     }
 
     @GetMapping("/findGoodGoods")
-    public Result findGoodGoods(){
+    public Result findGoodGoods() {
         return goodsService.findGoodGoods();
     }
 
     @GetMapping("/recomment")
-    public Result recomment(@RequestParam Integer id,@RequestParam Integer status){
-        return goodsService.recomment(id,status);
+    public Result recomment(@RequestParam Integer id, @RequestParam Integer status) {
+        return goodsService.recomment(id, status);
     }
 }

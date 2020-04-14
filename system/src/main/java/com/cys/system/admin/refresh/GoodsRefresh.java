@@ -4,6 +4,7 @@ import com.cys.system.common.config.RefreshCenter;
 import com.cys.system.common.pojo.TimeTask;
 import com.cys.system.common.service.GoodsService;
 import com.cys.system.common.util.TimeConverter;
+import com.cys.system.common.util.TimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -34,7 +35,7 @@ public class GoodsRefresh extends RefreshCenter {
                     Integer deleteGoodsId =  (Integer) deleteGoods.get("goods_id");
                     try {
                         long monthTime = 15 * 24 * 60 * 60 * 1000;
-                        if (((new Date()).getTime()) - (TimeConverter.StringToDate(lowerSelfTime).getTime()) >= monthTime) {
+                        if (((new Date()).getTime()) - (TimeConverter.getInstance().StringToDate(lowerSelfTime, TimeFormat.Y_M_D_H_M_S).getTime()) >= monthTime) {
                             goodsService.deleteGoodsById(deleteGoodsId);
                         }
                     } catch (Exception e) {

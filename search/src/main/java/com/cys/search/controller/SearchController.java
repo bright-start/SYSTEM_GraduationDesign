@@ -22,7 +22,7 @@ public class SearchController {
             searchEntity.setPage(1);
         }
         if(searchEntity.getSize() == null){
-            searchEntity.setSize(10);
+            searchEntity.setSize(12);
         }
         return systemInterface.search(searchEntity);
     }

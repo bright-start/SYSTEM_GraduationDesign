@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.system.common.mapper.SysLogMapper">
+    <resultMap id="sysLogMap" type="SysLog">
+        <id column="sys_log_id" property="sysLogId"/>
+        <result column="sys_month_transaction" property="sysMonthTransaction"/>
+        <result column="sys_trading_volume" property="sysTradingVolume"/>
+        <result column="sys_effective_trading_volume" property="sysEffectiveTradingVolume"/>
+        <result column="sys_register_shop_count_month" property="sysRegisterShopCountMonth"/>
+        <result column="sys_destory_shop_count_month" property="sysDestoryShopCountMonth"/>
+        <result column="sys_register_user_count_month" property="sysRegisterUserCountMonth"/>
+        <result column="sys_month_turnover" property="sysMonthTurnover"/>
+        <result column="sys_year" property="sysYear"/>
+        <result column="sys_month" property="sysMonth"/>
+        <result column="sys_day" property="sysDay"/>
+    </resultMap>
+    <select id="getUserInfo" resultMap="sysLogMap">
+        SELECT
+        "public"."sys_recode"."sys_register_shop_count_month",
+        "public"."sys_recode"."sys_destory_shop_count_month",
+        "public"."sys_recode"."sys_register_user_count_month"
+        FROM
+        "public"."sys_recode"
+        WHERE
+        "public"."sys_recode"."sys_month"=#{month} and "public"."sys_recode"."sys_year"=#{year}
+    </select>
+</mapper>

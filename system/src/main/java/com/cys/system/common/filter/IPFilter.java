@@ -6,6 +6,7 @@ import com.cys.system.common.service.IPLogService;
 import com.cys.system.common.service.IPRecodeService;
 import com.cys.system.common.util.AesUtil;
 import com.cys.system.common.util.TimeConverter;
+import com.cys.system.common.util.TimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,10 +90,10 @@ public class IPFilter implements HandlerInterceptor {
         if (ipRecode != null) {
             // 每天第一次访问
             if (ipRecode.getBeginBrowseTime() == null) {
-                ipRecode.setBeginBrowseTime(TimeConverter.DateToString(new Date()));
+                ipRecode.setBeginBrowseTime(TimeConverter.getInstance().DateToString(new Date(), TimeFormat.Y_M_D_H_M_S));
                 ipRecode.setBrowseTotalCount(AesUtil.encrypt("0"));
             } else {
-                ipRecode.setBeginBrowseTime(TimeConverter.DateToString(new Date()));
+                ipRecode.setBeginBrowseTime(TimeConverter.getInstance().DateToString(new Date(), TimeFormat.Y_M_D_H_M_S));
                 String totalCount = AesUtil.encrypt(String.valueOf(Integer.parseInt(AesUtil.decrypt(ipRecode.getBrowseTotalCount())) + 1));
                 ipRecode.setBrowseTotalCount(totalCount);
             }
@@ -115,7 +116,7 @@ public class IPFilter implements HandlerInterceptor {
         }
 
         // ip日志记录
-        String date = TimeConverter.DateToString(new Date());
+        String date = TimeConverter.getInstance().DateToString(new Date(), TimeFormat.Y_M_D_H_M_S);
         String[] split = date.split(" ");
         String[] split1 = split[0].split("-");
         IPLog ipLog = new IPLog();

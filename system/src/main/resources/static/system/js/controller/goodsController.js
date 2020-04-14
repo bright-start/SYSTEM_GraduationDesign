@@ -135,7 +135,7 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
 			function(data){
 			    if(data.code === 200){
 				    $scope.list=data.data.list;
-				    for(var i = 0;i < $scope.list;i++){
+				    for(var i = 0;i < $scope.list.length;i++){
 				        $scope.list[i].goodsImages = $scope.list[i].goodsImages.split(",")[0];
 				    }
 				    $scope.paginationConf.totalItems=data.data.total;//更新总记录数

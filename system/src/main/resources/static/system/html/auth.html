@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style type="text/css">
+    .dropsource {
+        width:350px;
+        height:350px;
+        padding:10px;
+        border:1px solid #aaaaaa;
+        float: left;
+        overflow:scroll;
+    }
+    .dropsource p{
+        border:1px solid #e9e9ea;
+        background-color:#dedddd;
+        cursor: pointer;
+        padding:10px;
+    }
+    .droptarget {
+        width:350px;
+        height:350px;
+        padding:10px;
+        border:1px solid #aaaaaa;
+        float: left;
+        overflow:scroll;
+    }
+    .droptarget p{
+        border:1px solid #e9e9ea;
+        background-color:#dedddd;
+        cursor: pointer;
+        padding:10px;
+    }
+
+
+    </style>
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/angularjs/angular.min.js"></script>
+    <script type="text/javascript" src="../js/base.js"></script>
+    <script type="text/javascript" src="../js/service/authService.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/controller/authController.js"></script>
+</head>
+<body ng-app="system" ng-controller="authController" ng-init="loadAllRole();" onselectstart="return false">
+<p>角色权限分配</p>
+<div>
+    <select id="roleSelect" ng-model="roleId" style="height: 30px;width: 744px;">
+        <option ng-repeat="role in roleList" ng-value="role.role_id">{{role.role_name}}</option>
+    </select>
+</div>
+<div>
+    <div style="overflow:hidden;">
+        <div class="dropsource" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <p ng-repeat="noHaveAuth in noHaveAuthList" ng-value="noHaveAuth.permission_Id"
+               ondragstart="drag(event)"
+               draggable="true" id="{{noHaveAuth.permission_Id}}">{{noHaveAuth.permission_url}}</p>
+        </div>
+
+        <div class="droptarget" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <p ng-repeat="haveAuth in haveAuthList" ng-value="haveAuth.permission_Id"
+               ondragstart="drag(event)" draggable="true" id="{{haveAuth.permission_Id}}">
+                {{haveAuth.permission_url}}</p>
+        </div>
+    </div>
+    <div style="overflow:hidden;">
+        <div style="float:left;width: 351px;text-align: center;font-size: 20px;border-left: 1px solid #838686;padding: 10px;background-color: antiquewhite;border-bottom: 1px solid #838686;border-right: 1px solid #838686;">待分配权限</div>
+        <div style="float:left;width: 351px;text-align: center;font-size: 20px;border-right: 1px solid #838686;padding: 10px;background-color: antiquewhite;border-bottom: 1px solid #838686;">已拥有权限</div>
+    </div>
+</div>
+</body>
+<script>
+    function allowDrop(e){
+        e.preventDefault();
+    }
+    function drag(e){
+        e.dataTransfer.setData("Text",e.target.id);
+    }
+    function drop(e){
+        e.preventDefault();
+        var data=e.dataTransfer.getData("Text");
+        e.target.appendChild(document.getElementById(data));
+        console.log(e.target.parentNode.className);
+        if(e.target.className == "dropsource"){
+        //左增右删
+            $.ajax({
+                url: "/system/auth/remove",
+                type: "GET",
+                dataType: "json",
+                data:{
+                    "authId":data,
+                    "roleId":$('#roleSelect option:selected').val()
+                },
+                before: function () {
+
+                },
+                success: function (data) {
+                    if (data.code === 200) {
+                        console.log(data.data);
+                    }
+                }
+            });
+        }else{
+            $.ajax({
+                url: "/system/auth/add",
+                type: "GET",
+                dataType: "json",
+                data:{
+                    "authId":data,
+                    "roleId":$('#roleSelect option:selected').val()
+                },
+                before: function () {
+
+                },
+                success: function (data) {
+                    if (data.code === 200) {
+                        console.log(data.data);
+                    }
+                }
+            });
+        }
+    }
+
+
+</script>
+</html>

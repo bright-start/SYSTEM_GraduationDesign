@@ -456,7 +456,7 @@
                 username: $("#text1").val(),
                 password: $("#myInput2").val(),
                 sex: $("#myInput3").val() === "男" ? 0 : 1,
-                image: document.getElementById("myInput4").value,
+                image: $("#show_img").attr("src"),
                 roleId: $("#role").val(),
                 bindPhone: $("#myInput5").val()
             },
@@ -489,7 +489,7 @@
             username: $("#name").val(),
             password: $("#pass").val(),
             bindPhone: $("#bindPhone").val(),
-            logoPath: $("#logo_path").val(),
+            logoPath: $("#show_img").attr("src"),
             shopName: $("#shopName").val(),
             shopDesc: $("#shopDesc").val(),
             shopCompany: $("#shopCompany").val(),

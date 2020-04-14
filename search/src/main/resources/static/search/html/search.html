@@ -27,7 +27,7 @@
     <script type="text/javascript" src="../js/controller/baseController.js"></script>
     <script type="text/javascript" src="../js/controller/indexController.js"></script>
 </head>
-<body ng-app="system" ng-controller="indexController" ng-init="search1();loadLoginUser();">
+<body ng-app="system" ng-controller="indexController" ng-init="findAreaList();search1();loadLoginUser();">
 <style>
     .active {
         text-decoration: none;
@@ -293,15 +293,26 @@
 
 </script>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <!--条件搜索-->
 <section>
-    <div></div>
+    <div style="width:1190px;margin: 0 auto;">
+        <div ng-if="areaList != null">
+            <span>地区</span>
+            <ul>
+                <li ng-repeat="area in areaList" style="float:left;">
+                    <span ng-if="area.areaName == searchEntity.areaName" style="color:orange;">{{area.areaName}}</span>
+                    <span ng-click="search3(area.areaName)" ng-if="area.areaName != searchEntity.areaName">{{area.areaName}}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
 </section>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 <br>
 <!--搜索结果-->

@@ -31,6 +31,7 @@
         ON "public".shop."shop_id" = "public".goods."shop_id"
         JOIN "public".product
         ON "public".product."goods_id" = "public".goods."goods_id"
+        where "public".goods."goods_status"=4
         ORDER BY
         "public".goods."goods_id" DESC
     </select>

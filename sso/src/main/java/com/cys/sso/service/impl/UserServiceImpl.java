@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
             newUser.setBindPhone(shop.getBindPhone());
             newUser.setRoleId(shop.getRoleId());
             newUser.setShopId(shop.getShopId());
-            newUser.setStatus(0);
+            newUser.setStatus(1);
             newUser.setLevel(0);
             newUser.setImage(shop.getLogoPath());
             userMapper.registry(newUser);

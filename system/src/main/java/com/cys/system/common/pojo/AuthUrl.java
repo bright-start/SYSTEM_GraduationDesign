@@ -24,4 +24,21 @@ public class AuthUrl {
     public String toString() {
         return  permission_url;
     }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + permission_Id.hashCode();
+        result = 31 * result + permission_url.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof AuthUrl) {
+            AuthUrl order = (AuthUrl) obj;
+            return permission_Id.equals(order.getPermission_Id());
+        }
+        return false;
+    }
 }

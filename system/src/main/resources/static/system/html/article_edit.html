@@ -121,8 +121,12 @@
     KindEditor.ready(function (K) {
         editor = K.create('textarea[name="content"]', {
             allowFileManager: true,
-            uploadJson: '../jsp/upload_json.jsp',
-            fileManagerJson: '../jsp/file_manager_json.jsp',
+            uploadJson:"/system/upload/contentPicture",
+            filePostName:'file',
+            afterUpload:function(data){
+                /*上传完成后要做的事情*/
+            },
+            urlType:'absolute'
         });
     });
 </script>

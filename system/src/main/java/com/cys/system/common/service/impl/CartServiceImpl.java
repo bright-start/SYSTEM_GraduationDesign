@@ -11,6 +11,7 @@ import com.cys.system.common.pojo.Goods;
 import com.cys.system.common.pojo.Product;
 import com.cys.system.common.service.CartService;
 import com.cys.system.common.util.TimeConverter;
+import com.cys.system.common.util.TimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -77,7 +78,7 @@ public class CartServiceImpl implements CartService {
             Cart newCart = new Cart();
 
             newCart.setUserId(userId);
-            newCart.setCreateTime(TimeConverter.DateToString(new Date()));
+            newCart.setCreateTime(TimeConverter.getInstance().DateToString(new Date(), TimeFormat.Y_M_D_H_M_S));
 
             cartMapper.saveCart(newCart);
 

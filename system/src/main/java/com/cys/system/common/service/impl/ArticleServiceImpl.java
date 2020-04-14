@@ -8,6 +8,7 @@ import com.cys.system.common.mapper.UserMapper;
 import com.cys.system.common.pojo.*;
 import com.cys.system.common.service.ArticleService;
 import com.cys.system.common.util.TimeConverter;
+import com.cys.system.common.util.TimeFormat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -173,7 +174,7 @@ public class ArticleServiceImpl implements ArticleService {
             return new Result().success(e.getMessage());
         }
 
-        article.setCreateTime(TimeConverter.DateToString(new Date()));
+        article.setCreateTime(TimeConverter.getInstance().DateToString(new Date(), TimeFormat.Y_M_D_H_M_S));
         article.setBrowseNum(0);
         article.setLoveNum(0);
         article.setStatus(0);

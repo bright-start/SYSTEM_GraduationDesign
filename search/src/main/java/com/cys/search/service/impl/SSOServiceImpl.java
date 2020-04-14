@@ -1,5 +1,6 @@
 package com.cys.search.service.impl;
 
+import com.cys.search.pojo.Result;
 import com.cys.search.service.SSOService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -107,5 +108,17 @@ public class SSOServiceImpl implements SSOService {
             }
         }
         return noPayList;
+    }
+
+    @Override
+    public Result getTTL(String payCode) {
+        RedisSerializer redisSerializer = new StringRedisSerializer();
+        redisTemplate.setKeySerializer(redisSerializer);
+
+        long ttl = redisTemplate.getExpire(payCode,TimeUnit.SECONDS);
+        if(ttl < 0){
+            ttl = 0;
+        }
+        return new Result().success(ttl);
     }
 }

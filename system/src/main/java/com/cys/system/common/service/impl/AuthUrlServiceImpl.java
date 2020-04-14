@@ -1,7 +1,9 @@
 package com.cys.system.common.service.impl;
 
+import com.cys.system.common.common.pojo.Result;
 import com.cys.system.common.config.OnlyOneClassConfig;
 import com.cys.system.common.mapper.AuthUrlMapper;
+import com.cys.system.common.mapper.AuthUrlRoleMapper;
 import com.cys.system.common.mapper.RoleMapper;
 import com.cys.system.common.pojo.AuthUrl;
 import com.cys.system.common.service.AuthUrlService;
@@ -12,9 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -22,6 +22,9 @@ public class AuthUrlServiceImpl implements AuthUrlService {
 
     @Resource
     private AuthUrlMapper authUrlMapper;
+
+    @Resource
+    private AuthUrlRoleMapper authUrlRoleMapper;
 
     @Resource
     private RoleMapper roleMapper;
@@ -43,24 +46,58 @@ public class AuthUrlServiceImpl implements AuthUrlService {
 
             RedisSerializer redisSerializer = new StringRedisSerializer();
             redisTemplate.setKeySerializer(redisSerializer);
-            String json = (String) redisTemplate.opsForHash().get(ROLE_AUTH_KEY, roleId);
+            String json = (String) redisTemplate.opsForHash().get(ROLE_AUTH_KEY, roleName);
             if (json == null) {
                 synchronized (this) {
-                    json = (String) redisTemplate.opsForHash().get(ROLE_AUTH_KEY, roleId);
+                    json = (String) redisTemplate.opsForHash().get(ROLE_AUTH_KEY, roleName);
                     if (json == null) {
                         List<AuthUrl> authUrls = authUrlMapper.listAuthUrlForRole(roleId);
                         if (authUrls == null || authUrls.isEmpty()) {
                             continue;
                         }
-                        String authUrlJson = OnlyOneClassConfig.gson.toJson(authUrls);
-                        redisTemplate.opsForHash().put(ROLE_AUTH_KEY, roleId, authUrlJson);
+                        String authUrlJson = OnlyOneClassConfig.gson1.toJson(authUrls);
+                        redisTemplate.opsForHash().put(ROLE_AUTH_KEY, roleName, authUrlJson);
                         redisTemplate.expire(ROLE_AUTH_KEY, 30, TimeUnit.MINUTES);
                     }
                 }
             }
-            List<AuthUrl> authUrlList = OnlyOneClassConfig.gson.fromJson(json, (Type) AuthUrl.class);
-            authUrlMap.put(roleName, authUrlList);
+            List<AuthUrl> authUrlList = OnlyOneClassConfig.gson1.fromJson(json, List.class);
+            if(authUrlList != null) {
+                authUrlMap.put(roleName, authUrlList);
+            }
         }
         return authUrlMap;
+    }
+
+    @Override
+    public Result getAllRole() {
+        List<Map> listRole = roleMapper.listRole();
+        return new Result().success(listRole);
+    }
+
+    @Override
+    public Result loadHaveAuth(Integer roleId) {
+        List<AuthUrl> list = authUrlRoleMapper.loadAuth(roleId);
+        return new Result().success(list);
+    }
+
+    @Override
+    public Result loadNoHaveAuth(Integer roleId) {
+        List<AuthUrl> allAuthUrl = authUrlMapper.getAllAuthUrl();
+        List<AuthUrl> list = authUrlRoleMapper.loadAuth(roleId);
+        allAuthUrl.removeAll(list);
+        return new Result().success(allAuthUrl);
+    }
+
+    @Override
+    public Result addAuth(Integer roleId, Integer authId) {
+        authUrlRoleMapper.addAuth(roleId,authId);
+        return new Result().success(200,"添加成功");
+    }
+
+    @Override
+    public Result removeAuth(Integer roleId, Integer authId) {
+        authUrlRoleMapper.removeAuth(roleId,authId);
+        return new Result().success(200,"移出成功");
     }
 }

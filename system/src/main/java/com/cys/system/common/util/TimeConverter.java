@@ -4,14 +4,24 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class TimeConverter {
-    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+public class TimeConverter extends TimeFormat{
 
-    public static Date StringToDate(String time) throws ParseException {
+    private static final TimeConverter timeConverter = new TimeConverter();
+    private TimeConverter(){
+
+    }
+
+    public static TimeConverter getInstance(){
+        return timeConverter;
+    }
+    public Date StringToDate(String time, String format) throws ParseException {
+        SimpleDateFormat FORMAT = new SimpleDateFormat(format);
         return FORMAT.parse(time);
     }
 
-    public static String DateToString(Date date) {
+    public String DateToString(Date date, String format) {
+        SimpleDateFormat FORMAT = new SimpleDateFormat(format);
         return FORMAT.format(date);
     }
+
 }

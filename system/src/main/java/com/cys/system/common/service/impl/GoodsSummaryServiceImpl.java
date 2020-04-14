@@ -9,6 +9,7 @@ import com.cys.system.common.service.GoodsSummaryService;
 import com.github.pagehelper.PageInfo;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.FuzzyQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -17,11 +18,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.LinkedList;
 import java.util.List;
 
+@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = true, rollbackFor = {Exception.class})
 @Service
 public class GoodsSummaryServiceImpl implements GoodsSummaryService {
 
@@ -37,8 +42,14 @@ public class GoodsSummaryServiceImpl implements GoodsSummaryService {
 
         NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        FuzzyQueryBuilder fuzzyQuery = QueryBuilders.fuzzyQuery("goodsName", searchEntity.getGoodsName());
-        boolQueryBuilder.must(fuzzyQuery);
+        if(searchEntity.getGoodsName() != null) {
+            FuzzyQueryBuilder fuzzyQuery = QueryBuilders.fuzzyQuery("goodsName", searchEntity.getGoodsName());
+            boolQueryBuilder.must(fuzzyQuery);
+        }
+        if(searchEntity.getAreaName() != null){
+            MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("areaName", searchEntity.getAreaName());
+            boolQueryBuilder.must(matchQueryBuilder);
+        }
 
         //分页
         queryBuilder.withPageable(PageRequest.of((searchEntity.getPage() - 1), searchEntity.getSize()));
@@ -91,6 +102,7 @@ public class GoodsSummaryServiceImpl implements GoodsSummaryService {
         }
     }
 
+    @Transactional(readOnly = false)
     @Override
     public Result importGoodsToEngine() {
         goodsEngineMapper.deleteAll();

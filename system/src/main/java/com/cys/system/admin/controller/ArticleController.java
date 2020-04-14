@@ -10,6 +10,7 @@ import com.cys.system.common.service.ArticleService;
 import com.cys.system.common.service.SSOService;
 import com.cys.system.common.service.UserService;
 import com.cys.system.common.util.TimeConverter;
+import com.cys.system.common.util.TimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -117,7 +118,7 @@ public class ArticleController {
 //            throw new UnauthorizedException();
 //        }
 //        command.setUserId(userId);
-        command.setCreateTime(TimeConverter.DateToString(new Date()));
+        command.setCreateTime(TimeConverter.getInstance().DateToString(new Date(), TimeFormat.Y_M_D_H_M_S));
         return articleService.commitCommand(command);
     }
 

@@ -68,12 +68,12 @@ app.controller("indexController", function ($scope,$controller,$location,areaSer
 
     $scope.search1 = function(){
         var goodsName = $location.search()['goodsName'];
-        var areaId = $location.search()['areaId'];
+        var areaName = $location.search()['areaName'];
         if(typeof(goodsName) != "undefined" || goodsName != null){
             $scope.searchEntity.goodsName = goodsName;
             $scope.goodsName = "";
-        }else if(typeof(areaId) != "undefined" || areaId != null){
-            scope.searchEntity.areaId = areaId;
+        }else if(typeof(areaName) != "undefined" || areaId != null){
+            $scope.searchEntity.areaName = areaName;
         }else{
             return;
         }
@@ -86,9 +86,12 @@ app.controller("indexController", function ($scope,$controller,$location,areaSer
         }else{
             window.location.href="http://www.cys.com:9200/search/search/html/search.html#?goodsName="+$scope.searchEntity.goodsName;
         }
-        $scope.search();
     }
 
+    $scope.search3 = function(areaName){
+        $scope.searchEntity.areaName = areaName;
+        $scope.search();
+    }
 
     $scope.search = function(){
         console.log($scope.searchEntity);
@@ -99,8 +102,8 @@ app.controller("indexController", function ($scope,$controller,$location,areaSer
         });
     };
 
-    $scope.findGoodsByArea = function(areaId){
-        window.location.href="http://www.cys.com:9200/search/search/html/search.html#?areaId="+areaId;
+    $scope.findGoodsByArea = function(areaName){
+        window.location.href="http://www.cys.com:9200/search/search/html/search.html#?areaName="+areaName;
     }
 
     $scope.specList = [];
@@ -278,13 +281,14 @@ app.controller("indexController", function ($scope,$controller,$location,areaSer
                 }else{
                     $scope.noPayOrderList = data.data;
                     if($scope.noPayOrderList != null){
-                        for(var i=0;i<$scope.noPayOrderList.length;i++){
-                            var orderPayOrder = $scope.noPayOrderList[i];
-                            orderPayOrder=$scope._objToStrMap(orderPayOrder);
-                            orderPayOrder.forEach(function(value,key){
-                                $scope.totalPrice = $scope.totalPrice + value[0][0].totalPrice;
+                        var orderPayOrder = $scope.noPayOrderList;
+                        orderPayOrder=$scope._objToStrMap(orderPayOrder);
+                        orderPayOrder.forEach(function(value,key){
+                            var orderMap = $scope._objToStrMap(value);
+                            orderMap.forEach(function(val,k){
+                                $scope.totalPrice = $scope.totalPrice + val[0][0].totalPrice;
                             });
-                        }
+                        });
                         console.log($scope.noPayOrderList);
                     }
                 }

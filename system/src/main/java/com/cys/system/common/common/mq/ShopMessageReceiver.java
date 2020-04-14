@@ -9,6 +9,7 @@ import com.cys.system.common.mapper.MsgMapper;
 import com.cys.system.common.pojo.GoodsSummary;
 import com.cys.system.common.pojo.Msg;
 import com.cys.system.common.util.TimeConverter;
+import com.cys.system.common.util.TimeFormat;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +64,7 @@ public class ShopMessageReceiver {
         msg1.setMessage(message);
         msg1.setMsgType(3);
         msg1.setMsgBelong((Integer) info.get("shop_id"));
-        msg1.setCreateTime(TimeConverter.DateToString(new Date()));
+        msg1.setCreateTime(TimeConverter.getInstance().DateToString(new Date(), TimeFormat.Y_M_D_H_M_S));
         msg1.setRead(0);
 
         msgMapper.storeMessage(msg1);

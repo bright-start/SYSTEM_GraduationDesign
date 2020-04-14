@@ -193,7 +193,7 @@
                         <div ng-if="goods.goodsIntroduce != null">
                             <p>商品介绍</p>
                             <hr>
-                            <p>{{goods.goodsIntroduce}}</p>
+                            <article ng-bind-html="goods.goodsIntroduce | trustHtml"></article>
                         </div>
                         <div ng-if="goods.goodsSaleService != null">
                             <p>售后服务</p>

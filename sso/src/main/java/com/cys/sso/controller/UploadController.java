@@ -18,7 +18,7 @@ public class UploadController {
     @Autowired
     private FastFileStorageClient storageClient;
 
-    private static final String PHOTO_DOMAIN = "http://47.95.234.255/";
+    private static final String PHOTO_DOMAIN = "http://10.211.55.33:8888/";
 
     private static final String[] CONTENT_TYPE_LIST = {"image/jpeg","image/png","image/gif"};
 

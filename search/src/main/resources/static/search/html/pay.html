@@ -160,6 +160,7 @@
         <div style="width:1000px;margin: 0 auto;">
             <ul ng-repeat="(payCode,noPayOrderMap) in noPayOrderList">
                 <li ng-repeat="(shopId,orderList) in noPayOrderMap">
+                    <input id="payCode" type="hidden" ng-value="payCode">
                     <input type="hidden" ng-model="shopId">
                     <div style="color:red;font-size:20px;">{{orderList[0][0].shopName}}</div>
                     <ul style="text-align:center;width:980px;padding:10px;background-color:white;box-shadow: 0px 0px 5px #e0dddd;">
@@ -177,11 +178,15 @@
                         </li>
                     </ul>
                     <div style="overflow:hidden">
+                        <div style="float:left;width:400px;height:30px;background-color: #ececf9;">
+                            <div id="progress" style="width:400px;height:40px;background-color:#eccaa2;"></div>
+                            <div style="position: relative;top: -35px;left: 10px;">订单剩余支付时间&nbsp;<span id="time"></span></div>
+                        </div>
                         <div style="float:right;font-size:20px;color:orange;">
                             <span>折扣:{{orderList[0][0].discount || 0.00}}</span>
                             <span>邮费:{{orderList[0][0].postage || 0.00}}</span>
                             <span>订单项数量:{{orderList[0][0].orderCount}}</span>
-                            <span>订单总价格:¥{{orderList[0][0].totalPrice}}</span>
+                            <span>订单小记:¥{{orderList[0][0].totalPrice}}</span>
                             <span ng-click="deleteOrder($event,payCode)" style="text-align:center;width:90px;height:28px;line-height:28px;background-color: #eae9e7;display:inline-block;">删除订单</span>
                         </div>
                     </div>
@@ -325,6 +330,49 @@
 <!--        }-->
     })
 
+    function freeTime(opj){
+        var width = $(opj).width();
+        $.ajax({
+            url: "/search/order/leaveOrderTime",
+            type: "POST",
+            dataType: "json",
+            data: {
+                "payCode": $("#payCode").attr("value")
+            },
+            before: function () {
+
+            },
+            success: function (data) {
+                if (data.code === 200) {
+                    $("#time").text(data.data);
+                    var leave_width = width * (data.data/1800);
+                    console.log(leave_width);
+                    $(opj).width(leave_width);
+                }
+            }
+        });
+
+	}
+    var time=setInterval('freeTime("#progress")',1000);
+    if($("#progress").attr("width") == 0){
+        clearInterval(freeTime);
+        $.ajax({
+            url: "/search/order/deleteOrder",
+            type: "POST",
+            dataType: "json",
+            data: {
+                "payCode": $("#payCode").attr("value")
+            },
+            before: function () {
+
+            },
+            success: function (data) {
+                console.log(data);
+                if (data.code === 200) {
+                }
+            }
+        });
+    }
 
 </script>
 </body>

@@ -70,16 +70,24 @@
         ON "public".brand."brand_id" = "public".goods."brand_id"
         <where>
             <if test="status != null">
-                "public".goods.goods_status=#{status}
+                "public".goods."goods_status"=#{status}
             </if>
             <if test="goodsName != null">
-                "public".goods.goods_name like concat('%',#{goodsName},'%')
+                "public".goods."goods_name" like concat('%',#{goodsName},'%')
+            </if>
+            <if test="shopId != null">
+                "public".goods."shop_id" = #{shopId}
             </if>
         </where>
         order by "public".goods.goods_id
     </select>
     <select id="count" resultType="java.lang.Long" parameterType="Goods">
         select count(goods_id) from goods
+        <where>
+            <if test="shopId != null">
+                "public".goods.shop_id = #{shopId}
+            </if>
+        </where>
     </select>
     <select id="findGoodsById" resultMap="goodsMap" parameterType="java.lang.Integer">
         SELECT

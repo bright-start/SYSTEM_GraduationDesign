@@ -4,6 +4,7 @@ import com.cys.system.common.config.RefreshCenter;
 import com.cys.system.common.pojo.TimeTask;
 import com.cys.system.common.service.ArticleService;
 import com.cys.system.common.util.TimeConverter;
+import com.cys.system.common.util.TimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +32,7 @@ public class ArticleRefresh extends RefreshCenter {
             for (TimeTask timeTask : timeTasks) {
                 if (timeTask.getEnable() == 1 && !"null".equals(timeTask.getTime())) {
                     try {
-                        if (TimeConverter.StringToDate(timeTask.getTime()).before(new Date())) {
+                        if (TimeConverter.getInstance().StringToDate(timeTask.getTime(), TimeFormat.Y_M_D_H_M_S).before(new Date())) {
                             articleService.updateStatusById(timeTask.getId());
                         }
                     } catch (Exception e) {

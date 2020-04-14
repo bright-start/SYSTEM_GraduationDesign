@@ -7,6 +7,8 @@ import com.cys.search.service.SSOService;
 import com.google.gson.Gson;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -100,5 +102,15 @@ public class OrderController{
         }else {
             return new Result().success(200,"订单获取异常,重试或者联系客服");
         }
+    }
+
+    @PostMapping("/leaveOrderTime")
+    public Result leaveOrderTime(@RequestBody String payCode){
+        return ssoService.getTTL(payCode);
+    }
+
+    @PostMapping("/deleteOrder")
+    public Result deleteOrder(@RequestBody String payCode){
+        return new Result().success();
     }
 }

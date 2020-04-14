@@ -327,10 +327,11 @@
     .mt20 {
         margin-top: 20px !important;
     }
-    .c-nav :hover{
-        position:relative;
-        width:380px;
-        z-index:10;
+    .category_hover{
+        position:absolute;
+        height:340px;
+        width:350px;
+        z-index:5;
         opacity:0.9;
         background-color:white;
     }
@@ -472,11 +473,11 @@
 
         </style>
         <div class="c-nav">
-            <div class="module J-mainNav" data-spm="2164140">
-                <ul class="category">
+            <div id="category_nav" class="module J-mainNav" data-spm="2164140">
+                <ul class="category" style="height:324px;overflow:hidden;">
                     <li ng-repeat="area in areaList">
                         <a style="font-size:14px;"
-                           href="javascript:void(0)" ng-click="findGoodsByArea(area.id)">{{area.areaName}}</a>
+                           href="javascript:void(0)" ng-click="findGoodsByArea(area.areaName)">{{area.areaName}}</a>
                     </li>
                 </ul>
             </div>
@@ -596,7 +597,7 @@
             <div class="img img-area">
                 <span style="width:250px;height:250px;background-image:url({{goodGoods.goods_images}});background-size: 100% 100%;display: block;"></span>
             </div>
-            <a href="javascript:;" target="_blank" class="con_info">
+            <a href="product_detail.html?goodsId={{goodGoods.goods_id}}" target="_blank" class="con_info">
 
                 <p class="co_tit">
                         <span style="display: inline-block;width: 267px;overflow: hidden;white-space: nowrap;    text-overflow: ellipsis;">
@@ -997,31 +998,12 @@
 
 </style>
 <script>
-    $(function () {
-        $(".fx-phone").mouseover(function () {
-            $(".fx-phone .fa-phone").hide();
-            $(".fx-phone .phone-box").show();
-        }).mouseout(function () {
-            $(".fx-phone .fa-phone").show();
-            $(".fx-phone .phone-box").hide();
-        });
-
-        $(".fx-share").mouseover(function () {
-            $(".fx-share .fa-share-alt").hide();
-            $(".fx-share .fx-share-box").show();
-        }).mouseout(function () {
-            $(".fx-share .fa-share-alt").show();
-            $(".fx-share .fx-share-box").hide();
-        });
-        $(".fx-qrcode").mouseover(function () {
-            $(".fx-qrcode .fa-qrcode").hide();
-            $(".fx-qrcode .fx-qrcode-box").show();
-        }).mouseout(function () {
-            $(".fx-qrcode .fa-qrcode").show();
-            $(".fx-qrcode .fx-qrcode-box").hide();
-        });
-    })
-
+	$("#category_nav").mouseover(function(){
+	console.log("over");
+	    $("#category_nav").addClass("category_hover");
+	}).mouseout(function(){
+	    $("#category_nav").removeClass("category_hover");
+	})
 </script>
 
 

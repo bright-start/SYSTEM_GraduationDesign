@@ -47,7 +47,11 @@
         <a href="index.html" class="logo"> <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>农特产</b></span> <!-- logo for regular state and mobile devices -->
             <ng-if></ng-if>
-            <span class="logo-lg"><b>农特产-店铺后台</b></span>
+            <span class="logo-lg">
+                <b ng-if="a == -1">农特产-店铺后台</b>
+                <b ng-if="b == -1 && a != -1">农特产-管理员后台</b>
+                <b ng-if="b != -1">农特产-超级管理员后台</b>
+            </span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -233,10 +237,14 @@
                         </ul>
                     </li>
                     <!-- User Account: style can be found in dropdown.less -->
-                    <li class="dropdown user user-menu"><a href="#"
-                                                           class="dropdown-toggle" data-toggle="dropdown"> <img
-                            src="../images/user2-160x160.jpg" class="user-image"
-                            alt="User Image"> <span id="loginUserFlag" ng-value="loginUserInfo.userId" class="hidden-xs">{{loginUserInfo.username}}</span>
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="{{loginUserInfo.image}}" class="user-image"
+                            alt="User Image">
+                            <span id="loginUserFlag" ng-value="loginUserInfo.userId" class="hidden-xs">
+                                {{loginUserInfo.username}}
+                            </span>
+                            <span id="loginRole" ng-value="loginUserInfo.authorities[0].role"></span>
                     </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
@@ -250,7 +258,7 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">修改密码</a>
+                                    <a href="password.html" class="btn btn-default btn-flat">修改密码</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="javascript:void(0)" ng-click="logout()" class="btn btn-default btn-flat">注销</a>
@@ -287,9 +295,9 @@
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
                 <li class="header">菜单</li>
-                <li id="admin-index"><a href="index.html"><i
+                <li id="admin-index"><a href="home.html"><i
                         class="fa fa-dashboard"></i> <span>首页</span></a></li>
-                <li id="admin-index"><a href="index.html"><i
+                <li ng-if="b != -1" id="admin-index"><a href="center.html"><i
                         class="fa fa-dashboard"></i> <span>监控中心</span></a></li>
                 <!-- 菜单 -->
                 <li class="treeview"><a href="#"> <i class="fa fa-folder"></i>
@@ -306,7 +314,7 @@
                         </a></li>
                     </ul>
                 </li>
-                <li class="treeview"><a href="#"> <i class="fa fa-folder"></i>
+                <li ng-if="b != -1" class="treeview"><a href="#"> <i class="fa fa-folder"></i>
                     <span>系统管理</span> <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
@@ -315,43 +323,26 @@
                         <li id="admin-login"><a href="ipinfo.html"
                                                 target="iframe"> <i class="fa fa-circle-o"></i>IP记录管理
                         </a></li>
-                        <li id="admin-login"><a href="bulletin.html"
-                                                target="iframe"> <i class="fa fa-circle-o"></i>系统公告管理
+                        <li id="admin-login"><a href="auth.html"
+                                                target="iframe"> <i class="fa fa-circle-o"></i>权限管理
                         </a></li>
-                        <li id="admin-login"><a href="#"> <i class="fa fa-folder"></i>
-                            <span>文章管理</span> <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                            <ul class="treeview-menu">
-                                <li id="admin-login"><a href="article.html"
-                                                        target="iframe"> <i class="fa fa-circle-o"></i>文章管理
-                                </a></li>
-                                <li id="admin-login"><a href="article_edit.html"
-                                                        target="iframe"> <i class="fa fa-circle-o"></i>编辑文章
-                                </a></li>
-                                <li id="admin-login"><a href="article_template.html"
-                                                        target="iframe"> <i class="fa fa-circle-o"></i>文章详情模版
-                                </a></li>
-                            </ul>
-                        </li>
                     </ul>
                 </li>
-                <li class="treeview"><a href="#"> <i class="fa fa-folder"></i>
+                <li ng-if="a != -1" class="treeview"><a href="#"> <i class="fa fa-folder"></i>
                     <span>用户管理</span> <span class="pull-right-container"> <i
                             class="fa fa-angle-left pull-right"></i>
 						</span>
                 </a>
                     <ul class="treeview-menu">
                         <li id="admin-login"><a href="user.html" target="iframe">
-                            <i class="fa fa-circle-o"></i>会员管理
+                            <i class="fa fa-circle-o"></i>角色用户管理
                         </a></li>
-                        <li id="admin-login"><a href="seller_1.html" target="iframe">
+                        <li id="admin-login"><a href="shop_examine.html" target="iframe">
                             <i class="fa fa-circle-o"></i>商家审核
                         </a></li>
-                        <li id="admin-login"><a href="seller.html" target="iframe">
-                            <i class="fa fa-circle-o"></i>商家管理
-                        </a></li>
+<!--                        <li id="admin-login"><a href="seller.html" target="iframe">-->
+<!--                            <i class="fa fa-circle-o"></i>商家管理-->
+<!--                        </a></li>-->
                     </ul>
                 </li>
 
@@ -380,16 +371,16 @@
                         <li id="admin-login"><a href="specification.html"
                                                 target="iframe"> <i class="fa fa-circle-o"></i>规格管理
                         </a></li>
-                        <li id="admin-login"><a href="type_template.html"
-                                                target="iframe"> <i class="fa fa-circle-o"></i>模板管理
+<!--                        <li id="admin-login"><a href="type_template.html"-->
+<!--                                                target="iframe"> <i class="fa fa-circle-o"></i>模板管理-->
                         </a></li>
-                        <li id="admin-login"><a href="area.html" target="iframe">
+                        <li ng-if="a != -1" id="admin-login"><a href="area.html" target="iframe">
                             <i class="fa fa-circle-o"></i>区域管理
                         </a></li>
-                        <li id="admin-login"><a href="goods_examine.html" target="iframe">
+                        <li ng-if="a != -1" id="admin-login"><a href="goods_examine.html" target="iframe">
                             <i class="fa fa-circle-o"></i>商品审核
                         </a></li>
-                        <li id="admin-login"><a href="goods_edit.html" target="iframe">
+                        <li ng-if="a == -1" id="admin-login"><a href="goods_edit.html" target="iframe">
                             <i class="fa fa-circle-o"></i>发布商品
                         </a></li>
                         <li id="admin-login"><a href="goods_list.html" target="iframe">
@@ -397,8 +388,35 @@
                         </a></li>
                     </ul>
                 </li>
-
-                <li class="treeview"><a href="#"> <i class="fa fa-folder"></i>
+                <li ng-if="a != -1" class="treeview"><a href="#"> <i class="fa fa-folder"></i>
+                    <span>文章管理</span> <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                </a>
+                    <ul class="treeview-menu">
+                        <li id="admin-login"><a href="article.html"
+                                                target="iframe"> <i class="fa fa-circle-o"></i>文章管理
+                        </a></li>
+                        <li id="admin-login"><a href="article_edit.html"
+                                                target="iframe"> <i class="fa fa-circle-o"></i>编辑文章
+                        </a></li>
+                        <!--                                <li id="admin-login"><a href="article_template.html"-->
+                        <!--                                                        target="iframe"> <i class="fa fa-circle-o"></i>文章详情模版-->
+                        <!--                                </a></li>-->
+                    </ul>
+                </li>
+                <li ng-if="a != -1" class="treeview"><a href="#"> <i class="fa fa-folder"></i>
+                    <span>公告管理</span> <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                </a>
+                    <ul class="treeview-menu">
+                        <li id="admin-login"><a href="bulletin.html"
+                                                target="iframe"> <i class="fa fa-circle-o"></i>公告管理
+                        </a></li>
+                    </ul>
+                </li>
+                <li ng-if="a != -1" class="treeview"><a href="#"> <i class="fa fa-folder"></i>
                     <span>广告管理</span> <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
@@ -435,7 +453,7 @@
             <b>Version</b> 1.0.8
         </div>
         <strong>Copyright &copy; 2014-2017 <a
-                href="http://www.itcast.cn">研究院研发部</a>.
+                href="#">农特产</a>.
         </strong> All rights reserved.
     </footer>
     <!-- 底部导航 /-->
