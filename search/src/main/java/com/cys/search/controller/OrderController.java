@@ -91,7 +91,7 @@ public class OrderController{
                     payToken = payCode;
 
                     Cookie newCookie = new Cookie(payToken, "1");
-                    newCookie.setMaxAge(0);
+                    newCookie.setMaxAge(30*60);
                     newCookie.setPath("/");
                     newCookie.setHttpOnly(true);
                     response.addCookie(newCookie);
@@ -105,12 +105,12 @@ public class OrderController{
     }
 
     @PostMapping("/leaveOrderTime")
-    public Result leaveOrderTime(@RequestBody String payCode){
+    public Result leaveOrderTime(@RequestParam String payCode){
         return ssoService.getTTL(payCode);
     }
 
     @PostMapping("/deleteOrder")
-    public Result deleteOrder(@RequestBody String payCode){
+    public Result deleteOrder(@RequestParam String payCode){
         return new Result().success();
     }
 }

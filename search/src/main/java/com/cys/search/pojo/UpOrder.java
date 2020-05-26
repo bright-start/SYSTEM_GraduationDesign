@@ -5,7 +5,7 @@ import java.util.List;
 
 public class UpOrder {
     private String creator;
-    private Integer phone;
+    private String phone;
     private String address;
     private String payType;
     private String noPayList;
@@ -19,11 +19,11 @@ public class UpOrder {
         this.creator = creator;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

@@ -116,7 +116,7 @@ public class SSOServiceImpl implements SSOService {
         redisTemplate.setKeySerializer(redisSerializer);
 
         long ttl = redisTemplate.getExpire(payCode,TimeUnit.SECONDS);
-        if(ttl < 0){
+        if(ttl <= 0){
             ttl = 0;
         }
         return new Result().success(ttl);

@@ -191,6 +191,7 @@ app.controller("indexController", function ($scope,$controller,$location,areaSer
         cartService.addCart($scope.productId,num).success(function(data){
             if(data.code === 200){
                 console.log(data.message);
+                alert(data.message);
             }
         });
      }
@@ -208,23 +209,35 @@ app.controller("indexController", function ($scope,$controller,$location,areaSer
          });
      }
 
-     $scope.deleteCartItem =function(){
-         if($scope.productId == null){
-             index1 = 0;
-             index2 = 0;
-             $scope.selectProductId();
+     $scope.add = function(cartId,cartItemId,num){
+        console.log(cartId+"-"+cartItemId+"-"+num);
+        cartService.addNum(cartId,cartItemId,num).success(function(data){
+            if(data.code === 200){
+                 console.log(data.data);
+                 window.location.reload()
+            }
+        })
+     }
+
+     $scope.deleteCartItem =function(cartId){
+        console.log($scope.selectCartIds.length);
+         if($scope.selectCartIds.length == 0){
+            alert("请勾选你要删除的商品");
+            return;
          }
-         cartService.deleteCartItem($scope.productId).success(function(data){
+         cartService.deleteCartItem(cartId,$scope.selectCartIds).success(function(data){
               if(data.code === 200){
                   console.log(data.data);
+                  window.location.reload();
               }
          });
      }
 
      $scope.clearCart = function(){
-         cartService.clearCart($scope.productId).success(function(data){
+         cartService.clearCart().success(function(data){
                if(data.code === 200){
                    console.log(data.message);
+                   window.location.reload();
                }
           });
      }
@@ -307,14 +320,16 @@ app.controller("indexController", function ($scope,$controller,$location,areaSer
          console.log($scope.order);
          cartService.pay($scope.order).success(function(data){
              if(data.code === 200){
-                if(data.data != null && typeof(data.data) != "undefined"){
+                alert(data.message);
+                if(data.message == "付款成功") {
+                 window.location.href="pay_success.html";
+                }
+                if(data.data != null || typeof(data.data) != "undefined"){
                     var noProductList = [];
                     for(var i =0;i<data.data.length;i++){
                         noProductList.push(data.data[i])
                     }
                     console.log(noProductList.join(',')+"商品库存不足");
-                }else{
-                  window.location.href="pay_success.html";
                 }
              }else{
                   window.location.href="http://www.cys.com:9200/search/search/html/500.html";

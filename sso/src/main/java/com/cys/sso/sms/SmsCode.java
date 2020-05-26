@@ -1,9 +1,10 @@
-package com.pyg.sms;
+package com.cys.sms;
 
 import java.util.Map;
 
 import com.aliyuncs.exceptions.ClientException;
 import com.cys.sso.sms.SmsUtils;
+import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,12 @@ public class SmsCode {
 	public void sendSms(String message) {
 		Map maps = JSON.parseObject(message,Map.class);
 		String mobile = (String)maps.get("mobile");
-		String code = (String)maps.get("number");
+		String templateParam = (String)maps.get("templateParam");
 		String signName = (String)maps.get("signName");
 		String accessKeyId = env.getProperty("accessKeyId");
 		String accessKeySecret = env.getProperty("accessKeySecret");
-		System.out.println(code);
 		try {
-			SmsUtils.sendSms(mobile,signName,templateCode,code,accessKeyId,accessKeySecret);
+			SmsUtils.sendSms(mobile,signName,templateCode,templateParam,accessKeyId,accessKeySecret);
 		} catch (ClientException e) {
 			logger.error(e.getMessage());
 		}

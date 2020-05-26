@@ -40,8 +40,11 @@ public interface SystemInterface {
     @GetMapping("/cart/look")
     Result lookCart(@RequestParam String token);
 
+    @GetMapping("/cart/addNum")
+    Result addNum(@RequestParam Integer cartId,@RequestParam Integer cartItemId, @RequestParam Integer num, @RequestParam String token);
+
     @DeleteMapping("/cart/delete")
-    Result deleteCartItem(@RequestParam Integer productId,@RequestParam String token);
+    Result deleteCartItem(@RequestParam Integer cartId,@RequestParam Integer[] ids,@RequestParam String token);
 
     @DeleteMapping("/cart/clear")
     Result clearCart(@RequestParam String token);

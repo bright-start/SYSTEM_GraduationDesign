@@ -4,10 +4,7 @@ import com.cys.search.feign.SystemInterface;
 import com.cys.search.pojo.Result;
 import com.cys.search.service.SSOService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -42,12 +39,12 @@ public class CartController{
     }
 
     @DeleteMapping("/delete")
-    public Result deleteCartItem(Integer productId,HttpServletRequest request){
+    public Result deleteCartItem(Integer cartId,Integer[] ids,HttpServletRequest request){
         String token = ssoService.getTokenByCookie(request);
         if(token == null){
             return new Result().success(401,"请登录后操作");
         }
-        return systemInterface.deleteCartItem(productId,token);
+        return systemInterface.deleteCartItem(cartId,ids,token);
     }
     @DeleteMapping("/clear")
     public Result clearCart(HttpServletRequest request){
@@ -56,5 +53,13 @@ public class CartController{
             return new Result().success(401,"请登录后操作");
         }
         return systemInterface.clearCart(token);
+    }
+    @GetMapping("/addNum")
+    public Result addNum(@RequestParam Integer cartId, @RequestParam Integer cartItemId, @RequestParam Integer num, HttpServletRequest request){
+        String token = ssoService.getTokenByCookie(request);
+        if(token == null){
+            return new Result().success(401,"请登录后操作");
+        }
+        return systemInterface.addNum(cartId,cartItemId,num,token);
     }
 }

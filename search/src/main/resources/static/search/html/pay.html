@@ -82,13 +82,13 @@
 
         </script>
         <div class="app-nav-right">
-            <a class="seller-apply" ng-if="loginUserInfo.username==null"
+            <a class="seller-apply" ng-if="loginUserInfo.principal==null"
                href="http://www.cys.com:9200/sso/sso/html/login.html" target="_self">登陆</a>
-            <a class="seller-apply" ng-if="loginUserInfo.username==null"
+            <a class="seller-apply" ng-if="loginUserInfo.principal==null"
                href="http://www.cys.com:9200/sso/sso/html/registry.html" target="_self">|&nbsp;注册</a>
-            <a class="seller-apply" ng-if="loginUserInfo.username"
+            <a class="seller-apply" ng-if="loginUserInfo.principal"
                href="#" target="_blank"><i></i>会员中心</a>
-            <a class="seller-apply" ng-if="loginUserInfo.username"
+            <a class="seller-apply" ng-if="loginUserInfo.principal"
                href="javascript:void(0)" ng-click="logout()"><i></i>登出</a>
         </div>
     </div>
@@ -160,7 +160,7 @@
         <div style="width:1000px;margin: 0 auto;">
             <ul ng-repeat="(payCode,noPayOrderMap) in noPayOrderList">
                 <li ng-repeat="(shopId,orderList) in noPayOrderMap">
-                    <input id="payCode" type="hidden" ng-value="payCode">
+                    <input class="payCode" type="hidden" ng-value="payCode">
                     <input type="hidden" ng-model="shopId">
                     <div style="color:red;font-size:20px;">{{orderList[0][0].shopName}}</div>
                     <ul style="text-align:center;width:980px;padding:10px;background-color:white;box-shadow: 0px 0px 5px #e0dddd;">
@@ -178,10 +178,10 @@
                         </li>
                     </ul>
                     <div style="overflow:hidden">
-                        <div style="float:left;width:400px;height:30px;background-color: #ececf9;">
-                            <div id="progress" style="width:400px;height:40px;background-color:#eccaa2;"></div>
-                            <div style="position: relative;top: -35px;left: 10px;">订单剩余支付时间&nbsp;<span id="time"></span></div>
-                        </div>
+<!--                        <div style="float:left;width:400px;height:30px;background-color: #ececf9;">-->
+<!--                            <div class="progress" style="width:400px;height:40px;background-color:#eccaa2;"></div>-->
+<!--                            <div style="position: relative;top: -35px;left: 10px;">订单剩余支付时间&nbsp;<span class="time"></span></div>-->
+<!--                        </div>-->
                         <div style="float:right;font-size:20px;color:orange;">
                             <span>折扣:{{orderList[0][0].discount || 0.00}}</span>
                             <span>邮费:{{orderList[0][0].postage || 0.00}}</span>
@@ -217,8 +217,8 @@
                         style="float:left;margin-left:20px;padding:5px;background-color: #8ed2f3;">
                         微信
                     </li>
-                    <li ng-click="payType('银行卡')" class="ns"
-                        style="float:left;margin-left:20px;padding:5px;background-color: #8ed2f3;">
+                    <li ng-click="payType('paypal')" class="ns"
+                        style="float:left;margin-left:20px;padding:5px;background-image:url('../images/paypal.jpg')">
                         银行卡
                     </li>
                 </ul>
@@ -318,9 +318,16 @@
     </div>
 </div>
 <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+</body>
+</html>
+
 <script type="text/javascript">
     $("body").on('click',"#bb>li",function(){
         console.log($(this).text());
+        if($(this).text() != "货到付款") {
+            alert("暂不支持");
+            return;
+        }
         $(this).removeClass("ns").addClass("ys").siblings().removeClass("ys").addClass("ns");
 
 <!--        if($(this).index()==4){-->
@@ -330,50 +337,55 @@
 <!--        }-->
     })
 
-    function freeTime(opj){
-        var width = $(opj).width();
-        $.ajax({
-            url: "/search/order/leaveOrderTime",
-            type: "POST",
-            dataType: "json",
-            data: {
-                "payCode": $("#payCode").attr("value")
-            },
-            before: function () {
+<!--    function freeTime(opj){-->
+<!--        console.log(opj);-->
+<!--        console.log($(".payCode").eq(opj).attr("value");-->
+<!--        $.ajax({-->
+<!--            url: "/search/order/leaveOrderTime",-->
+<!--            type: "POST",-->
+<!--            dataType: "json",-->
+<!--            data: {-->
+<!--                "payCode": $(".payCode").eq(opj).attr("value")-->
+<!--            },-->
+<!--            before: function () {-->
 
-            },
-            success: function (data) {
-                if (data.code === 200) {
-                    $("#time").text(data.data);
-                    var leave_width = width * (data.data/1800);
-                    console.log(leave_width);
-                    $(opj).width(leave_width);
-                }
-            }
-        });
+<!--            },-->
+<!--            success: function (data) {-->
+<!--                if (data.code === 200) {-->
+<!--                    if(data.data == 0){-->
+<!--                        clearInterval($(opj));-->
+<!--                    }else{-->
+<!--                        $(".time").eq(opj).text(data.data);-->
+<!--                        var leave_width = (data.data/1800) * width;-->
+<!--                        $(".progress").eq(opj).width(leave_width);-->
+<!--                    }-->
+<!--                }-->
+<!--            }-->
+<!--        });-->
+<!--	}-->
+<!--	var width = 400;-->
+<!--	$(".payCode").each(function(){-->
+<!--	    var d = $(this).index();-->
+<!--        var d = setInterval('freeTime($(this).index())',1000);-->
+<!--        if($(".progress").eq($(this).index()).attr("width") == 0){-->
+<!--            clearInterval(d);-->
+<!--            $.ajax({-->
+<!--                url: "/search/order/deleteOrder",-->
+<!--                type: "POST",-->
+<!--                dataType: "json",-->
+<!--                data: {-->
+<!--                    "payCode": $(this).attr("value")-->
+<!--                },-->
+<!--                before: function () {-->
 
-	}
-    var time=setInterval('freeTime("#progress")',1000);
-    if($("#progress").attr("width") == 0){
-        clearInterval(freeTime);
-        $.ajax({
-            url: "/search/order/deleteOrder",
-            type: "POST",
-            dataType: "json",
-            data: {
-                "payCode": $("#payCode").attr("value")
-            },
-            before: function () {
-
-            },
-            success: function (data) {
-                console.log(data);
-                if (data.code === 200) {
-                }
-            }
-        });
-    }
+<!--                },-->
+<!--                success: function (data) {-->
+<!--                    console.log(data);-->
+<!--                    if (data.code === 200) {-->
+<!--                    }-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
+<!--    });-->
 
 </script>
-</body>
-</html>

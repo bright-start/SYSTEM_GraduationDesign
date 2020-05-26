@@ -75,15 +75,15 @@
 
         </script>
         <div class="app-nav-right">
-            <a class="seller-apply" ng-if="loginUserInfo.username==null"
+            <a class="seller-apply" ng-if="loginUserInfo.principal==null"
                href="http://www.cys.com:9200/sso/sso/html/login.html" target="_self">登陆</a>
-            <a class="seller-apply" ng-if="loginUserInfo.username==null"
+            <a class="seller-apply" ng-if="loginUserInfo.principal==null"
                href="http://www.cys.com:9200/sso/sso/html/registry.html" target="_self">|&nbsp;注册</a>
-            <a class="seller-apply" ng-if="loginUserInfo.username"
+            <a class="seller-apply" ng-if="loginUserInfo.principal"
                href="pay.html" target="_self"><i></i>待支付订单</a>
-            <a class="seller-apply" ng-if="loginUserInfo.username"
+            <a class="seller-apply" ng-if="loginUserInfo.principal"
                href="#" target="_blank"><i></i>会员中心</a>
-            <a class="seller-apply" ng-if="loginUserInfo.username"
+            <a class="seller-apply" ng-if="loginUserInfo.principal"
                href="javascript:void(0)" ng-click="logout()"><i></i>登出</a>
         </div>
     </div>
@@ -167,7 +167,11 @@
                                         </td>
                                         <td>{{cartItem.productName}}</td>
                                         <td>价格:¥{{cartItem.productPrice}}</td>
-                                        <td><span>-</span>数量:{{cartItem.productCount}}<span>+</span></td>
+                                        <td>
+                                            <span style="border: 1px solid beige;padding: 2px;" ng-click="add(cartGoods.id,cartItem.itemId,-1)">&nbsp;-&nbsp;</span>
+                                            数量:{{cartItem.productCount}}
+                                            <span style="border: 1px solid beige;padding: 2px;" ng-click="add(cartGoods.id,cartItem.itemId,1)">&nbsp;+&nbsp;</span>
+                                        </td>
                                         <td>折扣:{{cartItem.discount}}</td>
                                         <td>邮费:{{cartItem.postage}}</td>
                                         <td>小记:¥{{cartItem.productPrice * cartItem.productCount}}</td>
@@ -179,8 +183,12 @@
                 </li>
             </ul>
         </div>
-        <div style="width:1000px;margin:auto;text-align:right;">
-            <div style="margin:40px 0px;font-size:20px;">
+        <div style="width:1000px;margin:auto;">
+            <div style="margin:40px 0px;font-size:20px;text-align:left;">
+                <span style="display:inline-block;height:40px;line-height:40px;background: #e3eaea;padding:3px 10px;" ng-click="deleteCartItem(cartGoods.id)">删除商品</span>
+                <span style="display:inline-block;height:40px;line-height:40px;background: #e3eaea;padding:3px 10px;" ng-click="clearCart()">清空购物车</span>
+            </div>
+            <div style="margin:40px 0px;font-size:20px;text-align:right;">
                 <span style="display:inline-block;">商品总价格:&nbsp;<strong style="color:red;">{{totalPrice}}</strong></span>&nbsp;&nbsp;
                 <span style="display:inline-block;height:40px;line-height:40px;border: 4px solid #ea3434;background: #f1992d;padding:3px 10px;" ng-click="buildOrder()">生成订单</span>
             </div>

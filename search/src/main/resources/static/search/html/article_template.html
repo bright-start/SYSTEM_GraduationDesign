@@ -26,7 +26,7 @@
     <section>
         <div style="width:100%;height: 50px; margin:0 auto;background-image: url('../images/article_top.jpg');background-size:28% 50px;box-shadow: 0px 10px 5px black;"></div>
     </section>
-    <div style="position: fixed; left:80px; top: 120px;z-index:10">
+    <div style="position: fixed; left:80px; bottom: 0px;z-index:10">
         <div id="landlord">
             <div class="message" style="opacity:0"></div>
             <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
@@ -46,7 +46,6 @@
     </div>
     <div style="clear:both;overflow: hidden;width: 100%;">
         <div style="width: 25%;float: left;background-color: #275fa5;padding: 10px;text-align: center;">
-            作者
             <br>
             <br>
             <br>
@@ -56,7 +55,7 @@
             <div style="position:relative;width: 100%;height: 300px;">
                 <div class="fill">
                     <div class="reference"></div>
-                    <div class="clock" id="utility-clock">
+                    <div class="clock" id="utility-clock" style="transform: scale(0.9);">
                         <div class="centre">
                             <div class="dynamic"></div>
                             <div class="expand round circle-1"></div>
@@ -84,6 +83,7 @@
         <div style="width:67.88%;float: left;background-color: rgba(255,255,255,0.7); padding: 40px;">
             <!--文章主题-->
             <h1 style="text-align: center;margin-top: 50px;">{{entity.article.name}}</h1>
+            <p style="text-align: center">作者：{{entity.article.author}}</p>
             <p style="text-align: center"><span>浏览:{{entity.article.browseNum}}</span>&nbsp;|&nbsp;<span
                     ng-click="love(entity.article.id)"><img id="loveClick"
                                                             src="../images/heart.jpeg"

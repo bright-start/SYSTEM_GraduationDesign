@@ -5,8 +5,11 @@ app.service("cartService", function ($http) {
     this.lookCart = function () {
         return $http.get(basePath+"/cart/look");
     };
-    this.deleteCartItem = function (productId) {
-        return $http.get(basePath+"/cart/delete?productId="+productId);
+    this.addNum = function(cartId,cartItemId,num){
+        return $http.get(basePath+"/cart/addNum?cartId="+cartId+"&cartItemId="+cartItemId + "&num="+num);
+    }
+    this.deleteCartItem = function (cartId,ids) {
+        return $http.delete(basePath+"/cart/delete?cartId="+cartId+"&ids="+ids);
     };
     this.clearCart = function () {
         return $http.get(basePath+"/cart/clear");

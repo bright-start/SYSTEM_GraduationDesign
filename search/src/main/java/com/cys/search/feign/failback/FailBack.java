@@ -57,9 +57,15 @@ public class FailBack implements SystemInterface {
     }
 
     @Override
-    public Result deleteCartItem(Integer productId,String token) {
+    public Result addNum(Integer cartId, Integer cartItemId, Integer num, String token) {
         return new Result().success(503,"error");
     }
+
+    @Override
+    public Result deleteCartItem(Integer cartId, Integer[] ids, String token) {
+        return new Result().success(503,"error");
+    }
+
 
     @Override
     public Result clearCart(String token) {
