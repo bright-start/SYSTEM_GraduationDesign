@@ -75,4 +75,9 @@ public class UserController {
         return userService.modifyPassword(userId,passwordInfo);
     }
 
+    @PostMapping("/createAdmin")
+    public Result createAdmin(@RequestBody User user){
+        return userService.createAdmin(user);
+    }
+
 }

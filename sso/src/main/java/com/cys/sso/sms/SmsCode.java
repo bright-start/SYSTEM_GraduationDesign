@@ -1,10 +1,9 @@
-package com.cys.sms;
+package com.cys.sso.sms;
 
 import java.util.Map;
 
+import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
-import com.cys.sso.sms.SmsUtils;
-import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,18 +24,13 @@ public class SmsCode {
 
 	private Logger logger = LoggerFactory.getLogger(SmsCode.class);
 
-	public void sendSms(String message) {
+	public SendSmsResponse sendSms(String message) throws ClientException {
 		Map maps = JSON.parseObject(message,Map.class);
 		String mobile = (String)maps.get("mobile");
 		String templateParam = (String)maps.get("templateParam");
 		String signName = (String)maps.get("signName");
 		String accessKeyId = env.getProperty("accessKeyId");
 		String accessKeySecret = env.getProperty("accessKeySecret");
-		try {
-			SmsUtils.sendSms(mobile,signName,templateCode,templateParam,accessKeyId,accessKeySecret);
-		} catch (ClientException e) {
-			logger.error(e.getMessage());
-		}
-		
+		return SmsUtils.sendSms(mobile, signName, templateCode, templateParam, accessKeyId, accessKeySecret);
 	}
 }

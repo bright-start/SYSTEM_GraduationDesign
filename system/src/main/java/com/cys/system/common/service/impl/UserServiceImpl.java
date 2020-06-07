@@ -10,6 +10,7 @@ import com.cys.system.common.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.reflect.TypeToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,5 +80,20 @@ public class UserServiceImpl implements UserService {
             return new Result().success();
         }
         return new Result().success(200,"旧密码输入错误");
+    }
+
+    @Transactional(readOnly = false)
+    @Override
+    public Result createAdmin(User user) {
+        if(userMapper.isExistUsername(user.getUsername()) == null){
+            return new Result().success(200,"该账号已被注册");
+        }
+        user.setPassword(new BCryptPasswordEncoder().encode("123456"));
+        user.setRoleId(3);
+        user.setLevel(0);
+        user.setStatus(2);
+        user.setBindPhone("/");
+        userMapper.createAdmin(user);
+        return new Result().success();
     }
 }

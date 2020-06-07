@@ -55,7 +55,7 @@ public class OrderController {
     @PostMapping("/list")
     public Result list(Integer page,Integer rows,@RequestBody Order order,HttpServletRequest request) throws UnauthorizedException {
         Map<String, Object> userMap = ssoService.getUser(request);
-        if(userMap != null && !userMap.isEmpty()) {
+        if(userMap == null || userMap.isEmpty()) {
             throw new UnauthorizedException();
         }
         Integer shopId = (Integer) userMap.get("shopId");

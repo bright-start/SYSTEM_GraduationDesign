@@ -5,7 +5,7 @@
     <!-- 页面meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>商品管理</title>
+    <title>商品审核</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta
             content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
@@ -52,16 +52,18 @@
         <div class="pull-left">
             <div class="form-group form-inline">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default" title="审核通过">
-                        <i class="fa fa-check" ng-click="changeStatus(-1,2);"></i> 审核通过
+                    <button type="button" class="btn btn-default" title="审核通过"
+                            ng-click="changeStatus(-1,3);">
+                        <i class="fa fa-check"></i> 审核通过
                     </button>
                     <button type="button" class="btn btn-default" title="驳回" data-toggle="modal" data-target="#errorMsg"
                             ng-click="isBatch(true);">
                         <i class="fa fa-ban"></i> 驳回
                     </button>
                     </button>
-                    <button type="button" class="btn btn-default" title="刷新">
-                        <i class="fa fa-refresh" onclick="window.location.reload();"></i>
+                    <button type="button" class="btn btn-default" title="刷新"
+                            onclick="window.location.reload();">
+                        <i class="fa fa-refresh" ></i>
                         刷新
                     </button>
                 </div>
@@ -279,7 +281,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-success" data-dismiss="modal"
-                        aria-hidden="true" ng-click="changeStatus(entity.id,2);">审核通过
+                        aria-hidden="true" ng-click="changeStatus(entity.id,3);">审核通过
                 </button>
                 <button class="btn btn-danger"
                         aria-hidden="true" data-toggle="modal" ng-click="isBatch(false);" data-target="#errorMsg">审核未通过
@@ -311,7 +313,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-success" data-dismiss="modal"
-                        aria-hidden="true" ng-click="changeStatus(entity.id,3);">保存
+                        aria-hidden="true" ng-click="changeStatus(entity.id,2);">保存
                 </button>
                 <button class="btn btn-default" data-dismiss="modal"
                         aria-hidden="true">关闭

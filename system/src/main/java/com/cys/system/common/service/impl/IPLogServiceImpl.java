@@ -38,6 +38,6 @@ public class IPLogServiceImpl implements IPLogService {
         if (ipLogs != null && !ipLogs.isEmpty()) {
             return new Result().success(ipLogs);
         }
-        return new Result().success("无数据");
+        return new Result().success(200,"无数据");
     }
 }

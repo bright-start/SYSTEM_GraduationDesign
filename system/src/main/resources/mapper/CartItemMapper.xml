@@ -47,8 +47,13 @@
         #{cartId}
         )
     </insert>
+    <update id="addNum">
+        update cart_item set
+        cart_item_product_count=#{num}
+        where cart_item_id=#{cartItemId}
+    </update>
     <delete id="deleteCartItem" parameterType="java.lang.Integer">
-        delete from cart_item where cart_item_product_id=#{productId}
+        delete from cart_item where cart_item_id=#{cartItemId}
     </delete>
     <select id="findCartItemByCartId" parameterType="java.lang.Integer" resultType="java.lang.Long">
         select count(cart_item_id) from cart_item where cart_id=#{cartId}
@@ -60,5 +65,10 @@
         "public"."cart_item"
         WHERE
         "public"."cart_item"."cart_item_id"=#{id}
+    </select>
+    <select id="findCartItemByCartItemId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select cart_item_product_count
+        from cart_item
+        where cart_item_id=#{cartItemId}
     </select>
 </mapper>

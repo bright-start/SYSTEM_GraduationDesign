@@ -115,6 +115,7 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
                 $scope.isEnableSpec = 0;
                 $scope.entity = {};
                 editor.html('');
+                alert("特产编辑成功")
         	} else if(data.code === 401){
         	    $scope.isEnableSpec = 0;
                 $scope.entity = {};

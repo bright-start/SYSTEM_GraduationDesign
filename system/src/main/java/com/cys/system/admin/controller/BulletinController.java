@@ -33,6 +33,11 @@ public class BulletinController {
         }
     }
 
+    @GetMapping("/updateStatus")
+    public Result updateStatus(Integer id){
+        return bulletinService.updateStatus(id);
+    }
+
     @GetMapping("/loadBulletinList")
     public Result loadBulletinList(){
         return bulletinService.loadBulletinList();

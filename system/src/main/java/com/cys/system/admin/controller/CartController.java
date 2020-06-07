@@ -6,10 +6,7 @@ import com.cys.system.common.service.CartService;
 import com.cys.system.common.service.SSOService;
 import com.cys.system.common.service.impl.SSOServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -57,11 +54,21 @@ public class CartController {
         }
     }
 
-    @DeleteMapping("/delete")
-    public Result deleteCartItem(Integer productId,String token){
+    @GetMapping("/addNum")
+    public Result addNum(Integer cartId,Integer cartItemId,Integer num,String token){
         try {
             Integer userId = volidAndGetUserId(token);
-            return cartService.deleteCartItem(productId);
+            return cartService.addNum(cartId,cartItemId,num,userId);
+        } catch (UnauthorizedException e) {
+            return new Result().success(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete")
+    public Result deleteCartItem(Integer cartId,Integer[] ids,String token){
+        try {
+            Integer userId = volidAndGetUserId(token);
+            return cartService.deleteCartItem(cartId,ids,userId);
         } catch (UnauthorizedException e) {
             return new Result().success(e.getMessage());
         }

@@ -119,11 +119,12 @@
         set article_lovenum = article_lovenum-1
         where article_id = #{id}
     </update>
-    <update id="updateStatusById" parameterType="java.lang.Integer">
+    <update id="updateStatusById">
         update article
-        set article_status=0
-        article_enabletimetask = 0
-        article_timetask='null'
+        set article_status=1,
+        article_enabletimetask = 0,
+        article_timetask='null',
+        article_releasetime=#{releaseTime}
         where article_id=#{id}
     </update>
 </mapper>

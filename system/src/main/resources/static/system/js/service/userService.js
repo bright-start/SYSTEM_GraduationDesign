@@ -17,4 +17,7 @@ app.service("userService", function ($http) {
     this.modifyPassword = function (info) {
         return $http.post(basePath + "/user/modifyPassword",info);
     };
+    this.add = function (entity) {
+        return $http.post(basePath + "/user/createAdmin",entity);
+    };
 });

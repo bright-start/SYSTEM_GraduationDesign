@@ -62,7 +62,7 @@ public class TokenServiceImpl implements TokenService {
         RedisSerializer redisSerializer = new StringRedisSerializer();
         redisTemplate.setKeySerializer(redisSerializer);
 
-        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication();
         //清空springSecurity存储的信息
         SecurityContextHolder.getContext().setAuthentication(null);
 
@@ -99,7 +99,7 @@ public class TokenServiceImpl implements TokenService {
         cookie.setMaxAge(30 * 60);
         cookie.setPath("/");
 //        cookie.setDomain("cys.com");
-        cookie.setHttpOnly(true);
+//        cookie.setHttpOnly(true);
         response.addCookie(cookie);
 
 

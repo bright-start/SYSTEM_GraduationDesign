@@ -35,6 +35,12 @@
         ON "public"."cart_item"."cart_id" = "public".cart."cart_id"
         where "public".cart.user_id = #{userId}
     </select>
+    <select id="findUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select user_id
+        from
+        cart
+        where cart_id=#{cartId}
+    </select>
     <insert id="saveCart" parameterType="Cart">
 <!--        <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id">-->
 <!--            select nextval('cart_cart_id_seq'::regclass) as id-->

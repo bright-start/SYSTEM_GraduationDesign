@@ -1,12 +1,11 @@
 package com.cys.sso.pojo;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 
-public class LoginUser extends User {
+public class LoginUser extends UsernamePasswordAuthenticationToken {
     private Integer userId;
 
     private Integer shopId;

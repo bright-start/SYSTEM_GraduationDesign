@@ -41,8 +41,8 @@ public class ShopMessageReceiver {
     public void process(String msg){
 
         Map map = OnlyOneClassConfig.gson.fromJson(msg,Map.class);
-        Integer id = (Integer) map.get("id");
-        Integer status = (Integer) map.get("status");
+        Integer id =  ((Double) map.get("id")).intValue();
+        Integer status = ((Double) map.get("status")).intValue();
 
         //上架
         if(status == 4) {

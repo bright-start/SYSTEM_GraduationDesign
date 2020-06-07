@@ -8,6 +8,9 @@ app.service("bulletinService", function ($http) {
     this.update = function (entity) {
         return $http.put("http://www.cys.com:9200/system/bulletin/modify", entity);
     };
+    this.updateStatus = function (id) {
+        return $http.put("http://www.cys.com:9200/system/bulletin/updateStatus?id="+id);
+    };
 
     // 根据id查询
     this.findOne = function (id) {

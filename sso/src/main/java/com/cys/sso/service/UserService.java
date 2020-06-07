@@ -23,4 +23,6 @@ public interface UserService {
     Result shopRegistry(Shop shop, HttpServletRequest request);
 
     void updateLoginTimeById(Integer userId);
+
+    User findUserByMobile(String mobile);
 }

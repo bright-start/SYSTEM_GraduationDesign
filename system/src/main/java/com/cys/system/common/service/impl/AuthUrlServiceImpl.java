@@ -55,13 +55,13 @@ public class AuthUrlServiceImpl implements AuthUrlService {
                         if (authUrls == null || authUrls.isEmpty()) {
                             continue;
                         }
-                        String authUrlJson = OnlyOneClassConfig.gson1.toJson(authUrls);
+                        String authUrlJson = OnlyOneClassConfig.gson.toJson(authUrls);
                         redisTemplate.opsForHash().put(ROLE_AUTH_KEY, roleName, authUrlJson);
                         redisTemplate.expire(ROLE_AUTH_KEY, 30, TimeUnit.MINUTES);
                     }
                 }
             }
-            List<AuthUrl> authUrlList = OnlyOneClassConfig.gson1.fromJson(json, List.class);
+            List<AuthUrl> authUrlList = OnlyOneClassConfig.gson.fromJson(json, List.class);
             if(authUrlList != null) {
                 authUrlMap.put(roleName, authUrlList);
             }

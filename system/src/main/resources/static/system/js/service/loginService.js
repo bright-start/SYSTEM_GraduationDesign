@@ -5,4 +5,7 @@ app.service("loginService", function ($http) {
     this.logout = function () {
         return $http.get("http://www.cys.com:9200/sso/logoutSafe");
     };
+    this.loadMsg = function(){
+        return $http.get(basePath+"/msg/load");
+    };
 });

@@ -28,6 +28,8 @@ public class ShopServiceImpl implements ShopService {
     @Resource
     private SmsSender smsSender;
 
+    private String templateCode = "SMS_188625955";
+
     @Override
     public Result listApplyShop(Integer page, Integer rows) {
         long count = shopMapper.countApplyShop();
@@ -61,8 +63,10 @@ public class ShopServiceImpl implements ShopService {
                 Map info = shopMapper.getShopInfoByShopId(id);
                 Map map = new HashMap();
                 map.put("mobile",info.get("bind_phone"));
-                map.put("signName","[农特产]");
-                map.put("shopName",info.get("shop_name"));
+                map.put("templateCode",templateCode);
+                Map templateParam = new HashMap();
+                templateParam.put("shopName",info.get("shopName"));
+                map.put("templateCode",templateCode);
                 String msg = OnlyOneClassConfig.gson.toJson(map);
                 smsSender.sendSms(msg);
             } catch (ClientException e) {

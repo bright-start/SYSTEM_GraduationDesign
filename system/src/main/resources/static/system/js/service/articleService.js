@@ -9,6 +9,10 @@ app.service("articleService", function ($http) {
         return $http.get("http://www.cys.com:9200/system/article/get?id=" + id);
     };
 
+    this.updateStatus = function (id) {
+        return $http.get("http://www.cys.com:9200/system/article/updateStatus?id=" + id);
+    };
+
     // 条件查询
     this.search = function (page, rows, searchEntity) {
         return $http.post("http://www.cys.com:9200/system/article/list?page=" + page + "&rows=" + rows,

@@ -85,10 +85,16 @@
         </td>
         <td>{{entity.title}}</td>
         <td>{{entity.author}}</td>
-        <td>{{entity.status}}</td>
+        <td>
+            <span ng-if="entity.status == 1">已发布</span>
+            <span ng-if="entity.status == 0">未发布</span>
+        </td>
         <td>{{entity.createTime}}</td>
         <td>{{entity.updateTime}}</td>
         <td class="text-center">
+            <a ng-if="entity.status == 0" class="btn bg-olive btn-xs" href="updateStatus(entity.id)"
+               style="background-color: #e2dada">发布
+            </a>
             <button type="button" class="btn bg-olive btn-xs"
                     data-toggle="modal" ng-click="findOne(entity.id)"
                     data-target="#editModal">详情
@@ -146,7 +152,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-success" data-dismiss="modal"
+                <button ng-if="entity.status != 1" class="btn btn-success" data-dismiss="modal"
                         aria-hidden="true" ng-click="save()">保存
                 </button>
                 <button class="btn btn-default" data-dismiss="modal"

@@ -13,7 +13,7 @@ public class Order {
     private String overTime;
     private Integer status;
     private String creator;
-    private Integer phone;
+    private String phone;
     private String address;
     private Integer userId;
     private Integer shopId;
@@ -96,11 +96,11 @@ public class Order {
         this.creator = creator;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

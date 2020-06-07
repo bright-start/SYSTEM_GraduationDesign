@@ -61,12 +61,12 @@
 				<i class="fas fa-user"></i>
 				手机号
 			</label>
-            <input placeholder="手机号" id="bindPhone" name="phone" type="text" required autocomplete="off">
+            <input placeholder="手机号" id="mobile" name="mobile" type="text" required autocomplete="off">
         </div>
         <div class="form-style-agile">
             <input placeholder="验证码" style="width: 70%;" id="code" name="code" type="text" required
                    autocomplete="off">
-            <input style="width: 28%;background-color: #f7296f;height: 47px;opacity: 0.8;outline: none" id="getcode"
+            <input style="width: 28%;background-color: #f7296f;height: 47px;opacity: 0.8;outline: none" id="volid_code"
                    type="button" value="获取验证码"/>
         </div>
         <!-- checkbox -->
@@ -124,41 +124,96 @@
         }
     });
 
-	$("#login").click(function () {
-		console.log("login");
-		var username = $("#username").val();
-		var password = $("#password").val();
-		var flag = $("#flag").is(':checked');
-		console.log(username+"-"+password+"-"+flag);
-		$.ajax({
-			url: "/sso/login",
-			type: "POST",
-			dataType: "json",
-			data: {
-				username: username,
-				password: password,
-				enable: flag
-			},
-			before: function () {
+    if($("#changeLoginType").html() === "手机号登陆"){
+        $("#login").click(function () {
+            console.log("login");
+            var username = $("#username").val();
+            var password = $("#password").val();
+            var flag = $("#flag").is(':checked');
+            console.log(username+"-"+password+"-"+flag);
+            $.ajax({
+                url: "/sso/login",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    username: username,
+                    password: password,
+                    enable: flag
+                },
+                before: function () {
 
-            },
-            success: function (data) {
-                console.log(data);
-                if (data.code === 200) {
-                    if(typeof(data.data) == "undefined") {
-                        alert(data.message);
-                    }else {
-<!--                        alert("登陆成功，即将跳转到 "+data.data);-->
-                        window.location.href = data.data;
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data.code === 200) {
+                        if(typeof(data.data) == "undefined") {
+                            alert(data.message);
+                        }else {
+    <!--                        alert("登陆成功，即将跳转到 "+data.data);-->
+                            window.location.href = data.data;
+                        }
+                    }
+
+                },
+                error: function (data) {
+                    alert("用户名或密码错误！");
+                }
+            });
+        });
+    }else{
+        $("#volid_code").on("click",function(){
+            console.log("发送验证码");
+            var mobile = $("#mobile").val();
+            $.ajax({
+                url: "/sso/sendSms",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    phone: mobile
+                },
+                success: function (data) {
+                    if(data.code === 200){
+                        console.log("验证码发送成功");
                     }
                 }
-
-            },
-            error: function (data) {
-                alert("用户名或密码错误！");
-            }
+            });
         });
-    });
+        $("#login").click(function() {
+            console.log("login");
+            var mobile = $("#mobile").val();
+            var code = $("#code").val();
+            var flag = $("#flag").is(':checked');
+            console.log(username+"-"+password+"-"+flag);
+            $.ajax({
+                url: "/sso/mobileCodeLogin",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    mobile: mobile,
+                    code: code,
+                    enable: flag
+                },
+                before: function () {
+
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data.code === 200) {
+                        if(typeof(data.data) == "undefined") {
+                            alert(data.message);
+                        }else {
+    <!--                        alert("登陆成功，即将跳转到 "+data.data);-->
+                            window.location.href = data.data;
+                        }
+                    }
+
+                },
+                error: function (data) {
+                    alert("用户名或密码错误！");
+                }
+            });
+        });
+    }
 </script>
 </body>
 

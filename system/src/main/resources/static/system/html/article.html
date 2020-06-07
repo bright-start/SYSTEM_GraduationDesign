@@ -119,11 +119,14 @@
             <span ng-if="entity.enableTimeTask == 1">是</span>
         </td>
         <td class="text-center">
-            <a class="btn bg-olive btn-xs" href="article_edit.html#?id={{entity.id}}"
-               style="background-color: darkred">修改
+            <a ng-if="entity.status == 0" class="btn bg-olive btn-xs" ng-click="updateStatus(entity.id)"
+               style="background-color: #e2dada">发布
+            </a>
+            <a ng-if="entity.status == 0" class="btn bg-olive btn-xs" href="article_edit.html#?id={{entity.id}}"
+               style="background-color: #e2dada">修改
             </a>
             <a class="btn bg-olive btn-xs" href="article_template.html#?id={{entity.id}}"
-               style="background-color: #e08e0b">详情
+               style="background-color: #e2dada">详情
             </a>
         </td>
     </tr>

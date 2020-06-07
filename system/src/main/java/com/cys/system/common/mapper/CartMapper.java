@@ -10,4 +10,6 @@ public interface CartMapper {
     void clearCart(Integer userId);
 
     void updateCart();
+
+    Integer findUserId(Integer cartId);
 }

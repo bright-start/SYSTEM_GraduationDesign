@@ -76,6 +76,13 @@ public class BulletinServiceImpl implements BulletinService {
 
     @Transactional(readOnly = false)
     @Override
+    public Result updateStatus(Integer id) {
+        bulletinMapper.updateStatusById(id);
+        return new Result().success();
+    }
+
+    @Transactional(readOnly = false)
+    @Override
     public void insertBulletin(Bulletin bulletin) {
         bulletinMapper.insertBulletin(bulletin);
     }

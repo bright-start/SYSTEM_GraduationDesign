@@ -11,6 +11,7 @@
         <result column="level" property="level"/>
         <result column="status" property="status"/>
         <result column="disable_time" property="disableTime"/>
+        <result column="bind_phone" property="bindPhone"/>
         <result column="shop_id" property="shopId"/>
     </resultMap>
     <select id="findPasswordByUsername" parameterType="java.lang.String" resultMap="userMap">
@@ -25,6 +26,19 @@
         _user
         where
         username = #{username}
+    </select>
+    <select id="findUserByMobile" parameterType="java.lang.String" resultMap="userMap">
+        select
+        user_id,
+        username,
+        password,
+        role_id,
+        level,
+        shop_id
+        from
+        _user
+        where
+        bind_phone = #{mobile}
     </select>
     <select id="checkUsername" parameterType="java.lang.String" resultType="java.lang.Integer">
         select user_id
@@ -60,6 +74,9 @@
         status,
         disable_time,
         bind_phone
+        <if test="shopId != null">
+            ,shop_id
+        </if>
         )values (
         #{username},
         #{password},
@@ -70,6 +87,9 @@
         #{status},
         #{disableTime},
         #{bindPhone}
+        <if test="shopId != null">
+            ,#{shopId}
+        </if>
         )
     </insert>
 </mapper>

@@ -26,7 +26,7 @@ public interface ArticleService {
 
     Result deleteCommand(Integer commandId, Integer userId);
 
-    void updateStatusById(Integer id);
+    Result updateStatusById(Integer id);
 
     List<TimeTask> listTimeTask();
 

@@ -2,6 +2,7 @@ package com.cys.system.common.mapper;
 
 import com.cys.system.common.pojo.Article;
 import com.cys.system.common.pojo.TimeTask;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public interface ArticleMapper {
 
     void increaseLoveNum(Integer id);
 
-    void updateStatusById(Integer id);
+    void updateStatusById(@Param("id") Integer id, @Param("releaseTime") String releaseTime);
 
     List<TimeTask> listTimeTask();
 

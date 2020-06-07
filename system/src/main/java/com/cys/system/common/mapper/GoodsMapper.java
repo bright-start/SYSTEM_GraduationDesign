@@ -36,7 +36,7 @@ public interface GoodsMapper {
     @Update("update goods set goods_recomment = goods_recomment+#{status} where goods_id =#{id}")
     void recomment(@Param("id") Integer id, @Param("status") Integer status);
 
-    @Update("update goods set goods_month_sale=goods_month_sale+#{num}, where goods_id =#{id}")
+    @Update("update goods set goods_month_sale=goods_month_sale+#{num} where goods_id =#{id}")
     void saleGoods(@Param("num") Integer num,@Param("id") Integer goodsId);
 
     @Select("SELECT\n" +

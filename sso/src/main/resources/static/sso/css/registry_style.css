@@ -246,6 +246,7 @@ body {
     -ms-background-size: cover;
 	position: relative;
     min-height: 100vh;
+    opacity
 }
 .layer {
     padding: 2em 0;

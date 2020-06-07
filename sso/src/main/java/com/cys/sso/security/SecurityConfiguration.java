@@ -1,5 +1,8 @@
-package com.cys.sso.filter;
+package com.cys.sso.security;
 
+import com.cys.sso.security.filter.MobileCodeAuthenticationProcessingFilter;
+import com.cys.sso.security.provider.MobileCodeAuthenticationProvider;
+import com.cys.sso.security.provider.UsernamePasswordAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -10,8 +13,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import javax.annotation.Resource;
 
 
 @Configuration
@@ -24,8 +25,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(mobileCodeAuthenticationProvider())
-                .authenticationProvider(usernamePasswordAuthenticationProvider());
+        auth.authenticationProvider(usernamePasswordAuthenticationProvider())
+                .authenticationProvider(mobileCodeAuthenticationProvider());
     }
 
     @Override
@@ -40,10 +41,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/js/**",
                         "/images/**",
                         "/html/**",
-                        "/sso/login",
+                        "/login",
                         "/sendSms",
                         "/upload",
-                        "/sso/registry"
+                        "/registry",
+                        "/shop_registry"
                 ).permitAll()
                 .anyRequest().permitAll()
 //                .antMatchers("/sso/**").access("hasRole('SUPPERADMIN')")

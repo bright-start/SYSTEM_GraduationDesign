@@ -7,10 +7,7 @@ import com.cys.system.common.mapper.GoodsSummaryMapper;
 import com.cys.system.common.pojo.GoodsSummary;
 import com.cys.system.common.service.GoodsSummaryService;
 import com.github.pagehelper.PageInfo;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.FuzzyQueryBuilder;
-import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -43,8 +40,8 @@ public class GoodsSummaryServiceImpl implements GoodsSummaryService {
         NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         if(searchEntity.getGoodsName() != null) {
-            FuzzyQueryBuilder fuzzyQuery = QueryBuilders.fuzzyQuery("goodsName", searchEntity.getGoodsName());
-            boolQueryBuilder.must(fuzzyQuery);
+            MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("goodsName", searchEntity.getGoodsName());
+            boolQueryBuilder.must(matchQueryBuilder);
         }
         if(searchEntity.getAreaName() != null){
             MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("areaName", searchEntity.getAreaName());
@@ -55,7 +52,11 @@ public class GoodsSummaryServiceImpl implements GoodsSummaryService {
         queryBuilder.withPageable(PageRequest.of((searchEntity.getPage() - 1), searchEntity.getSize()));
 
         //搜索文本高亮显示
-        queryBuilder.withHighlightFields(new HighlightBuilder.Field("goodsName"));
+        HighlightBuilder highlightBuilder = new HighlightBuilder();
+        highlightBuilder.field("goodsName");
+        highlightBuilder.preTags("<span style=\"color:red\">");
+        highlightBuilder.postTags("</span>");
+        queryBuilder.withHighlightBuilder(highlightBuilder);
 
         //条件排序
         if (searchEntity.getOrderField() == null) {

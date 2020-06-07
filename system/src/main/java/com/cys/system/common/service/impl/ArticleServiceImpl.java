@@ -56,8 +56,10 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Transactional(readOnly = false)
     @Override
-    public void updateStatusById(Integer id) {
-        articleMapper.updateStatusById(id);
+    public Result updateStatusById(Integer id) {
+        String releaseTime = TimeConverter.getInstance().DateToString(new Date(),TimeFormat.Y_M_D_H_M_S);
+        articleMapper.updateStatusById(id,releaseTime);
+        return new Result().success();
     }
 
     @Override

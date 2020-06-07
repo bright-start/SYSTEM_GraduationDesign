@@ -24,4 +24,8 @@ public interface UserMapper {
     void updatePassword(User user);
 
     Long getNumForRole(Integer roleId);
+
+    Integer isExistUsername(String username);
+
+    void createAdmin(User user);
 }

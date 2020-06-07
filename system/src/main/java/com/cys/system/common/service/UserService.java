@@ -11,4 +11,6 @@ public interface UserService {
     Result load(Integer userId);
 
     Result modifyPassword(Integer userId,String passwordInfo);
+
+    Result createAdmin(User user);
 }

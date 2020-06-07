@@ -20,4 +20,6 @@ public interface UserMapper {
     void changeStatus(@Param("username") String username,@Param("status") Integer status);
 
     void updateUserById(@Param("userId") Integer userId,@Param("shopId") Integer shopId);
+
+    User findUserByMobile(String mobile);
 }

@@ -84,8 +84,14 @@
     <select id="count" resultType="java.lang.Long" parameterType="Goods">
         select count(goods_id) from goods
         <where>
+            <if test="status != null">
+                "public".goods."goods_status"=#{status}
+            </if>
+            <if test="goodsName != null">
+                "public".goods."goods_name" like concat('%',#{goodsName},'%')
+            </if>
             <if test="shopId != null">
-                "public".goods.shop_id = #{shopId}
+                "public".goods."shop_id" = #{shopId}
             </if>
         </where>
     </select>

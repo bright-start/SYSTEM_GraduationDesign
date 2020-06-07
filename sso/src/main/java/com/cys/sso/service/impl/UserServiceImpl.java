@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
         if (user.getRoleId() == 1 && user.getImage() == null) {
         }
 
-        user.setStatus(0);
+        user.setStatus(2);
         user.setLevel(0);
         user.setPassword((new BCryptPasswordEncoder()).encode(user.getPassword()));
         Integer userId = this.userMapper.registry(userFingerprint.getUser());
@@ -105,14 +105,14 @@ public class UserServiceImpl implements UserService {
         shopMapper.saveShopInfo(shop);
 
         //检查该账号是否已注册
-        User user = userMapper.findPasswordByUsername(shop.getUsername());
-        if(user != null) {
-            if (!user.getPassword().equals((new BCryptPasswordEncoder()).encode(shop.getPassword()))) {
-                return new Result().success("会员账号密码错误");
-            }
-
-            userMapper.updateUserById(user.getUserId(),shop.getShopId());
-        }else{
+//        User user = userMapper.findPasswordByUsername(shop.getUsername());
+//        if(user != null) {
+//            if (!user.getPassword().equals((new BCryptPasswordEncoder()).encode(shop.getPassword()))) {
+//                return new Result().success("会员账号密码错误");
+//            }
+//
+//            userMapper.updateUserById(user.getUserId(),shop.getShopId());
+//        }else{
 
             //未注册则注册
             User newUser = new User();
@@ -132,9 +132,9 @@ public class UserServiceImpl implements UserService {
             userInfo.setLastLoginTime(userInfo.getRegistryTime());
             userInfo.setLoginTime(userInfo.getLastLoginTime());
             userInfoMapper.saveUserInfo(userInfo);
-        }
+//        }
 
-        return new Result().success("开始申请店铺,一个工作日返回审核结果，请耐心等待");
+        return new Result().success(200,"店铺申请已提交,一个工作日返回审核结果，请耐心等待");
     }
 
     @Override
@@ -162,5 +162,10 @@ public class UserServiceImpl implements UserService {
     public void updateLoginTimeById(Integer userId) {
         String loginTime = TimeConverter.DateToString(new Date());
         userInfoMapper.updateLoginTimeById(loginTime,userId);
+    }
+
+    @Override
+    public User findUserByMobile(String mobile) {
+        return userMapper.findUserByMobile(mobile);
     }
 }

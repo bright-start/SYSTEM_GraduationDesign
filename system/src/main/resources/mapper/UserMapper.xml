@@ -36,9 +36,10 @@
         lastlogintime,
         logintype,
         ip_addr
-        from _user,user_info
+        from _user
+        full join user_info
+        on _user.user_id = user_info.user_id
         <where>
-            _user.user_id = user_info.user_id
             <if test="username != null">
                 and username = #{username}
             </if>
@@ -84,8 +85,22 @@
     <select id="getNumForRole" parameterType="java.lang.Integer" resultType="java.lang.Long">
         select count(user_id) from _user where role_id = #{roleId}
     </select>
+    <select id="isExistUsername" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select user_id from _user where username=#{username}
+    </select>
     <update id="updatePassword">
         update _user set password = #{password}
         where user_id = #{userId}
     </update>
+    <insert id="createAdmin" parameterType="User">
+        insert into _user(username,password,role_id,level,status,bind_phone)
+        values(
+        #{username},
+        #{password},
+        #{roleId},
+        #{level},
+        #{status},
+        #{bindPhone}
+        )
+    </insert>
 </mapper>

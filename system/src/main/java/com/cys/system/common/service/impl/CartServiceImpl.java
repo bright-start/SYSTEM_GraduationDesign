@@ -1,5 +1,6 @@
 package com.cys.system.common.service.impl;
 
+import com.cys.system.common.exception.UnauthorizedException;
 import com.cys.system.common.mapper.GoodsMapper;
 import com.cys.system.common.pojo.Cart;
 import com.cys.system.common.pojo.CartItem;
@@ -89,7 +90,22 @@ public class CartServiceImpl implements CartService {
         return new Result().success();
     }
 
-    private CartItem createCartItem(Cart cart,Integer productId){
+    @Override
+    public Result addNum(Integer cartId,Integer cartItemId, Integer num, Integer userId) throws UnauthorizedException {
+        Integer userFlag = cartMapper.findUserId(cartId);
+        if(!userFlag.equals(userId)){
+            throw new UnauthorizedException("非法操作购物车");
+        }
+        Integer hasNum = cartItemMapper.findCartItemByCartItemId(cartItemId);
+        Integer nowNum = hasNum +num;
+        if(nowNum <= 0){
+            cartItemMapper.deleteCartItem(cartItemId);
+        }
+        cartItemMapper.addNum(cartItemId,nowNum);
+        return new Result().success();
+    }
+
+    private CartItem createCartItem(Cart cart, Integer productId){
         CartItem newCartItem = new CartItem();
         newCartItem.setCartId(cart.getId());
 
@@ -147,8 +163,14 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Result deleteCartItem(Integer productId) {
-        cartItemMapper.deleteCartItem(productId);
+    public Result deleteCartItem(Integer cartId,Integer[] ids,Integer userId) throws UnauthorizedException {
+        Integer userFlag = cartMapper.findUserId(cartId);
+        if(!userFlag.equals(userId)){
+            throw new UnauthorizedException("非法操作购物车");
+        }
+        for (Integer id : ids) {
+            cartItemMapper.deleteCartItem(id);
+        }
         return new Result().success();
     }
 

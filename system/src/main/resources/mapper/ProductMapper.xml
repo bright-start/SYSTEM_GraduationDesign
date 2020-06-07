@@ -58,4 +58,8 @@
             #{goodsId}
         )
     </insert>
+    <update id="updateProduct" parameterType="Product">
+        update product set product_stock=#{productStock}
+        where product_id=#{id}
+    </update>
 </mapper>

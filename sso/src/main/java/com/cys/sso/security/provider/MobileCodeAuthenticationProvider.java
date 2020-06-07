@@ -1,4 +1,4 @@
-package com.cys.sso.filter;
+package com.cys.sso.security.provider;
 
 import com.cys.sso.pojo.LoginUser;
 import com.cys.sso.pojo.User;
@@ -14,13 +14,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 public class MobileCodeAuthenticationProvider implements AuthenticationProvider {
     @Autowired
@@ -42,7 +38,7 @@ public class MobileCodeAuthenticationProvider implements AuthenticationProvider 
         if (null == _code) {
             throw new BadCredentialsException("验证码为空");
         }
-        User user = userService.findUserByMobile();
+        User user = userService.findUserByMobile(mobile);
         if(user == null){
             throw new BadCredentialsException("该手机号未注册");
         }
@@ -95,7 +91,6 @@ public class MobileCodeAuthenticationProvider implements AuthenticationProvider 
 
     @Override
     public boolean supports(Class<?> authentication) {
-        System.out.println(this.getClass().getName() + "---supports");
         return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
     }
 }

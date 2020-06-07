@@ -1,4 +1,4 @@
-package com.cys.sso.filter;
+package com.cys.sso.security.filter;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationServiceException;

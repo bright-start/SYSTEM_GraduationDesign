@@ -97,7 +97,6 @@
             },
             success: function (data) {
                 if (data.code === 200) {
-                    console.log(data.data);
                     $("#waitDealOrderNum").text(data.data.waitDealOrderNum);
                     $("#publishedGoodsNum").text(data.data.publishedGoodsNum);
                 }
@@ -117,7 +116,6 @@
         },
         success: function (data) {
             if (data.code === 200) {
-                console.log(data.data);
                 option = JSON.parse(data.data);
                 if (option != null) {
                     myChart.setOption(option, true);
@@ -139,7 +137,6 @@
         },
         success: function (data) {
             if (data.code === 200) {
-                console.log(data.data);
                 registry_ratio_data = JSON.parse(data.data);
                 if (registry_ratio_data != null) {
                     registry_ratio_echarts.setOption(registry_ratio_data, true);

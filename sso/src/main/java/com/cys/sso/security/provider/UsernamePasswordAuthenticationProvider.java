@@ -1,14 +1,11 @@
-package com.cys.sso.filter;
+package com.cys.sso.security.provider;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 import com.cys.sso.pojo.LoginUser;
 import com.cys.sso.pojo.User;
 import com.cys.sso.service.UserService;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,7 +15,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 
 public class UsernamePasswordAuthenticationProvider implements AuthenticationProvider {
     @Autowired
@@ -83,7 +79,6 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
 
     @Override
     public boolean supports(Class<?> authentication) {
-        System.out.println(this.getClass().getName() + "---supports");
         return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
     }
 }

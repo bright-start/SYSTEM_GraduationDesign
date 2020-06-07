@@ -19,6 +19,31 @@
 
 
 
+## 运行环境要求
+
+- jdk1.8
+- docker环境
+- elasticsearch6.5.4
+- postgresql10
+- redis
+- fastdfs
+
+
+
+## 本地搭建运行
+
+网站前台首页地址 http://localhost:9200/search/search/index.html
+
+网站后台首页地址http://localhost:9200/system/system/index.html
+
+超级管理员密码 admin 123456
+
+
+
+
+
+
+
 # 功能开发
 
 - [x] 首页

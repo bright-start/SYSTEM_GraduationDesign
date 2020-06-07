@@ -25,6 +25,15 @@ app.controller("bulletinController", function ($scope, $controller, bulletinServ
 
     };
 
+    $scope.updateStatus = function(id){
+        bulletinController.updateStatus(id).success(function(data){
+            if(data.code === 200){
+
+                alert("发布成功");
+            }
+        })
+    }
+
     $scope.findOne = function (id) {
         // 发送请求
         bulletinService.findOne(id).success(function (data) {

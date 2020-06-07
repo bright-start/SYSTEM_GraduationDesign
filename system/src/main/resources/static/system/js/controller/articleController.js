@@ -20,6 +20,24 @@ app.controller("articleController", function ($scope, $controller, $location, ar
 
     };
 
+    $scope.find = function(){
+        var id = $location.search()["id"];
+        console.log("查询文章id:" + id);
+        if(typeof(id) === "undefined"){
+            return;
+        }
+        // 发送请求
+        articleService.findOne(id).success(function (data) {
+            if(data.code === 200){
+                $scope.entity = data.data.article;
+                editor.html($scope.entity.content)
+                if($scope.entity.status == 1){
+                    alert("该文章给你已发布，无法修改");
+                    window.history(-1);
+                }
+            }
+        })
+    }
 
     $scope.findOne = function () {
         var id = $location.search()["id"];
@@ -35,6 +53,15 @@ app.controller("articleController", function ($scope, $controller, $location, ar
             $scope.browse(id);
         })
     };
+
+    $scope.updateStatus = function(id){
+        console.log("发布："+id);
+        articleService.updateStatus(id).success(function(data){
+            if(data.code === 200){
+                $scope.reloadList();
+            }
+        })
+    }
 
 
     // 初始化对象

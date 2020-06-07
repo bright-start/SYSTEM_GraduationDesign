@@ -1,4 +1,4 @@
-package com.cys.sso.filter;
+package com.cys.sso.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;

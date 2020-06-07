@@ -44,10 +44,10 @@ app.controller("specificationController", function ($scope,$controller, specific
         specificationService.search(page, rows, $scope.searchEntity).success(function (data) {
             if (data.code === 200) {
                 $scope.list = data.data.list;
+                $scope.paginationConf.totalItems = data.data.total;// 更新总记录数
                 for(var i = 0;i < $scope.list.length;i++){
                     $scope.list[i].specificationDesc = JSON.parse($scope.list[i].specificationDesc);
                 }
-                $scope.paginationConf.totalItems = data.data.total;// 更新总记录数
             } else {
                 // 全局异常页面
             }

@@ -187,17 +187,17 @@ public class OrderServiceImpl implements OrderService {
         redisTemplate.setKeySerializer(redisSerializer);
 
 
-        Long payTimeout = redisTemplate.getExpire("pay_code");
-        if(payTimeout != null){
-            return new Result().success(200,"请勿重复提交订单");
+        Long payTimeout = redisTemplate.getExpire("pay_code:" + upOrder.getUserId());
+        if (payTimeout  > 0) {
+            return new Result().success(200, "请勿重复提交订单");
         }
 
         List<String> noPayList = OnlyOneClassConfig.gson.fromJson(upOrder.getNoPayList(), List.class);
-        if(noPayList == null) {
-            return new Result().success(200,"订单错误，请尝试再次提交");
+        if (noPayList == null) {
+            return new Result().success(200, "订单错误，请尝试再次提交");
         }
 
-        redisTemplate.opsForValue().set("pay_code", 1);
+        redisTemplate.opsForValue().set("pay_code:" + upOrder.getUserId(), 1);
         redisTemplate.expire("pay_code", 1, TimeUnit.SECONDS);
         for (String noPayCode : noPayList) {
 
@@ -273,8 +273,8 @@ public class OrderServiceImpl implements OrderService {
                         orderMapper.createOrder(order);
                     }
                 }
+                redisTemplate.expire(noPayCode, 0, TimeUnit.SECONDS);
             }
-            redisTemplate.expire(noPayCode, 0, TimeUnit.SECONDS);
         }
 
         //支付  支付失败则不生成最终订单

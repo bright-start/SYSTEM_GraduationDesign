@@ -74,6 +74,11 @@ public class ArticleController {
         return articleService.getArticleById(id);
     }
 
+    @GetMapping("/updateStatus")
+    public Result updateStatus(Integer id){
+        return articleService.updateStatusById(id);
+    }
+
     @PostMapping("/add")
     public Result addArticle(@RequestBody Article article) {
         return articleService.addArticle(article);

@@ -36,20 +36,11 @@ public class GoodsController {
         if (rows == 10 || rows == 20 || rows == 30 || rows == 40 || rows == 50) {
             Map<String, Object> userMap = ssoService.getUser(request);
             if (userMap != null && !userMap.isEmpty()) {
-                List list = (List) userMap.get("authorities");
-                if (list != null && !list.isEmpty()) {
-                    Map map = (Map) list.get(0);
-                    if (map != null && !map.isEmpty()) {
-                        String role = (String) map.get("role");
-                        if (role != null && role.contains("SHOP")) {
-                            Integer shopId = (Integer) userMap.get("shopId");
-                            if(shopId != null) {
-                                goods.setShopId(shopId);
-                            }
-                            return goodsService.listGoods(page, rows, goods);
-                        }
-                    }
+                Integer shopId = (Integer) userMap.get("shopId");
+                if (shopId != null) {
+                    goods.setShopId(shopId);
                 }
+                return goodsService.listGoods(page, rows, goods);
             }
         }
         throw new InvalidRequestException();

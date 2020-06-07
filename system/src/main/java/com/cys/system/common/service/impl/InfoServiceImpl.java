@@ -90,7 +90,7 @@ public class InfoServiceImpl implements InfoService {
             }
         }
         echartsData.setSeries(series);
-        return new Result().success(OnlyOneClassConfig.gson.toJson(echartsData));
+        return new Result().success(OnlyOneClassConfig.gson1.toJson(echartsData));
     }
 
     private List<String> timeFrame(Date nowDate, int range) {
@@ -112,7 +112,7 @@ public class InfoServiceImpl implements InfoService {
     public Result getUserMap() {
         //获取图表模版
         String echartsTemplateData = echartsMapper.getEchartsTemplateByType(2);
-        EchartsData echartsData = OnlyOneClassConfig.gson.fromJson(echartsTemplateData, new TypeToken<EchartsData>() {
+        EchartsData echartsData = OnlyOneClassConfig.gson1.fromJson(echartsTemplateData, new TypeToken<EchartsData>() {
         }.getType());
 
         List<EchartsData.Series> series = echartsData.getSeries();

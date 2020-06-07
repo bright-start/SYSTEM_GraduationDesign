@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cys.system.common.mapper.MsgMapper">
-    <resultMap id="MsgMap" type="Msg">
+    <resultMap id="msgMap" type="Msg">
         <id column="msg_id" property="id"/>
         <result column="message" property="message"/>
         <result column="msg_type" property="msgType"/>
@@ -24,4 +24,15 @@
         #{read}
         )
     </insert>
+    <select id="loadMsg" parameterType="java.lang.Integer" resultMap="msgMap">
+        select
+            message,
+            msg_type,
+            createtime,
+            read
+        from
+            msg
+        where msg_belong = #{userId}
+        order by createtime DESC
+    </select>
 </mapper>

@@ -77,4 +77,18 @@ app.controller("userController", function ($scope, $controller, userService) {
             }
         });
     };
+
+    // 添加函数
+    $scope.save = function () {
+        userService.add($scope.entity).success(function (data) {
+            // 判断
+            if (data.code === 200) {
+                // 刷新
+                $scope.reloadList();
+            } else {
+                alert(data.message);
+            }
+        })
+
+    };
 });

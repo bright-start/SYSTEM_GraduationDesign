@@ -112,7 +112,7 @@
         </td>
         <td>{{entity.username}}</td>
         <!--        存在ssrf攻击，后面修复-->
-        <td><img src="entity.image"/></td>
+        <td><img src="{{entity.image}}"/></td>
         <td>
             <span ng-if="entity.sex == 0">男</span>
             <span ng-if="entity.sex == 1">女</span>
