@@ -1,5 +1,5 @@
 server:
-  port: 9200
+
 spring:
   application:
     name: www.cys.com
@@ -12,7 +12,7 @@ spring:
           lowerCaseServiceId: true
       routes:
         - id: index
-          uri: http://www.cys.com:9200/
+          uri: http://www.cys.com:9201/
           predicates:
             - Path=/
         - id: sso

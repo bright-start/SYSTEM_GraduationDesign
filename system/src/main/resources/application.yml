@@ -38,7 +38,7 @@ spring:
   data:
     elasticsearch:
       cluster-name: docker-cluster
-      cluster-nodes: 10.211.55.33:9300
+      cluster-nodes: 127.0.0.1:9300
       repositories:
         enabled: true
   #mq配置

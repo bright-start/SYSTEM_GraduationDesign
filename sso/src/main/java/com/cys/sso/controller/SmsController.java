@@ -2,6 +2,7 @@ package com.cys.sso.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import com.alibaba.fastjson.JSONObject;

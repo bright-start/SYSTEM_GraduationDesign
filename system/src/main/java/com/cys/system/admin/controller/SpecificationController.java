@@ -59,7 +59,7 @@ public class SpecificationController {
     @DeleteMapping("/delete")
     public Result delete(Integer[] ids,HttpServletRequest request) throws UnauthorizedException {
         Map<String, Object> userMap = ssoService.getUser(request);
-        if (userMap == null && userMap.isEmpty()) {
+        if (userMap == null || userMap.isEmpty()) {
             throw new UnauthorizedException();
         }
         List<Map> list = (List<Map>)userMap.get("authorities");
