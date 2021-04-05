@@ -26,7 +26,7 @@ app.controller("bulletinController", function ($scope, $controller, bulletinServ
     };
 
     $scope.updateStatus = function(id){
-        bulletinController.updateStatus(id).success(function(data){
+        bulletinService.updateStatus(id).success(function(data){
             if(data.code === 200){
 
                 alert("发布成功");

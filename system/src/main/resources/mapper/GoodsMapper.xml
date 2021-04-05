@@ -103,8 +103,8 @@
         "public".product.*,
         "public".area."area_name"
         FROM
-        "public".product
-        JOIN "public".goods
+        "public".goods
+        left JOIN "public".product
         ON "public".product."goods_id" = "public".goods."goods_id"
         JOIN "public".area
         ON "public".area."area_id" = "public".goods."area_id"
@@ -137,7 +137,6 @@
         "public".goods
         ORDER BY
         "public".goods."goods_recomment" DESC
-        limit 4
     </select>
     <update id="updateStatus">
         update goods set goods_status=#{status}

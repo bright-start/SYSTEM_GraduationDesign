@@ -62,12 +62,6 @@ public class IPController {
             ipLog.setBrowseDateYear(s[0]);
             ipLog.setBrowseDateMonth(s[1]);
             ipLog.setBrowseDateDay(s[2]);
-        } else {
-            String date1 = TimeConverter.getInstance().DateToString(new Date(), TimeFormat.Y_M_D_H_M_S);
-            String[] s = date1.split(" ")[0].split("-");
-            ipLog.setBrowseDateYear(s[0]);
-            ipLog.setBrowseDateMonth(s[1]);
-            ipLog.setBrowseDateDay(s[2]);
         }
         return ipLogService.listIPLog(ipLog);
     }

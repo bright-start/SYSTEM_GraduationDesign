@@ -3,17 +3,17 @@ app.controller("ipinfoController", function ($scope, $controller, ipinfoService)
     $controller("baseController", {$scope: $scope});
 
     $scope.findIPLogByDate = function (ipAddr, date, startDate) {
-        if ("null" === date) {
-            var d = new Date();
-            var time = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-            $("#datetime").val(time);
-            date = time;
-
-            $scope.findEntity.ipAddr = ipAddr;
-            $scope.findEntity.date = startDate.split(" ")[0];
-            console.log($scope.findEntity.ipAddr);
-            console.log($scope.findEntity.date);
-        }
+//        if ("null" === date) {
+//            var d = new Date();
+//            var time = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+//            $("#datetime").val(time);
+//            date = time;
+//
+//            $scope.findEntity.ipAddr = ipAddr;
+//            $scope.findEntity.date = startDate.split(" ")[0];
+//            console.log($scope.findEntity.ipAddr);
+//            console.log($scope.findEntity.date);
+//        }
         console.log("查询" + date + "的数据");
 
         // 发送请求
